@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="560" viewBox="0 0 800 560" role="img">
+  <rect width="800" height="560" fill="#12121F"/>
+  <rect x="200" y="180" width="400" height="220" rx="16" fill="#1A1A2E" stroke="#6B3A8C" stroke-width="4"/>
+  <rect x="240" y="220" width="140" height="80" rx="8" fill="#0F0F1E"/>
+  <circle cx="520" cy="260" r="36" fill="#D91E63"/>
+  <text x="400" y="500" text-anchor="middle" fill="#E0E0E0" font-family="Segoe UI, Arial, sans-serif" font-size="28">Teams · Drivers</text>
+</svg>

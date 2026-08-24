@@ -10,7 +10,7 @@ This file tracks progress, decisions, and context across development sessions. U
 - **Event:** IEEE RAS Robotics Competition (Inter-college)
 - **Organization:** IEEE Robotics & Automation Society (RAS), KLS GIT Belagavi
 - **Created:** 2026-08-23
-- **Status:** Phase 4 - Home Page & 3D Robot Animation (**Complete**)
+- **Status:** Phase 6 - Leaderboard, Backend & Integration (**Complete**)
 - **App path:** `gearstorm-website/`
 - **Docs path:** `docs/`
 - **Expected Launch:** Week 12
@@ -216,6 +216,57 @@ This file tracks progress, decisions, and context across development sessions. U
 - Timeline uses step labels, not dates — event dates are still an open
   question in the docs; footnote says dates will be announced ✅
 
+### Phase 5: Content Pages (Week 6-8)
+**Status:** ✅ Complete
+
+**Completed:**
+- [x] Bot Specs page — overview, physical/electrical/component tables, design
+      tips, static 3D `BotPreview`, FAQ
+- [x] Rules page — general rules, obstacles, scoring table, Round 1 vs 2, DQ,
+      safety, submission process, FAQ, print stylesheet + Print button
+- [x] Gallery — responsive grid, category/year filters, lazy images, Modal
+      lightbox; local SVG placeholders in `public/gallery/`
+- [x] Contact — Zod + RHF form, organiser card, social links, Google Maps embed
+- [x] Register — Zod + RHF form with dynamic 3–5 members (exactly one Lead);
+      wired to API in Phase 6
+
+**Verified:**
+- [x] `npm run type-check`, `lint`, and `build` pass
+
+**Key Decisions (Phase 5):**
+- Installed `react-hook-form`, `zod`, `@hookform/resolvers` as required by
+  Rules.md for form pages ✅
+- Specs/scoring marked provisional via shared `COMPETITION` constants so Home
+  and content pages stay consistent until organisers lock numbers ✅
+- Forms submit to the Express API (Phase 6) ✅
+- Gallery uses branded SVG placeholders rather than external image CDNs ✅
+
+### Phase 6: Leaderboard, Backend & Integration (Week 8-10)
+**Status:** ✅ Complete
+
+**Completed:**
+- [x] Express API in `backend/` — health, leaderboard, teams, contact, gallery
+- [x] JSON file store (`data/store.json`) with seed leaderboard/gallery (no
+      Firebase project required for local demo)
+- [x] Leaderboard page — round select, search, college filter, sortable table,
+      row detail modal, 30s polling, “New” badges
+- [x] Registration + Contact forms POST to API with toast feedback
+- [x] Gallery fetches API images (falls back to local SVGs); organiser upload
+      form with `x-admin-key` + multer (5 MB images)
+- [x] Frontend: axios, TanStack Query, Vite `/api` proxy
+
+**Verified:**
+- [x] Backend `type-check` passes; API smoke tests OK (health, leaderboard,
+      contact, teams, gallery)
+- [x] Frontend `type-check`, `lint`, `build` pass
+
+**Key Decisions (Phase 6):**
+- Persistence is local JSON until Firebase credentials exist — same route
+  shapes, swap the store module later ✅
+- Ranking uses ascending adjusted time (`time + penaltySeconds * 1000`) ✅
+- Real-time = 30s polling (plan risk mitigation vs. Firestore listeners) ✅
+- Email confirmation is stubbed to console (`emailQueued: true`) ✅
+
 ---
 
 ## Architecture Decisions
@@ -225,13 +276,13 @@ This file tracks progress, decisions, and context across development sessions. U
 Frontend: React 18 + TypeScript 5 + Vite 5
 Build: Vite
 Styling: Tailwind CSS 3 + CSS variables
-3D: Three.js + React Three Fiber + Drei (Phase 4)
-Forms: React Hook Form + Zod (Phase 5)
-State: Zustand (Phase 6)
-HTTP: Axios + React Query (Phase 6)
-Backend: Node.js + Express (Phase 6)
-Database: Firebase Firestore
-Deployment: Vercel (frontend) + Firebase (backend)
+3D: Three.js + React Three Fiber (procedural; drei removed)
+Forms: React Hook Form + Zod (Phase 5 ✅)
+State: Zustand (toasts + leaderboard UI store)
+HTTP: Axios + TanStack Query (Phase 6 ✅)
+Backend: Node.js + Express (Phase 6 ✅, JSON store)
+Database: JSON file now; Firebase Firestore when project is created
+Deployment: Vercel (frontend) + Firebase/hosting TBD (backend)
 ```
 
 ### Color Palette Approved
@@ -320,6 +371,11 @@ VITE_APP_VERSION=1.0.0
 | 2026-08-23 | 3 | Dev-only `/styleguide` route | Visual reference, excluded from prod |
 | 2026-08-24 | 4 | 3D robot + scroll assembly hero | Signature "wow" feature live |
 | 2026-08-24 | 4 | Rules glance, timeline, FAQ sections | Home page content complete |
+| 2026-08-24 | 5 | Bot Specs, Rules, Gallery, Contact, Register | Content pages complete |
+| 2026-08-24 | 5 | RHF + Zod forms (contact + registration) | Client validation ready for Phase 6 |
+| 2026-08-24 | 6 | Express API + JSON store + seed data | Backend runnable without Firebase |
+| 2026-08-24 | 6 | Leaderboard UI + form/API integration | End-to-end registration & contact |
+| 2026-08-24 | 6 | Post-review hardening (PII, upload, admin key) | Safer local API + form UX |
 
 ---
 
@@ -331,9 +387,11 @@ VITE_APP_VERSION=1.0.0
 4. ✅ Phase 1–2 review findings fixed
 5. ✅ Phase 3 complete: component library + section components
 6. ✅ Phase 4 complete: 3D robot scroll assembly + full Home page
-7. ⬜ Start Phase 5: content pages (Bot Specs, Rules, Gallery, Contact, Register)
-8. ⬜ Optional: create Firebase project and fill `.env.local`
-9. ⬜ Update this Memory when Phase 5 completes
+7. ✅ Phase 5 complete: Bot Specs, Rules, Gallery, Contact, Register
+8. ✅ Phase 6 complete: Leaderboard + Express API + form wiring
+9. ⬜ Start Phase 7: testing, optimization, accessibility polish
+10. ⬜ Optional: create Firebase project and swap JSON store for Firestore
+11. ⬜ Update this Memory when Phase 7 completes
 
 ---
 
@@ -343,8 +401,10 @@ VITE_APP_VERSION=1.0.0
 None
 
 ### Notes
-- Firebase project not created yet — config is stubbed; fine for Phase 1–5 UI work
-- Git initialized at repo root; first commit not created (await user request)
+- GitHub remote: `https://github.com/Varad-Amasi/Gearstorm.git` (master)
+- Firebase project not created yet — API uses `backend/data/store.json`
+- Gallery photos and exact scoring numbers remain provisional placeholders
+- SMTP not configured — registration confirmation is logged as queued
 
 ---
 
@@ -367,4 +427,4 @@ npm run build
 
 **Last Updated:** 2026-08-24  
 **By:** Cursor Agent  
-**Status:** Phase 4 Complete → Ready for Phase 5
+**Status:** Phase 6 Complete → Ready for Phase 7

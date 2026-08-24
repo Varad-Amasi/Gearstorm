@@ -4,12 +4,26 @@ Inter-college robotics competition website by **IEEE RAS, KLS GIT Belagavi**.
 
 ## Quick start
 
+### Frontend
+
 ```bash
 cd gearstorm-website
-cp .env.example .env.local   # optional until Firebase is configured
+cp .env.example .env.local   # optional
 npm install
 npm run dev
 ```
+
+Vite proxies `/api` and `/uploads` to `http://localhost:3000`.
+
+### Backend API
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+API: `http://localhost:3000` · Health: `/api/health` · Docs: [`backend/README.md`](./backend/README.md)
 
 App: [`gearstorm-website/`](./gearstorm-website/) · Docs: [`docs/`](./docs/)
 
@@ -24,4 +38,8 @@ App: [`gearstorm-website/`](./gearstorm-website/) · Docs: [`docs/`](./docs/)
 
 - Phase 1 — Project foundation ✅
 - Phase 2 — Layout & navigation ✅
-- Next — Phase 3 design system components
+- Phase 3 — Design system ✅
+- Phase 4 — Home + 3D robot ✅
+- Phase 5 — Content pages ✅
+- Phase 6 — Leaderboard + API ✅
+- Next — Phase 7 testing & polish

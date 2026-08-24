@@ -6,6 +6,10 @@ import { getStorage, type FirebaseStorage } from 'firebase/storage';
 /**
  * Firebase web config — values come from Vite env (see `.env.example`).
  * Client-side keys are public; never put admin/service-account secrets here.
+ *
+ * Note: Phase 6 persistence still uses the Express JSON store. This module
+ * initializes only when env vars are present so Firestore/Auth/Storage can be
+ * wired later without changing call sites.
  */
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -38,7 +42,7 @@ if (hasFirebaseConfig) {
 
 export { app, auth, db, storage, hasFirebaseConfig };
 
-/** Planned Firestore collections (created when backend is wired in Phase 6). */
+/** Planned Firestore collections (unused until the JSON store is swapped). */
 export const FIRESTORE_COLLECTIONS = {
   TEAMS: 'teams',
   LEADERBOARD: 'leaderboard',

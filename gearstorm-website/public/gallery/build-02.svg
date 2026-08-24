@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="560" viewBox="0 0 800 560" role="img">
+  <rect width="800" height="560" fill="#0F0F1E"/>
+  <rect x="300" y="280" width="200" height="80" rx="12" fill="#2A2A3E"/>
+  <rect x="360" y="180" width="24" height="100" fill="#00FF88"/>
+  <circle cx="372" cy="160" r="16" fill="#D91E63"/>
+  <path d="M420 300 L520 260 L520 320 Z" fill="#6B3A8C"/>
+  <text x="400" y="500" text-anchor="middle" fill="#E0E0E0" font-family="Segoe UI, Arial, sans-serif" font-size="28">Build · Gripper</text>
+</svg>

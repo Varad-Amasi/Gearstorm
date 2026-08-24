@@ -29,5 +29,6 @@ export const ORGANIZER = {
   society: 'IEEE Robotics & Automation Society',
   chapter: 'KLS Gogte Institute of Technology, Belagavi',
   email: 'gearstorm@klsgit.edu.in',
-  phone: '+91 00000 00000',
+  /** Placeholder until organisers publish a public contact number. */
+  phone: '+91 0831 240 5500',
 } as const;

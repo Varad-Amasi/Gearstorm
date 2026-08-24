@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="560" viewBox="0 0 800 560" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1A1A2E"/>
+      <stop offset="100%" stop-color="#0F0F1E"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="560" fill="url(#bg)"/>
+  <rect x="220" y="210" width="360" height="140" rx="18" fill="#6B3A8C"/>
+  <circle cx="280" cy="360" r="42" fill="#2A2A3E" stroke="#D91E63" stroke-width="8"/>
+  <circle cx="520" cy="360" r="42" fill="#2A2A3E" stroke="#D91E63" stroke-width="8"/>
+  <rect x="380" y="150" width="40" height="70" rx="8" fill="#00D9FF"/>
+  <text x="400" y="500" text-anchor="middle" fill="#E0E0E0" font-family="Segoe UI, Arial, sans-serif" font-size="28">Build · Chassis</text>
+</svg>

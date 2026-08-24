@@ -20,6 +20,7 @@ export interface Team {
 export interface LeaderboardEntry {
   teamId: string;
   teamName: string;
+  college: string;
   round: 1 | 2;
   time: number;
   obstaclesCleared: number;

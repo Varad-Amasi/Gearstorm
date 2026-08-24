@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="560" viewBox="0 0 800 560" role="img">
+  <rect width="800" height="560" fill="#0F0F1E"/>
+  <rect x="120" y="360" width="560" height="16" fill="#6B3A8C"/>
+  <rect x="520" y="300" width="120" height="60" rx="8" fill="#1A1A2E" stroke="#00FF88" stroke-width="4"/>
+  <circle cx="240" cy="320" r="28" fill="#D91E63"/>
+  <text x="400" y="500" text-anchor="middle" fill="#E0E0E0" font-family="Segoe UI, Arial, sans-serif" font-size="28">Course · Finals</text>
+</svg>

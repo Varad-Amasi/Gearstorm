@@ -38,3 +38,21 @@
     scroll-behavior: auto;
   }
 }
+
+@media print {
+  header,
+  footer,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
