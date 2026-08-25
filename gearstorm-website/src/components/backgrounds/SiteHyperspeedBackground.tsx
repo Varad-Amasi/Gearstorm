@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { isWebGLAvailable } from '@/utils/webgl';
 
@@ -50,16 +51,18 @@ const GEARSTORM_HYPERSPEED = {
 /**
  * Fixed full-viewport Hyperspeed backdrop for the whole site.
  * Decorative only — pointer events are disabled so forms/nav keep working.
+ * Skipped on small viewports to avoid fighting Home’s Robot3D WebGL context.
  */
 export const SiteHyperspeedBackground = (): JSX.Element | null => {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const isCompactViewport = useMediaQuery('(max-width: 768px)');
   const [webglOk, setWebglOk] = useState(false);
 
   useEffect(() => {
     setWebglOk(isWebGLAvailable());
   }, []);
 
-  if (prefersReducedMotion || !webglOk) {
+  if (prefersReducedMotion || isCompactViewport || !webglOk) {
     return null;
   }
 

@@ -964,17 +964,21 @@ const roadVertex = `
   }
 `;
 
-function resizeRendererToDisplaySize(
-  renderer: THREE.WebGLRenderer,
-  setSize: (width: number, height: number, updateStyle: boolean) => void
-) {
+function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer): boolean {
   const canvas = renderer.domElement;
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
   if (width <= 0 || height <= 0) return false;
-  const needResize = canvas.width !== width || canvas.height !== height;
+
+  // Compare against the drawing buffer (CSS size × pixel ratio). Comparing to
+  // clientWidth alone forces a resize every frame when devicePixelRatio > 1.
+  const pixelRatio = renderer.getPixelRatio();
+  const needResize =
+    canvas.width !== Math.floor(width * pixelRatio) ||
+    canvas.height !== Math.floor(height * pixelRatio);
+
   if (needResize) {
-    setSize(width, height, false);
+    renderer.setSize(width, height, false);
   }
   return needResize;
 }
@@ -1080,7 +1084,6 @@ class App {
 
     this.tick = this.tick.bind(this);
     this.init = this.init.bind(this);
-    this.setSize = this.setSize.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
 
@@ -1166,6 +1169,9 @@ class App {
   }
 
   init() {
+    if (this.disposed) {
+      return;
+    }
     this.initPasses();
     const options = this.options;
     this.road.init();
@@ -1324,15 +1330,13 @@ class App {
     }
   }
 
-  setSize(width: number, height: number, updateStyles: boolean) {
-    this.composer.setSize(width, height, updateStyles);
-  }
-
   tick() {
     if (this.disposed) return;
 
     // Pause the RAF loop while the tab is hidden to save GPU.
     if (typeof document !== 'undefined' && document.hidden) {
+      // Discard the large delta so returning to the tab doesn't jump the scene.
+      this.clock.getDelta();
       requestAnimationFrame(this.tick);
       return;
     }
@@ -1352,12 +1356,11 @@ class App {
       }
     }
 
-    if (resizeRendererToDisplaySize(this.renderer, this.setSize)) {
+    if (resizeRendererToDisplaySize(this.renderer)) {
       const canvas = this.renderer.domElement;
-      if (this.hasValidSize) {
-        this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        this.camera.updateProjectionMatrix();
-      }
+      this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      this.camera.updateProjectionMatrix();
+      this.composer.setSize(canvas.clientWidth, canvas.clientHeight);
     }
 
     if (this.hasValidSize) {
@@ -1379,19 +1382,15 @@ const Hyperspeed: FC<HyperspeedProps> = ({
   const appRef = useRef<App | null>(null);
 
   useEffect(() => {
-    if (appRef.current) {
-      appRef.current.dispose();
-      appRef.current = null;
-      const container = hyperspeed.current;
-      if (container) {
-        while (container.firstChild) {
-          container.removeChild(container.firstChild);
-        }
-      }
+    let cancelled = false;
+    const container = hyperspeed.current;
+    if (!container) {
+      return;
     }
 
-    const container = hyperspeed.current;
-    if (!container) return;
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
 
     const options: HyperspeedOptions = {
       ...defaultOptions,
@@ -1404,11 +1403,19 @@ const Hyperspeed: FC<HyperspeedProps> = ({
 
     const myApp = new App(container, options);
     appRef.current = myApp;
-    myApp.loadAssets().then(myApp.init);
+    void myApp.loadAssets().then(() => {
+      // Strict Mode remounts dispose before assets resolve — skip stale init.
+      if (cancelled || myApp.disposed) {
+        return;
+      }
+      myApp.init();
+    });
 
     return () => {
+      cancelled = true;
       if (appRef.current) {
         appRef.current.dispose();
+        appRef.current = null;
       }
     };
   }, [effectOptions]);

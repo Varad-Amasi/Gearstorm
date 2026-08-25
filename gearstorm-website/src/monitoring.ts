@@ -17,8 +17,10 @@ export const initAnalytics = (): void => {
   }
 
   window.dataLayer = window.dataLayer ?? [];
-  window.gtag = function gtag(...args: unknown[]) {
-    window.dataLayer?.push(args);
+  // Match the official GA stub: push the Arguments object, not a nested array.
+  window.gtag = function gtag() {
+    // eslint-disable-next-line prefer-rest-params
+    window.dataLayer?.push(arguments);
   };
   window.gtag('js', new Date());
   window.gtag('config', measurementId);
