@@ -1,8 +1,10 @@
 import {
+  copyFileSync,
   existsSync,
   mkdirSync,
   readFileSync,
   renameSync,
+  unlinkSync,
   writeFileSync,
 } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -65,11 +67,20 @@ const readStore = (): StoreData => {
   }
 };
 
-/** Atomic write so a crash mid-write cannot leave a half-written store. */
+/**
+ * Atomic-ish write so a crash mid-write cannot leave a half-written store.
+ * On Windows, `rename` cannot overwrite an existing destination — fall back to
+ * copy + unlink after writing the temp file.
+ */
 const writeStore = (data: StoreData): void => {
   mkdirSync(DATA_DIR, { recursive: true });
   writeFileSync(DATA_TMP_PATH, JSON.stringify(data, null, 2), 'utf8');
-  renameSync(DATA_TMP_PATH, DATA_PATH);
+  try {
+    renameSync(DATA_TMP_PATH, DATA_PATH);
+  } catch {
+    copyFileSync(DATA_TMP_PATH, DATA_PATH);
+    unlinkSync(DATA_TMP_PATH);
+  }
 };
 
 const mutate = (updater: (data: StoreData) => StoreData): StoreData => {

@@ -32,8 +32,9 @@ export const MainLayout = (): JSX.Element => {
   }, [hash, pathname]);
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-dark-950 text-text-light">
+    <div className="relative flex min-h-screen flex-col text-text-light">
       <SiteHyperspeedBackground />
+      {/* Transparent shell so the fixed Hyperspeed backdrop shows through gaps */}
       <div className="relative z-10 flex min-h-screen flex-col">
         <ScrollToTop />
         <a
