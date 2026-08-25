@@ -14,13 +14,20 @@ export const BotPreview = (): JSX.Element => {
   const inView = useInView(frameRef);
 
   return (
-    <div
-      ref={frameRef}
-      className="h-64 overflow-hidden rounded-xl border border-primary/30 bg-dark-900/60 shadow-purple sm:h-80"
-    >
-      <Suspense fallback={<RobotFallback loading />}>
-        <Robot3D progress={progress} mode="static" active={inView} />
-      </Suspense>
+    <div>
+      <div
+        ref={frameRef}
+        className="h-64 overflow-hidden rounded-xl border border-primary/30 bg-dark-900/60 shadow-purple sm:h-80"
+        aria-hidden="true"
+      >
+        <Suspense fallback={<RobotFallback loading />}>
+          <Robot3D progress={progress} mode="static" active={inView} />
+        </Suspense>
+      </div>
+      <p className="sr-only">
+        Static 3D illustration of a fully assembled GearStorm competition robot:
+        four-wheeled chassis, sensor mast, gripper, and electronics deck.
+      </p>
     </div>
   );
 };

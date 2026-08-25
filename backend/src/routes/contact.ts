@@ -1,13 +1,24 @@
 import { Router } from 'express';
 import { randomUUID } from 'node:crypto';
 import { validateBody } from '../middleware/errorHandler.js';
+import { rateLimit } from '../middleware/rateLimit.js';
 import { contactSchema } from '../schemas/index.js';
 import { store } from '../store/jsonStore.js';
 import type { ContactRecord } from '../types.js';
 
 export const contactRouter = Router();
 
-contactRouter.post('/', validateBody(contactSchema), (req, res) => {
+const contactLimit = rateLimit({
+  windowMs: 60_000,
+  max: 10,
+  keyPrefix: 'contact-post',
+});
+
+contactRouter.post(
+  '/',
+  contactLimit,
+  validateBody(contactSchema),
+  (req, res) => {
   const body = req.body as {
     name: string;
     email: string;
@@ -33,4 +44,5 @@ contactRouter.post('/', validateBody(contactSchema), (req, res) => {
       message: 'Message received. The organising team will follow up by email.',
     },
   });
-});
+  }
+);

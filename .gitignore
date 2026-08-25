@@ -32,3 +32,8 @@ Thumbs.db
 
 # Testing
 coverage/
+playwright-report/
+test-results/
+blob-report/
+dist/stats.html
+

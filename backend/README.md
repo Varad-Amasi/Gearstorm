@@ -13,19 +13,25 @@ npm run dev
 
 `dotenv` loads `backend/.env` on startup. Server: `http://localhost:3000`
 
+Production start (after `npm run build`):
+
+```bash
+npm start   # node dist/server.js
+```
+
 ## Endpoints
 
 | Method | Path | Notes |
 |--------|------|-------|
-| GET | `/api/health` | Liveness |
+| GET | `/api/health` | Liveness + JSON store counts |
 | GET | `/api/leaderboard?round=1&limit=50&search=&college=` | Ranked entries (lower adjusted time wins) |
 | GET | `/api/leaderboard/:teamId` | Scores for one team |
 | POST | `/api/leaderboard` | Admin score submit (`x-admin-key`) |
 | GET | `/api/teams` | Public team list (no emails/phones) |
 | GET | `/api/teams/:teamId` | Public team summary |
 | GET | `/api/teams/:teamId/full` | Full team + PII (`x-admin-key`) |
-| POST | `/api/teams` | Register team |
-| POST | `/api/contact` | Contact form |
+| POST | `/api/teams` | Register team (rate-limited) |
+| POST | `/api/contact` | Contact form (rate-limited) |
 | GET | `/api/gallery` | Gallery metadata |
 | POST | `/api/gallery` | Admin image upload (`multipart`, `x-admin-key`) |
 
@@ -36,6 +42,26 @@ Set `ADMIN_API_KEY` in `.env`.
 - **Development:** if unset, falls back to `dev-admin-key` and logs a warning.
 - **Production (`NODE_ENV=production`):** requests fail closed until `ADMIN_API_KEY` is set.
 
+## CORS
+
+`CORS_ORIGIN` accepts a comma-separated allowlist, e.g.
+
+```env
+CORS_ORIGIN=https://gearstorm.vercel.app,http://localhost:5173
+```
+
 ## Persistence
 
-Local JSON file at `data/store.json` (gitignored). Frontend Firebase env vars do **not** power this API yet — swap the store module for Firestore when you are ready.
+Local JSON file at `data/store.json` (gitignored), written atomically (temp file + rename). Frontend Firebase env vars do **not** power this API yet — swap the store module for Firestore when you are ready.
+
+**Deploy note:** use a persistent volume for `data/` and `uploads/` on Railway/Fly/VPS. Do not run this API on Vercel serverless.
+
+Verify locally:
+
+```bash
+npm run test:store
+```
+
+## Docker / Railway
+
+See `Dockerfile`, `railway.toml`, and [`docs/08_Launch.md`](../docs/08_Launch.md).

@@ -17,7 +17,7 @@ export const InlineFAQ = ({
   items,
 }: InlineFAQProps): JSX.Element => (
   <div>
-    <h2 className="font-heading text-2xl font-bold md:text-3xl">{title}</h2>
+    <h3 className="font-heading text-2xl font-bold md:text-3xl">{title}</h3>
     <div className="mt-6 flex max-w-3xl flex-col gap-3">
       {items.map((item) => (
         <details

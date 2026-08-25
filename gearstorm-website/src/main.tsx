@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
+import { initAnalytics, initErrorMonitoring } from './monitoring';
 import './index.css';
 
 const rootElement = document.getElementById('root');
@@ -18,6 +19,9 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+void initErrorMonitoring();
+initAnalytics();
 
 createRoot(rootElement).render(
   <StrictMode>

@@ -10,7 +10,7 @@ This file tracks progress, decisions, and context across development sessions. U
 - **Event:** IEEE RAS Robotics Competition (Inter-college)
 - **Organization:** IEEE Robotics & Automation Society (RAS), KLS GIT Belagavi
 - **Created:** 2026-08-23
-- **Status:** Phase 6 - Leaderboard, Backend & Integration (**Complete**)
+- **Status:** Phase 8 - Deployment & Launch (**Prep Complete** — go live when hosts are ready)
 - **App path:** `gearstorm-website/`
 - **Docs path:** `docs/`
 - **Expected Launch:** Week 12
@@ -265,7 +265,55 @@ This file tracks progress, decisions, and context across development sessions. U
   shapes, swap the store module later ✅
 - Ranking uses ascending adjusted time (`time + penaltySeconds * 1000`) ✅
 - Real-time = 30s polling (plan risk mitigation vs. Firestore listeners) ✅
-- Email confirmation is stubbed to console (`emailQueued: true`) ✅
+- Email confirmation is stubbed to console (`emailQueued: false` until SMTP) ✅
+
+### Phase 7: Testing, Optimization & Polish (Week 10-12)
+**Status:** ✅ Complete (automated slice + manual QA checklist)
+
+**Completed:**
+- [x] Vitest + Testing Library — 21 unit/component tests
+- [x] Coverage gates on critical forms/schemas/store/apiClient (~78% lines
+      in scoped include)
+- [x] Playwright smoke E2E (Chromium): Home, nav, Register validation, skip link
+- [x] SEO — `seo.ts`, OG/Twitter meta sync in `useDocumentTitle`,
+      `robots.txt`, `sitemap.xml`, `og-image.svg`, JSON-LD in `index.html`
+- [x] A11y polish — InlineFAQ `h3`, BotPreview `sr-only`, QA checklist doc
+- [x] Perf — react/data vendor chunks + rollup visualizer (`dist/stats.html`)
+
+**Verified:**
+- [x] `npm run test`, `test:coverage`, `test:e2e` (chromium), `type-check`,
+      `lint`, `build`
+
+**Key Decisions (Phase 7):**
+- Scoped coverage thresholds to critical modules (not whole app 80%) — honest
+  about what is gated in CI vs. remaining page surface ✅
+- Manual Lighthouse / Safari / Firefox left on `docs/07_QA_Checklist.md` ✅
+- Replace `gearstorm.example` host in SEO/sitemap before production ✅
+
+### Phase 8: Deployment & Launch (Week 12)
+**Status:** ✅ Prep complete (configs + hardening). Live deploy needs your Vercel/Railway accounts.
+
+**Completed:**
+- [x] Pre-deploy audit: lint, type-check, unit tests, Playwright smoke, API store E2E
+- [x] JSON store verified (health counts, register/contact/scores, atomic writes, ranks)
+- [x] `vercel.json` SPA rewrites for frontend
+- [x] Backend `Dockerfile` + `railway.toml` + production `npm run build` → `node dist`
+- [x] CORS allowlist (comma-separated), rate limits on public POSTs
+- [x] Health endpoint reports persistence + record counts
+- [x] SEO: `VITE_SITE_URL`, raster `og-image.png`, build-time sitemap/robots rewrite
+- [x] Optional GA4 + Sentry hooks (`VITE_GA_*` / `VITE_SENTRY_DSN`)
+- [x] CI: frontend tests + backend type-check/build/store verify
+- [x] Launch runbook: `docs/08_Launch.md` (backups, rollback, env matrix)
+
+**Still on you for go-live:**
+- [ ] Create Vercel project (root `gearstorm-website`) + set build env
+- [ ] Deploy API to Railway/Fly/VPS with volume for `data/` + `uploads/`
+- [ ] Point custom domain / DNS
+- [ ] Set real `VITE_SITE_URL`, `VITE_API_BASE_URL`, `CORS_ORIGIN`, `ADMIN_API_KEY`
+
+**Key Decisions (Phase 8):**
+- Frontend on Vercel; API stays long-lived Node — JSON+disk cannot run on Vercel serverless ✅
+- Persistence remains JSON until Firestore swap; volume required in prod ✅
 
 ---
 
@@ -376,6 +424,8 @@ VITE_APP_VERSION=1.0.0
 | 2026-08-24 | 6 | Express API + JSON store + seed data | Backend runnable without Firebase |
 | 2026-08-24 | 6 | Leaderboard UI + form/API integration | End-to-end registration & contact |
 | 2026-08-24 | 6 | Post-review hardening (PII, upload, admin key) | Safer local API + form UX |
+| 2026-08-24 | 7 | Vitest + Playwright + SEO/a11y polish | Phase 7 automated quality slice |
+| 2026-08-24 | 8 | Deploy configs + API/store hardening | Ready to push to Vercel + Railway |
 
 ---
 
@@ -389,9 +439,12 @@ VITE_APP_VERSION=1.0.0
 6. ✅ Phase 4 complete: 3D robot scroll assembly + full Home page
 7. ✅ Phase 5 complete: Bot Specs, Rules, Gallery, Contact, Register
 8. ✅ Phase 6 complete: Leaderboard + Express API + form wiring
-9. ⬜ Start Phase 7: testing, optimization, accessibility polish
-10. ⬜ Optional: create Firebase project and swap JSON store for Firestore
-11. ⬜ Update this Memory when Phase 7 completes
+9. ✅ Phase 7 complete: Vitest, Playwright smoke, SEO, a11y polish
+10. ✅ Phase 8 prep: Vercel/Railway configs, store hardening, launch docs
+11. ⬜ Deploy frontend to Vercel + API to Railway (or equivalent)
+12. ⬜ Optional: swap JSON store for Firestore
+13. ⬜ Run manual checklist in `docs/07_QA_Checklist.md` (Lighthouse, Safari)
+14. ⬜ Update this Memory when production URLs are live
 
 ---
 
@@ -427,4 +480,4 @@ npm run build
 
 **Last Updated:** 2026-08-24  
 **By:** Cursor Agent  
-**Status:** Phase 6 Complete → Ready for Phase 7
+**Status:** Phase 8 Prep Complete → Deploy when hosts/env are ready

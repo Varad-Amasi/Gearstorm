@@ -6,14 +6,13 @@ on:
   pull_request:
     branches: [main, master, develop, staging]
 
-defaults:
-  run:
-    working-directory: gearstorm-website
-
 jobs:
-  quality:
-    name: Lint, type-check & build
+  frontend:
+    name: Frontend quality
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: gearstorm-website
 
     steps:
       - name: Checkout
@@ -38,8 +37,14 @@ jobs:
       - name: Prettier
         run: npm run format:check
 
+      - name: Unit tests
+        run: npm run test
+
       - name: Build
         run: npm run build
+        env:
+          VITE_SITE_URL: https://gearstorm.example
+          VITE_API_BASE_URL: /api
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -47,3 +52,33 @@ jobs:
           name: dist
           path: gearstorm-website/dist
           retention-days: 7
+
+  backend:
+    name: Backend type-check & store
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript
+        run: npm run type-check
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify JSON store
+        run: npm run test:store

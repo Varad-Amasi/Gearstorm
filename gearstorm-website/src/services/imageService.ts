@@ -28,8 +28,17 @@ export const resolveMediaUrl = (url: string): string => {
   if (url.startsWith('/gallery/')) {
     return url;
   }
-  const apiRoot = APP_CONFIG.apiBaseUrl.replace(/\/api\/?$/, '');
-  return `${apiRoot}${url.startsWith('/') ? url : `/${url}`}`;
+
+  const base = APP_CONFIG.apiBaseUrl.replace(/\/+$/, '');
+  const apiRoot = base.replace(/\/api$/, '');
+  const path = url.startsWith('/') ? url : `/${url}`;
+
+  // Relative `/api` (Vite proxy) → keep `/uploads/...` relative for same-origin.
+  if (!apiRoot || apiRoot === base) {
+    return path;
+  }
+
+  return `${apiRoot}${path}`;
 };
 
 export const fetchGalleryImages = async (): Promise<GalleryImageDto[]> => {

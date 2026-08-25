@@ -1,11 +1,18 @@
 import { Router } from 'express';
 import { randomUUID } from 'node:crypto';
 import { HttpError, requireAdmin, validateBody } from '../middleware/errorHandler.js';
+import { rateLimit } from '../middleware/rateLimit.js';
 import { registerTeamSchema } from '../schemas/index.js';
 import { store } from '../store/jsonStore.js';
 import type { TeamMemberRecord, TeamRecord } from '../types.js';
 
 export const teamsRouter = Router();
+
+const registrationLimit = rateLimit({
+  windowMs: 60_000,
+  max: 8,
+  keyPrefix: 'teams-post',
+});
 
 /** Public team shape — no emails/phones. */
 const toPublicTeam = (team: TeamRecord) => ({
@@ -43,7 +50,11 @@ teamsRouter.get('/:teamId', (req, res) => {
   res.json({ success: true, data: toPublicTeam(team) });
 });
 
-teamsRouter.post('/', validateBody(registerTeamSchema), (req, res) => {
+teamsRouter.post(
+  '/',
+  registrationLimit,
+  validateBody(registerTeamSchema),
+  (req, res) => {
   const body = req.body as {
     teamName: string;
     college: string;
@@ -96,4 +107,5 @@ teamsRouter.post('/', validateBody(registerTeamSchema), (req, res) => {
         'Team registered. Organisers will confirm by email once SMTP is configured.',
     },
   });
-});
+  }
+);

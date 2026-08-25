@@ -15,6 +15,8 @@ This folder contains complete project documentation for the **GearStorm Website*
 | **04_Phases.md** | Implementation roadmap (8 phases, 12 weeks) | ⚠️ Planning |
 | **05_Design.md** | Color palette, typography, components | ⚠️ During design |
 | **06_Memory.md** | Progress tracking, decisions, context | 📝 Update regularly |
+| **07_QA_Checklist.md** | Manual a11y / browser / Lighthouse checks | Phase 7+ |
+| **08_Launch.md** | Vercel + API deploy, backups, monitoring | Phase 8 |
 
 ---
 

@@ -1,5 +1,6 @@
 import { Suspense, useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+import { SiteHyperspeedBackground } from '@/components/backgrounds/SiteHyperspeedBackground';
 import { Footer } from '@/components/common/Footer';
 import { Header } from '@/components/common/Header';
 import { ToastViewport } from '@/components/common/Toast';
@@ -31,34 +32,37 @@ export const MainLayout = (): JSX.Element => {
   }, [hash, pathname]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-dark-950 text-text-light">
-      <ScrollToTop />
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-skiplink focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-white"
-        onClick={() => {
-          requestAnimationFrame(() => {
-            mainRef.current?.focus({ preventScroll: true });
-          });
-        }}
-      >
-        Skip to content
-      </a>
-      <Header />
-      <main
-        id="main-content"
-        ref={mainRef}
-        tabIndex={-1}
-        className="flex-grow outline-none"
-      >
-        <RouteErrorBoundary>
-          <Suspense fallback={<RouteFallback />}>
-            <Outlet />
-          </Suspense>
-        </RouteErrorBoundary>
-      </main>
-      <Footer />
-      <ToastViewport />
+    <div className="relative flex min-h-screen flex-col bg-dark-950 text-text-light">
+      <SiteHyperspeedBackground />
+      <div className="relative z-10 flex min-h-screen flex-col">
+        <ScrollToTop />
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-skiplink focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-white"
+          onClick={() => {
+            requestAnimationFrame(() => {
+              mainRef.current?.focus({ preventScroll: true });
+            });
+          }}
+        >
+          Skip to content
+        </a>
+        <Header />
+        <main
+          id="main-content"
+          ref={mainRef}
+          tabIndex={-1}
+          className="flex-grow outline-none"
+        >
+          <RouteErrorBoundary>
+            <Suspense fallback={<RouteFallback />}>
+              <Outlet />
+            </Suspense>
+          </RouteErrorBoundary>
+        </main>
+        <Footer />
+        <ToastViewport />
+      </div>
     </div>
   );
 };

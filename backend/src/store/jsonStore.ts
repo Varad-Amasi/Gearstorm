@@ -1,4 +1,10 @@
-import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  writeFileSync,
+} from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type {
@@ -11,7 +17,9 @@ import type {
 import { createSeedData } from './seed.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DATA_PATH = join(__dirname, '../../data/store.json');
+const DATA_DIR = join(__dirname, '../../data');
+const DATA_PATH = join(DATA_DIR, 'store.json');
+const DATA_TMP_PATH = join(DATA_DIR, 'store.json.tmp');
 
 const rankRound = (
   entries: LeaderboardRecord[],
@@ -57,9 +65,11 @@ const readStore = (): StoreData => {
   }
 };
 
+/** Atomic write so a crash mid-write cannot leave a half-written store. */
 const writeStore = (data: StoreData): void => {
-  mkdirSync(dirname(DATA_PATH), { recursive: true });
-  writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), 'utf8');
+  mkdirSync(DATA_DIR, { recursive: true });
+  writeFileSync(DATA_TMP_PATH, JSON.stringify(data, null, 2), 'utf8');
+  renameSync(DATA_TMP_PATH, DATA_PATH);
 };
 
 const mutate = (updater: (data: StoreData) => StoreData): StoreData => {

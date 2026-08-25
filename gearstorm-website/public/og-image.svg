@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F0F1E"/>
+      <stop offset="100%" stop-color="#1A1A2E"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="80" y="180" width="140" height="140" rx="28" fill="#6B3A8C"/>
+  <text x="120" y="270" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="72" font-weight="700">G</text>
+  <text x="260" y="270" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="72" font-weight="800">GearStorm</text>
+  <text x="260" y="340" fill="#D91E63" font-family="Segoe UI, Arial, sans-serif" font-size="32" font-weight="600">IEEE RAS · KLS GIT Belagavi</text>
+  <text x="260" y="400" fill="#E0E0E0" font-family="Segoe UI, Arial, sans-serif" font-size="28">Inter-college robotics competition</text>
+</svg>

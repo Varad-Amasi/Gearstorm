@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://gearstorm.example/</loc></url>
+  <url><loc>https://gearstorm.example/rules</loc></url>
+  <url><loc>https://gearstorm.example/bot-specs</loc></url>
+  <url><loc>https://gearstorm.example/leaderboard</loc></url>
+  <url><loc>https://gearstorm.example/gallery</loc></url>
+  <url><loc>https://gearstorm.example/register</loc></url>
+  <url><loc>https://gearstorm.example/contact</loc></url>
+</urlset>
