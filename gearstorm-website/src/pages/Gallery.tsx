@@ -199,7 +199,7 @@ const GalleryPage = (): JSX.Element => {
                     className="aspect-[10/7] w-full object-cover transition-opacity duration-normal group-hover:opacity-90"
                   />
                   <div className="flex items-start justify-between gap-2 p-3">
-                    <div>
+                    <div className="min-w-0">
                       <p className="font-heading text-sm font-semibold text-text-light">
                         {item.caption}
                       </p>
@@ -207,7 +207,9 @@ const GalleryPage = (): JSX.Element => {
                         {item.year}
                       </p>
                     </div>
-                    <Badge variant="info">{item.category}</Badge>
+                    <Badge variant="info" className="shrink-0">
+                      {item.category}
+                    </Badge>
                   </div>
                 </button>
               </li>

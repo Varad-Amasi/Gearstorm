@@ -1,19 +1,18 @@
 import { Link } from 'react-router-dom';
-import { NAV_LINKS, ORGANIZER, ROUTES } from '@/config/routes';
+import { EVENT, NAV_LINKS, ORGANIZER, ROUTES } from '@/config/routes';
 
 /**
- * Site footer with navigation, organizer details, and IEEE RAS branding.
+ * Site footer with navigation, organizer details, and chapter branding.
  */
 export const Footer = (): JSX.Element => (
-  <footer className="border-t border-border bg-dark-950">
+  <footer className="border-t border-border bg-dark-950 pb-[env(safe-area-inset-bottom)]">
     <div className="container-page grid gap-10 py-12 md:grid-cols-3">
       <div>
-        <p className="font-heading text-lg font-extrabold text-text-light">
-          GearStorm
+        <p className="font-brand text-lg font-bold text-text-light">
+          {EVENT.name}
         </p>
         <p className="mt-2 max-w-xs text-sm text-text-muted">
-          Inter-college robotics competition organised by {ORGANIZER.society},{' '}
-          {ORGANIZER.chapter}.
+          Inter-college robotics competition organised {ORGANIZER.credit}.
         </p>
       </div>
 
@@ -56,6 +55,7 @@ export const Footer = (): JSX.Element => (
               {ORGANIZER.email}
             </a>
           </p>
+          <p>{ORGANIZER.societiesJoined}</p>
           <p>{ORGANIZER.chapter}</p>
         </address>
       </div>
@@ -63,8 +63,8 @@ export const Footer = (): JSX.Element => (
 
     <div className="border-t border-border">
       <p className="container-page py-6 text-sm text-text-subtle">
-        &copy; {new Date().getFullYear()} IEEE RAS, KLS GIT Belagavi. All rights
-        reserved.
+        &copy; {new Date().getFullYear()} {ORGANIZER.societiesJoined},{' '}
+        {ORGANIZER.chapterShort}. All rights reserved.
       </p>
     </div>
   </footer>

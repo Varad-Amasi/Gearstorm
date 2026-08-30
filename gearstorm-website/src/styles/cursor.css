@@ -1,0 +1,132 @@
+/* Custom cursor — desktop pointer only; hidden on touch / reduced-motion */
+
+.gs-cursor-root {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+}
+
+.gs-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border: 1.5px solid #d91e63;
+  border-radius: 9999px;
+  opacity: 0.85;
+  transform: translate3d(-100px, -100px, 0) scale(1);
+  transition:
+    width 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    margin 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 200ms ease,
+    background-color 200ms ease,
+    box-shadow 200ms ease,
+    opacity 150ms ease;
+  will-change: transform;
+}
+
+.gs-cursor-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  border-radius: 9999px;
+  background: #d91e63;
+  transition:
+    width 200ms ease,
+    height 200ms ease,
+    margin 200ms ease,
+    background-color 200ms ease;
+}
+
+.gs-cursor--hover {
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border-color: #ff006e;
+  background: rgba(217, 30, 99, 0.1);
+  box-shadow: 0 0 15px rgba(217, 30, 99, 0.8);
+}
+
+.gs-cursor--hover .gs-cursor-dot {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  background: #ff006e;
+}
+
+.gs-cursor--text {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-color: #6b3a8c;
+  background: rgba(107, 58, 140, 0.15);
+}
+
+.gs-cursor--text .gs-cursor-dot {
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  background: #6b3a8c;
+}
+
+.gs-cursor--focus {
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border-radius: 2px;
+  border-color: #e0e0e0;
+  transform: translate3d(-100px, -100px, 0) rotate(45deg);
+}
+
+.gs-cursor--focus .gs-cursor-dot {
+  display: none;
+}
+
+.gs-cursor-ripple {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border: 1.5px solid rgba(217, 30, 99, 0.8);
+  border-radius: 9999px;
+  pointer-events: none;
+  animation: gs-cursor-ripple 220ms ease-out forwards;
+}
+
+@keyframes gs-cursor-ripple {
+  from {
+    transform: translate3d(var(--gs-x), var(--gs-y), 0) scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: translate3d(var(--gs-x), var(--gs-y), 0) scale(2.4);
+    opacity: 0;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .gs-cursor-root {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gs-cursor-root {
+    display: none !important;
+  }
+}
+
+@media print {
+  .gs-cursor-root {
+    display: none !important;
+  }
+}

@@ -34,9 +34,14 @@ const ContactPage = (): JSX.Element => (
           <Card>
             <address className="not-italic text-text-muted">
               <p className="font-heading font-semibold text-text-light">
-                {ORGANIZER.society}
+                {ORGANIZER.societiesJoined}
               </p>
-              <p className="mt-1">{ORGANIZER.chapter}</p>
+              <ul className="mt-2 list-disc space-y-1 pl-5">
+                {ORGANIZER.societies.map((society) => (
+                  <li key={society.short}>{society.full}</li>
+                ))}
+              </ul>
+              <p className="mt-3">{ORGANIZER.chapter}</p>
               <p className="mt-4">
                 <a
                   className="text-accent hover:underline"

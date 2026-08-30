@@ -34,15 +34,17 @@ export const PageContainer = ({
     >
       <header className="max-w-3xl">
         {eyebrow ? (
-          <p className="mb-2 font-heading text-sm font-semibold uppercase tracking-widest text-accent">
+          <p className="font-subhead mb-2 text-sm font-semibold uppercase tracking-widest text-accent">
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="font-heading text-3xl font-extrabold tracking-tight md:text-5xl">
+        <h1 className="font-display text-3xl font-bold tracking-tight [letter-spacing:-0.02em] md:text-5xl">
           {title}
         </h1>
         {description ? (
-          <p className="mt-4 text-lg text-text-muted">{description}</p>
+          <p className="mt-4 font-sans text-lg leading-relaxed text-text-muted [line-height:1.8]">
+            {description}
+          </p>
         ) : null}
       </header>
       {children ? <div className="mt-10">{children}</div> : null}

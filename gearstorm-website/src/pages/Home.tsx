@@ -11,7 +11,7 @@ import { HeroSection } from '@/components/sections/HeroSection';
 import { Reveal } from '@/components/sections/Reveal';
 import { StatsSection } from '@/components/sections/StatsSection';
 import { TimelineSection } from '@/components/sections/TimelineSection';
-import { ROUTES } from '@/config/routes';
+import { EVENT, ORGANIZER, ROUTES } from '@/config/routes';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useInView } from '@/hooks/useInView';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
@@ -90,7 +90,7 @@ const FAQS = [
   {
     question: 'Who can participate?',
     answer:
-      'Any team of 3-5 students from the same engineering college. GearStorm is inter-college, so teams from any institution are welcome.',
+      'Any team of 3-5 students from the same engineering college. GearStorm 2.0 is inter-college, so teams from any institution are welcome.',
   },
   {
     question: 'Do we need to bring our own bot?',
@@ -112,7 +112,7 @@ const FAQS = [
 const HomePage = (): JSX.Element => {
   useDocumentTitle(
     undefined,
-    'GearStorm is an inter-college robotics competition by IEEE RAS, KLS GIT Belagavi.'
+    `${EVENT.name} is an inter-college robotics competition organised ${ORGANIZER.credit}.`
   );
 
   const reducedMotion = usePrefersReducedMotion();
@@ -150,7 +150,7 @@ const HomePage = (): JSX.Element => {
         </Suspense>
       </div>
       <p className="sr-only">
-        Animated 3D illustration of the GearStorm competition robot: a
+        Animated 3D illustration of the {EVENT.name} competition robot: a
         four-wheeled chassis with a sensor mast, gripper arm, and an electronics
         deck.
       </p>
@@ -173,11 +173,11 @@ const HomePage = (): JSX.Element => {
           >
             <motion.div
               style={{ y: orbNearY }}
-              className="absolute -top-20 right-[8%] h-96 w-96 rounded-full bg-primary/20 blur-3xl"
+              className="absolute -top-16 right-[-10%] h-56 w-56 rounded-full bg-primary/20 blur-3xl sm:-top-20 sm:right-[8%] sm:h-96 sm:w-96"
             />
             <motion.div
               style={{ y: orbFarY }}
-              className="absolute left-[4%] top-[35%] h-72 w-72 rounded-full bg-accent/10 blur-3xl"
+              className="absolute left-[-8%] top-[40%] h-44 w-44 rounded-full bg-accent/10 blur-3xl sm:left-[4%] sm:top-[35%] sm:h-72 sm:w-72"
             />
           </div>
         ) : null}
@@ -190,21 +190,29 @@ const HomePage = (): JSX.Element => {
           }
         >
           <HeroSection
-            eyebrow="IEEE RAS · KLS GIT Belagavi"
-            title="GearStorm"
+            eyebrow={ORGANIZER.byline}
+            title={EVENT.name}
             description="An inter-college robotics competition where teams build custom bots and race them through an obstacle course. Fastest clean run takes the title."
             className="w-full"
             actions={
               <>
                 <Link
                   to={ROUTES.REGISTER}
-                  className={getButtonClasses('primary', 'lg')}
+                  className={getButtonClasses(
+                    'primary',
+                    'lg',
+                    'w-full sm:w-auto'
+                  )}
                 >
                   Register Now
                 </Link>
                 <Link
                   to={ROUTES.RULES}
-                  className={getButtonClasses('ghost', 'lg')}
+                  className={getButtonClasses(
+                    'ghost',
+                    'lg',
+                    'w-full sm:w-auto'
+                  )}
                 >
                   Learn More
                 </Link>
@@ -323,13 +331,13 @@ const HomePage = (): JSX.Element => {
           <>
             <Link
               to={ROUTES.REGISTER}
-              className={getButtonClasses('primary', 'lg')}
+              className={getButtonClasses('primary', 'lg', 'w-full sm:w-auto')}
             >
               Register Your Team
             </Link>
             <Link
               to={ROUTES.BOT_SPECS}
-              className={getButtonClasses('ghost', 'lg')}
+              className={getButtonClasses('ghost', 'lg', 'w-full sm:w-auto')}
             >
               Read Bot Specs
             </Link>

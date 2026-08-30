@@ -1,8 +1,5 @@
 import { useId, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { getButtonClasses } from '@/components/common/buttonStyles';
 import { Navigation } from '@/components/common/Navigation';
-import { ROUTES } from '@/config/routes';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 export interface MobileMenuProps {
@@ -14,6 +11,7 @@ export interface MobileMenuProps {
 /**
  * Collapsible navigation panel shown below the header on small screens.
  * Stays in the DOM when closed so `aria-controls` remains valid.
+ * Register lives in the header beside the hamburger, so it is not repeated here.
  */
 export const MobileMenu = ({
   id,
@@ -44,13 +42,6 @@ export const MobileMenu = ({
           Site navigation
         </p>
         <Navigation orientation="vertical" onNavigate={onClose} />
-        <Link
-          to={ROUTES.REGISTER}
-          onClick={onClose}
-          className={getButtonClasses('secondary', 'md', 'mt-4 w-full')}
-        >
-          Register
-        </Link>
       </nav>
     </div>
   );

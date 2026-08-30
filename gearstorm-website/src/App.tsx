@@ -1,6 +1,7 @@
 import { MotionConfig } from 'framer-motion';
 import { lazy } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { CustomCursor } from '@/components/common/CustomCursor';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { ROUTES } from '@/config/routes';
 
@@ -25,6 +26,7 @@ const App = (): JSX.Element => (
   /* reducedMotion="user" makes every motion component honor the OS setting. */
   <MotionConfig reducedMotion="user">
     <BrowserRouter>
+      <CustomCursor />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path={ROUTES.HOME} element={<HomePage />} />

@@ -178,7 +178,12 @@ const LeaderboardPage = (): JSX.Element => {
               }}
               placeholder="Team name"
             />
-            <Button type="submit" variant="secondary" size="sm">
+            <Button
+              type="submit"
+              variant="secondary"
+              size="sm"
+              className="w-full sm:w-auto"
+            >
               Search
             </Button>
           </form>

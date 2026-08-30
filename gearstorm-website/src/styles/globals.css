@@ -5,21 +5,33 @@
 @layer base {
   html {
     @apply scroll-smooth antialiased;
+    overflow-x: clip;
+  }
+
+  html.gs-cursor-active,
+  html.gs-cursor-active * {
+    cursor: none !important;
   }
 
   body {
-    @apply m-0 min-h-screen bg-dark-950 font-body text-text-light;
-    font-family: var(--font-body);
+    @apply m-0 min-h-dvh bg-dark-950 font-sans text-text-light;
+    font-family: var(--font-sans);
+    overflow-x: clip;
   }
 
-  h1,
-  h2,
+  h1 {
+    @apply font-display font-bold text-text-light;
+  }
+
+  h2 {
+    @apply font-heading font-semibold text-text-light;
+  }
+
   h3,
   h4,
   h5,
   h6 {
-    font-family: var(--font-heading);
-    @apply font-semibold text-text-light;
+    @apply font-subhead font-semibold text-text-light;
   }
 
   :focus-visible {

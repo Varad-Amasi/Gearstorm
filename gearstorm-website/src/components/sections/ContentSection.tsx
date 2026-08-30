@@ -29,9 +29,13 @@ export const ContentSection = ({
     {' '}
     <div className="flex flex-wrap items-start justify-between gap-4">
       <div className="max-w-3xl">
-        <h2 className="font-heading text-2xl font-bold md:text-3xl">{title}</h2>
+        <h2 className="font-heading text-2xl font-bold tracking-tight [letter-spacing:-0.01em] md:text-3xl">
+          {title}
+        </h2>
         {description ? (
-          <p className="mt-2 text-text-muted">{description}</p>
+          <p className="mt-2 font-sans leading-relaxed text-text-muted">
+            {description}
+          </p>
         ) : null}
       </div>
       {actions}

@@ -10,17 +10,19 @@ const siteUrl = (
 ).replace(/\/$/, '');
 
 export const SEO_CONFIG = {
-  siteName: 'GearStorm',
-  title: 'GearStorm | IEEE RAS Robotics Competition',
+  siteName: 'GearStorm 2.0',
+  title: 'GearStorm 2.0 | IEEE RAS & ISTE Robotics Competition',
   description:
-    'Inter-college robotics competition organised by IEEE Robotics & Automation Society, KLS GIT Belagavi.',
+    'Inter-college robotics competition organised in collaboration with IEEE RAS and ISTE of KLS GIT Belagavi.',
   url: siteUrl,
   /** Raster OG image — social crawlers often reject SVG. */
   image: '/og-image.png',
   twitterCard: 'summary_large_image',
   keywords: [
+    'GearStorm 2.0',
     'GearStorm',
     'IEEE RAS',
+    'ISTE',
     'robotics competition',
     'KLS GIT',
     'Belagavi',

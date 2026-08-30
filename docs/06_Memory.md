@@ -10,7 +10,7 @@ This file tracks progress, decisions, and context across development sessions. U
 - **Event:** IEEE RAS Robotics Competition (Inter-college)
 - **Organization:** IEEE Robotics & Automation Society (RAS), KLS GIT Belagavi
 - **Created:** 2026-08-23
-- **Status:** Phase 8 - Deployment & Launch (**Prep Complete** — go live when hosts are ready)
+- **Status:** Visual polish — Anime.js robot + typography + custom cursor (**Complete**)
 - **App path:** `gearstorm-website/`
 - **Docs path:** `docs/`
 - **Expected Launch:** Week 12
@@ -441,10 +441,11 @@ VITE_APP_VERSION=1.0.0
 8. ✅ Phase 6 complete: Leaderboard + Express API + form wiring
 9. ✅ Phase 7 complete: Vitest, Playwright smoke, SEO, a11y polish
 10. ✅ Phase 8 prep: Vercel/Railway configs, store hardening, launch docs
-11. ⬜ Deploy frontend to Vercel + API to Railway (or equivalent)
-12. ⬜ Optional: swap JSON store for Firestore
-13. ⬜ Run manual checklist in `docs/07_QA_Checklist.md` (Lighthouse, Safari)
-14. ⬜ Update this Memory when production URLs are live
+11. ✅ Visual polish: Anime.js robot timeline, multi-font system, custom cursor
+12. ⬜ Deploy frontend to Vercel + API to Railway (or equivalent)
+13. ⬜ Optional: swap JSON store for Firestore
+14. ⬜ Run manual checklist in `docs/07_QA_Checklist.md` (Lighthouse, Safari)
+15. ⬜ Update this Memory when production URLs are live
 
 ---
 
@@ -478,6 +479,6 @@ npm run build
 
 ---
 
-**Last Updated:** 2026-08-24  
+**Last Updated:** 2026-08-30  
 **By:** Cursor Agent  
-**Status:** Phase 8 Prep Complete → Deploy when hosts/env are ready
+**Status:** Visual polish (Anime.js + Typography + Cursor) Complete
