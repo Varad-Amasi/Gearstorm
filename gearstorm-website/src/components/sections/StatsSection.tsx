@@ -31,7 +31,7 @@ export const StatsSection = ({
           <dt className="order-2 mt-1 text-sm uppercase tracking-wide text-text-muted">
             {stat.label}
           </dt>
-          <dd className="font-display order-1 text-3xl font-bold text-primary-500 md:text-4xl">
+          <dd className="order-1 font-display text-3xl font-bold text-primary-500 md:text-4xl">
             {stat.value}
           </dd>
         </div>

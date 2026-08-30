@@ -29,7 +29,7 @@ export const FeatureCard = ({
         {icon}
       </div>
     ) : null}
-    <h3 className="font-subhead mb-2 text-xl font-semibold text-text-light">
+    <h3 className="mb-2 font-subhead text-xl font-semibold text-text-light">
       {title}
     </h3>
     <p className="text-text-muted">{description}</p>

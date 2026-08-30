@@ -30,7 +30,7 @@ export const Navigation = ({
           onClick={onNavigate}
           className={({ isActive }) =>
             clsx(
-              'font-subhead flex min-h-11 items-center rounded-lg px-3 text-sm font-medium',
+              'flex min-h-11 items-center rounded-lg px-3 font-subhead text-sm font-medium',
               'transition-colors duration-normal hover:bg-dark-800 hover:text-white',
               isActive
                 ? 'text-accent'

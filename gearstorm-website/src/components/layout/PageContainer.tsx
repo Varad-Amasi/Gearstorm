@@ -34,7 +34,7 @@ export const PageContainer = ({
     >
       <header className="max-w-3xl">
         {eyebrow ? (
-          <p className="font-subhead mb-2 text-sm font-semibold uppercase tracking-widest text-accent">
+          <p className="mb-2 font-subhead text-sm font-semibold uppercase tracking-widest text-accent">
             {eyebrow}
           </p>
         ) : null}

@@ -16,12 +16,12 @@ export const Logo = ({ onNavigate }: LogoProps): JSX.Element => (
     aria-label={`${EVENT.name} home`}
   >
     <span
-      className="font-brand flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-lg font-bold text-white transition-colors duration-normal group-hover:bg-accent"
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary font-brand text-lg font-bold text-white transition-colors duration-normal group-hover:bg-accent"
       aria-hidden="true"
     >
       G
     </span>
-    <span className="font-brand truncate text-base font-bold tracking-tight text-text-light sm:text-xl">
+    <span className="truncate font-brand text-base font-bold tracking-tight text-text-light sm:text-xl">
       {EVENT.shortName} <span className="text-accent">2.0</span>
     </span>
   </Link>

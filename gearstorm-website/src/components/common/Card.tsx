@@ -34,7 +34,7 @@ export const Card = ({
       {title ? (
         <h3
           className={clsx(
-            'font-subhead mb-2 text-xl font-semibold',
+            'mb-2 font-subhead text-xl font-semibold',
             resolvedVariant === 'standard'
               ? 'text-text-light'
               : 'text-primary-500'
