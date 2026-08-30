@@ -16,10 +16,10 @@ export const SpecTable = ({ group }: SpecTableProps): JSX.Element => (
           key={row.label}
           className="grid gap-1 py-3 sm:grid-cols-[12rem_1fr] sm:gap-4"
         >
-          <dt className="font-heading text-sm font-semibold text-accent">
+          <dt className="font-mono text-sm font-semibold text-accent">
             {row.label}
           </dt>
-          <dd className="text-text-muted">{row.value}</dd>
+          <dd className="font-mono text-sm text-text-light">{row.value}</dd>
         </div>
       ))}
     </dl>

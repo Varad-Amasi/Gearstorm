@@ -17,6 +17,8 @@ This folder contains complete project documentation for the **GearStorm Website*
 | **06_Memory.md** | Progress tracking, decisions, context | 📝 Update regularly |
 | **07_QA_Checklist.md** | Manual a11y / browser / Lighthouse checks | Phase 7+ |
 | **08_Launch.md** | Vercel + API deploy, backups, monitoring | Phase 8 |
+| **09_ANIME_TYPOGRAPHY_CURSOR.md** | Anime.js robot, typography, custom cursor | Visual polish |
+| **10_QUICK_REFERENCE.md** | Short implementation guide for #09 | Quick start |
 
 ---
 

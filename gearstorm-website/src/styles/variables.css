@@ -21,9 +21,15 @@
   --color-electric-green: #00ff88;
 
   /* Typography */
-  --font-heading: 'Poppins', 'Inter', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
-  --font-mono: 'Fira Code', 'Courier New', monospace;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-subhead: 'Inter', system-ui, sans-serif;
+  --font-body: 'Outfit', system-ui, sans-serif;
+  --font-sans: 'Outfit', system-ui, sans-serif;
+  --font-accent: 'Sora', system-ui, sans-serif;
+  --font-brand: 'Sora', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-serif-accent: 'Playfair Display', Georgia, serif;
 
   /* Spacing (8px base) */
   --space-0: 0;

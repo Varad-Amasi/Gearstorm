@@ -26,24 +26,35 @@ export const HeroSection = ({
   className,
 }: HeroSectionProps): JSX.Element => (
   <section
-    className={clsx('container-page py-16 md:py-24', className)}
+    className={clsx('container-page py-10 sm:py-16 md:py-24', className)}
     aria-labelledby="hero-title"
   >
     <div
-      className={clsx('grid items-center gap-12', media && 'lg:grid-cols-2')}
+      className={clsx(
+        'grid items-center gap-8 sm:gap-12',
+        media && 'lg:grid-cols-2'
+      )}
     >
       <div className="space-y-6">
-        {eyebrow ? <Badge variant="accent">{eyebrow}</Badge> : null}
+        {eyebrow ? (
+          <Badge variant="accent" className="max-w-full whitespace-normal">
+            {eyebrow}
+          </Badge>
+        ) : null}
         <h1
           id="hero-title"
-          className="font-heading text-4xl font-extrabold leading-tight tracking-tight md:text-6xl"
+          className="font-brand text-4xl font-bold leading-tight tracking-tight text-white [letter-spacing:-0.02em] sm:text-5xl md:text-7xl"
         >
           {title}
         </h1>
-        <p className="max-w-xl text-lg text-text-muted md:text-xl">
+        <p className="max-w-xl font-sans text-base font-normal leading-relaxed text-text-light [line-height:1.8] md:text-lg">
           {description}
         </p>
-        {actions ? <div className="flex flex-wrap gap-3">{actions}</div> : null}
+        {actions ? (
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
+            {actions}
+          </div>
+        ) : null}
       </div>
       {media}
     </div>

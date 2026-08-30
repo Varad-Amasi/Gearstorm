@@ -6,7 +6,8 @@ import { clsx } from 'clsx';
  */
 export const getFieldClasses = (hasError = false, className?: string): string =>
   clsx(
-    'w-full rounded-lg border bg-dark-900 px-4 py-2 text-text-light',
+    // text-base (16px) avoids iOS Safari zooming the page on focus
+    'w-full rounded-lg border bg-dark-900 px-4 py-2 text-base text-text-light',
     'placeholder:text-text-subtle',
     'transition-colors duration-normal',
     'focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20',

@@ -28,7 +28,7 @@ export const getButtonClasses = (
   className?: string
 ): string =>
   clsx(
-    'inline-flex items-center justify-center rounded-lg font-heading font-semibold',
+    'inline-flex items-center justify-center rounded-lg font-subhead font-semibold',
     'transition-colors duration-normal',
     'disabled:cursor-not-allowed disabled:opacity-50',
     variantStyles[variant],

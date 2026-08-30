@@ -1,0 +1,78 @@
+/* GearStorm typography system — Space Grotesk / Inter / Outfit / Sora / JetBrains Mono / Playfair */
+
+:root {
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-subhead: 'Inter', system-ui, sans-serif;
+  --font-sans: 'Outfit', system-ui, sans-serif;
+  --font-body: 'Outfit', system-ui, sans-serif;
+  --font-accent: 'Sora', system-ui, sans-serif;
+  --font-brand: 'Sora', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  --font-serif-accent: 'Playfair Display', Georgia, serif;
+
+  --font-size-h1: clamp(2rem, 8vw, 4.5rem);
+  --font-size-h2: clamp(1.75rem, 6vw, 3rem);
+  --font-size-h3: clamp(1.25rem, 4vw, 1.875rem);
+  --font-size-body: clamp(0.95rem, 2vw, 1.125rem);
+  --font-size-small: 0.875rem;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'kern' 1;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-h1);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h2);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-family: var(--font-subhead);
+  font-size: var(--font-size-h3);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+h4,
+h5,
+h6 {
+  font-family: var(--font-subhead);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+p {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-body);
+  font-weight: 400;
+  line-height: 1.8;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+}
+
+.text-gradient-brand {
+  background: linear-gradient(90deg, #6b3a8c, #d91e63);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}

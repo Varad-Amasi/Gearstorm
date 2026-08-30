@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ROUTES } from '@/config/routes';
+import { EVENT, ROUTES } from '@/config/routes';
 
 export interface LogoProps {
   onNavigate?: () => void;
@@ -12,17 +12,17 @@ export const Logo = ({ onNavigate }: LogoProps): JSX.Element => (
   <Link
     to={ROUTES.HOME}
     onClick={onNavigate}
-    className="group inline-flex items-center gap-2 rounded-md"
-    aria-label="GearStorm home"
+    className="group inline-flex min-w-0 items-center gap-2 rounded-md"
+    aria-label={`${EVENT.name} home`}
   >
     <span
-      className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary font-heading text-lg font-extrabold text-white transition-colors duration-normal group-hover:bg-accent"
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary font-brand text-lg font-bold text-white transition-colors duration-normal group-hover:bg-accent"
       aria-hidden="true"
     >
       G
     </span>
-    <span className="font-heading text-xl font-extrabold tracking-tight text-text-light">
-      GearStorm
+    <span className="truncate font-brand text-base font-bold tracking-tight text-text-light sm:text-xl">
+      {EVENT.shortName} <span className="text-accent">2.0</span>
     </span>
   </Link>
 );

@@ -45,9 +45,15 @@ const config: Config = {
         'electric-green': '#00FF88',
       },
       fontFamily: {
-        heading: ['Poppins', 'Inter', 'system-ui', 'sans-serif'],
-        body: ['Inter', 'system-ui', 'sans-serif'],
-        sans: ['Inter', 'Poppins', 'system-ui', 'sans-serif'],
+        display: ['Space Grotesk', 'system-ui', 'sans-serif'],
+        heading: ['Space Grotesk', 'system-ui', 'sans-serif'],
+        subhead: ['Inter', 'system-ui', 'sans-serif'],
+        body: ['Outfit', 'system-ui', 'sans-serif'],
+        sans: ['Outfit', 'system-ui', 'sans-serif'],
+        accent: ['Sora', 'system-ui', 'sans-serif'],
+        brand: ['Sora', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+        'serif-accent': ['Playfair Display', 'Georgia', 'serif'],
       },
       boxShadow: {
         purple: '0 0 20px rgba(107, 58, 140, 0.5)',

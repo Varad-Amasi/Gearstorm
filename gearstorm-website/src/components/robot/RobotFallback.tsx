@@ -36,7 +36,7 @@ export const RobotFallback = ({
         <rect x="100" y="38" width="14" height="6" rx="2" fill="#6B7280" />
       </svg>
       <p className="mt-3 font-heading text-xs uppercase tracking-widest text-text-subtle">
-        {loading ? 'Loading 3D robot…' : 'GearStorm bot'}
+        {loading ? 'Loading 3D robot…' : 'GearStorm 2.0 bot'}
       </p>
     </div>
   </div>

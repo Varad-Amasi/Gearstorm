@@ -10,7 +10,7 @@ export const COMPETITION = {
   prizePoolLabel: '₹15K',
   rounds: 2,
   provisionalNotice:
-    'Specifications and scoring below are provisional and may be updated before the event. Final rules will be confirmed by IEEE RAS, KLS GIT.',
+    'Specifications and scoring below are provisional and may be updated before the event. Final rules will be confirmed by IEEE RAS and ISTE, KLS GIT.',
 } as const;
 
 export const VENUE = {

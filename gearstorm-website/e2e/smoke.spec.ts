@@ -14,7 +14,7 @@ test.describe('GearStorm smoke', () => {
   test('home renders brand and primary CTA', async ({ page }) => {
     await page.goto('/');
     await expect(
-      page.getByRole('heading', { name: 'GearStorm' })
+      page.getByRole('heading', { name: 'GearStorm 2.0' })
     ).toBeVisible();
     await expect(
       page.getByRole('link', { name: /register now/i }).first()

@@ -31,7 +31,7 @@ export const Badge = ({
     <span
       className={clsx(
         'inline-flex items-center rounded-full px-3 py-1',
-        'font-heading text-sm font-medium',
+        'font-subhead text-sm font-medium',
         variantStyles[variant],
         className
       )}
