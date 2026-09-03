@@ -11,27 +11,6 @@ export interface ApiFailure {
 
 export type ApiResponse<T> = ApiSuccess<T> | ApiFailure;
 
-export interface LeaderboardEntryDto {
-  id: string;
-  teamId: string;
-  teamName: string;
-  college: string;
-  round: 1 | 2;
-  time: number;
-  obstaclesCleared: number;
-  penaltyPoints: number;
-  totalScore: number;
-  rank: number;
-  timestamp: string;
-}
-
-export interface LeaderboardListDto {
-  round: 1 | 2;
-  entries: LeaderboardEntryDto[];
-  total: number;
-  updatedAt: string;
-}
-
 export interface TeamMemberDto {
   id: string;
   name: string;

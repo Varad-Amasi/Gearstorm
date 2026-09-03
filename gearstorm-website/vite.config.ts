@@ -69,9 +69,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'html'],
       include: [
-        'src/utils/formatters.ts',
         'src/schemas/**/*.ts',
-        'src/store/leaderboardStore.ts',
         'src/services/apiClient.ts',
         'src/components/forms/ContactForm.tsx',
         'src/components/forms/RegistrationForm.tsx',

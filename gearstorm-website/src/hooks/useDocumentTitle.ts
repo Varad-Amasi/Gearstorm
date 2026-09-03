@@ -30,7 +30,9 @@ export const useDocumentTitle = (
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const pageTitle = title ? `${title} | GearStorm` : SEO_CONFIG.title;
+    const pageTitle = title
+      ? `${title} | ${SEO_CONFIG.siteName}`
+      : SEO_CONFIG.title;
     const pageDescription = description ?? SEO_CONFIG.description;
     const pageUrl = `${SEO_CONFIG.url}${pathname === '/' ? '/' : pathname}`;
 

@@ -6,7 +6,7 @@
 |-------|------|-------|
 | Frontend SPA | **Vercel** (`gearstorm-website/`) | Static `dist/` + SPA rewrites |
 | API | **Railway / Fly / VPS** (`backend/`) | Long-lived Node — **not** Vercel serverless |
-| Database | `backend/data/store.json` | Mount a persistent volume; Firebase optional later |
+| Database | `backend/data/store.json` | Mount a persistent volume; optional Google Sheets webhook for registrations |
 | Uploads | `backend/uploads/` | Same volume (or object storage later) |
 
 Do **not** deploy the Express JSON-file API onto Vercel serverless — the filesystem is ephemeral and read-only.
@@ -44,13 +44,13 @@ VITE_SENTRY_DSN=https://...@....ingest.sentry.io/...   # optional
 ```
 
 5. Redeploy after changing env — Vite inlines these at **build** time.
-6. Confirm deep links (`/register`, `/leaderboard`) refresh without 404 (`vercel.json` SPA rewrite).
+6. Confirm deep links (`/register`, `/gallery`) refresh without 404 (`vercel.json` SPA rewrite).
 
 ## 3. Launch checklist
 
 - [ ] `/api/health` OK from production API
 - [ ] Register + Contact forms succeed (Network tab → 201)
-- [ ] Leaderboard loads + polls
+- [ ] Registration form submits to API (and Sheet webhook if configured)
 - [ ] Gallery images resolve (static `/gallery/*` + any `/uploads/*`)
 - [ ] CORS: browser console clean on form submit
 - [ ] OG preview uses `/og-image.png`

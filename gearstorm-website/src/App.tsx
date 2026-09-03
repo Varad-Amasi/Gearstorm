@@ -8,7 +8,6 @@ import { ROUTES } from '@/config/routes';
 const HomePage = lazy(() => import('@/pages/Home'));
 const RulesPage = lazy(() => import('@/pages/Rules'));
 const BotSpecsPage = lazy(() => import('@/pages/BotSpecs'));
-const LeaderboardPage = lazy(() => import('@/pages/Leaderboard'));
 const RegisterPage = lazy(() => import('@/pages/Register'));
 const GalleryPage = lazy(() => import('@/pages/Gallery'));
 const ContactPage = lazy(() => import('@/pages/Contact'));
@@ -32,7 +31,6 @@ const App = (): JSX.Element => (
           <Route path={ROUTES.HOME} element={<HomePage />} />
           <Route path={ROUTES.RULES} element={<RulesPage />} />
           <Route path={ROUTES.BOT_SPECS} element={<BotSpecsPage />} />
-          <Route path={ROUTES.LEADERBOARD} element={<LeaderboardPage />} />
           <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
           <Route path={ROUTES.GALLERY} element={<GalleryPage />} />
           <Route path={ROUTES.CONTACT} element={<ContactPage />} />

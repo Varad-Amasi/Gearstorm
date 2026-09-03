@@ -42,16 +42,6 @@ export const contactSchema = z.object({
   message: z.string().trim().min(20).max(2000),
 });
 
-export const leaderboardSubmitSchema = z.object({
-  teamId: z.string().trim().min(1),
-  teamName: z.string().trim().min(2),
-  college: z.string().trim().min(2),
-  round: z.union([z.literal(1), z.literal(2)]),
-  time: z.number().int().positive(),
-  obstaclesCleared: z.number().int().min(0),
-  penaltyPoints: z.number().int().min(0),
-});
-
 export const galleryMetaSchema = z.object({
   alt: z.string().trim().min(3).max(160),
   category: z.string().trim().min(2).max(40),

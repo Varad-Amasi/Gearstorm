@@ -12,7 +12,6 @@ import { fileURLToPath } from 'node:url';
 import type {
   ContactRecord,
   GalleryRecord,
-  LeaderboardRecord,
   StoreData,
   TeamRecord,
 } from '../types.js';
@@ -23,45 +22,42 @@ const DATA_DIR = join(__dirname, '../../data');
 const DATA_PATH = join(DATA_DIR, 'store.json');
 const DATA_TMP_PATH = join(DATA_DIR, 'store.json.tmp');
 
-const rankRound = (
-  entries: LeaderboardRecord[],
-  round: 1 | 2
-): LeaderboardRecord[] => {
-  const ranked = entries
-    .filter((entry) => entry.round === round)
-    .sort((a, b) => {
-      if (a.totalScore !== b.totalScore) {
-        return a.totalScore - b.totalScore;
-      }
-      if (a.time !== b.time) {
-        return a.time - b.time;
-      }
-      return a.teamName.localeCompare(b.teamName);
-    })
-    .map((entry, index) => ({ ...entry, rank: index + 1 }));
-
-  const others = entries.filter((entry) => entry.round !== round);
-  return [...others, ...ranked];
+const normalizeStore = (raw: unknown): StoreData => {
+  const data = (raw ?? {}) as Partial<StoreData> & { leaderboard?: unknown };
+  return {
+    teams: Array.isArray(data.teams) ? data.teams : [],
+    contacts: Array.isArray(data.contacts) ? data.contacts : [],
+    gallery: Array.isArray(data.gallery) ? data.gallery : [],
+  };
 };
 
-const recomputeRanks = (data: StoreData): StoreData => ({
-  ...data,
-  leaderboard: rankRound(rankRound(data.leaderboard, 1), 2),
-});
+const hasLegacyKeys = (raw: unknown): boolean =>
+  Boolean(
+    raw &&
+      typeof raw === 'object' &&
+      !Array.isArray(raw) &&
+      Object.prototype.hasOwnProperty.call(raw, 'leaderboard')
+  );
 
 const readStore = (): StoreData => {
   if (!existsSync(DATA_PATH)) {
-    const seeded = recomputeRanks(createSeedData());
+    const seeded = createSeedData();
     writeStore(seeded);
     return seeded;
   }
 
   try {
     const raw = readFileSync(DATA_PATH, 'utf8');
-    return recomputeRanks(JSON.parse(raw) as StoreData);
+    const parsed: unknown = JSON.parse(raw);
+    const normalized = normalizeStore(parsed);
+    // Drop removed collections (e.g. legacy leaderboard) from disk once.
+    if (hasLegacyKeys(parsed)) {
+      writeStore(normalized);
+    }
+    return normalized;
   } catch (error) {
     console.error('[store] Corrupt store.json — reseeding', error);
-    const seeded = recomputeRanks(createSeedData());
+    const seeded = createSeedData();
     writeStore(seeded);
     return seeded;
   }
@@ -84,53 +80,13 @@ const writeStore = (data: StoreData): void => {
 };
 
 const mutate = (updater: (data: StoreData) => StoreData): StoreData => {
-  const next = recomputeRanks(updater(readStore()));
+  const next = updater(readStore());
   writeStore(next);
   return next;
 };
 
 export const store = {
   getAll: (): StoreData => readStore(),
-
-  listLeaderboard: (round: 1 | 2): LeaderboardRecord[] =>
-    readStore()
-      .leaderboard.filter((entry) => entry.round === round)
-      .sort((a, b) => a.rank - b.rank),
-
-  getLeaderboardByTeam: (teamId: string): LeaderboardRecord[] =>
-    readStore().leaderboard.filter((entry) => entry.teamId === teamId),
-
-  addLeaderboardEntry: (
-    entry: Omit<LeaderboardRecord, 'rank' | 'totalScore'> & {
-      totalScore?: number;
-    }
-  ): LeaderboardRecord => {
-    const totalScore =
-      entry.totalScore ?? entry.time + entry.penaltyPoints * 1000;
-    let created: LeaderboardRecord | null = null;
-
-    mutate((data) => {
-      created = { ...entry, totalScore, rank: 0 };
-      return {
-        ...data,
-        leaderboard: [
-          ...data.leaderboard.filter(
-            (row) => !(row.teamId === entry.teamId && row.round === entry.round)
-          ),
-          created,
-        ],
-      };
-    });
-
-    const saved = store
-      .listLeaderboard(entry.round)
-      .find((row) => row.teamId === entry.teamId);
-
-    if (!saved) {
-      throw new Error('Failed to persist leaderboard entry');
-    }
-    return saved;
-  },
 
   listTeams: (college?: string): TeamRecord[] => {
     const teams = readStore().teams;

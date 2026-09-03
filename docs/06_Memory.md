@@ -10,7 +10,7 @@ This file tracks progress, decisions, and context across development sessions. U
 - **Event:** IEEE RAS Robotics Competition (Inter-college)
 - **Organization:** IEEE Robotics & Automation Society (RAS), KLS GIT Belagavi
 - **Created:** 2026-08-23
-- **Status:** Visual polish — Anime.js robot + typography + custom cursor (**Complete**)
+- **Status:** GearStorm 2.0 branding; leaderboard + Firebase removed (Sheets-ready registration)
 - **App path:** `gearstorm-website/`
 - **Docs path:** `docs/`
 - **Expected Launch:** Week 12
@@ -422,7 +422,8 @@ VITE_APP_VERSION=1.0.0
 | 2026-08-24 | 5 | Bot Specs, Rules, Gallery, Contact, Register | Content pages complete |
 | 2026-08-24 | 5 | RHF + Zod forms (contact + registration) | Client validation ready for Phase 6 |
 | 2026-08-24 | 6 | Express API + JSON store + seed data | Backend runnable without Firebase |
-| 2026-08-24 | 6 | Leaderboard UI + form/API integration | End-to-end registration & contact |
+| 2026-09-03 | — | Removed leaderboard + Firebase; Sheets webhook | Registrations Sheets-ready |
+| 2026-09-03 | — | Audit: Sheets redirect fix, drop animejs, titles | Post-removal regressions |
 | 2026-08-24 | 6 | Post-review hardening (PII, upload, admin key) | Safer local API + form UX |
 | 2026-08-24 | 7 | Vitest + Playwright + SEO/a11y polish | Phase 7 automated quality slice |
 | 2026-08-24 | 8 | Deploy configs + API/store hardening | Ready to push to Vercel + Railway |
