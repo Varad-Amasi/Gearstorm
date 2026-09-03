@@ -13,6 +13,14 @@ export const COMPETITION = {
     'Specifications and scoring below are provisional and may be updated before the event. Final rules will be confirmed by IEEE RAS and ISTE, KLS GIT.',
 } as const;
 
+/** UPI payment details shown on the registration page. */
+export const PAYMENT = {
+  upiId: 'gitupi@okaxis',
+  qrSrc: '/upi-qr.jpg',
+  qrAlt: 'UPI QR code for GearStorm 2.0 registration payment',
+  note: 'Pay the registration fee via UPI, then enter the UTR and upload a payment screenshot in the form below.',
+} as const;
+
 export const VENUE = {
   name: 'KLS Gogte Institute of Technology',
   city: 'Belagavi',

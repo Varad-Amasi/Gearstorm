@@ -26,6 +26,10 @@ export interface TeamRecord {
   members: TeamMemberRecord[];
   registrationDate: string;
   paymentStatus: 'pending' | 'completed';
+  /** UTR / UPI transaction reference from the registrant. */
+  paymentUtr: string;
+  /** Stored screenshot path served from `/uploads/...`. */
+  paymentProofUrl: string;
   contactEmail: string;
   contactPhone: string;
 }

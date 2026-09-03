@@ -1,9 +1,9 @@
 import { clsx } from 'clsx';
 import type { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
-import { Controller, useFieldArray } from 'react-hook-form';
+import { useFieldArray } from 'react-hook-form';
+import { Badge } from '@/components/common/Badge';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
-import { Select } from '@/components/common/Select';
 import {
   emptyMember,
   type RegistrationFormValues,
@@ -16,13 +16,9 @@ export interface TeamMemberFieldsProps {
   errors: FieldErrors<RegistrationFormValues>;
 }
 
-const ROLE_OPTIONS = [
-  { value: 'Lead', label: 'Lead' },
-  { value: 'Member', label: 'Member' },
-] as const;
-
 /**
  * Dynamic team-member field set for registration (3–5 members).
+ * Member 1 is always Lead and cannot be changed; others are Members.
  */
 export const TeamMemberFields = ({
   control,
@@ -47,8 +43,8 @@ export const TeamMemberFields = ({
         Team members
       </legend>
       <p className="text-sm text-text-muted">
-        Add {COMPETITION.teamSizeMin}–{COMPETITION.teamSizeMax} members. Exactly
-        one must be the Lead.
+        Add {COMPETITION.teamSizeMin}–{COMPETITION.teamSizeMax} members. The
+        first person is the Lead (fixed); everyone else is a Member.
       </p>
 
       {membersError ? (
@@ -59,6 +55,7 @@ export const TeamMemberFields = ({
 
       {fields.map((field, index) => {
         const memberErrors = errors.members?.[index];
+        const isLead = index === 0;
         return (
           <div
             key={field.id}
@@ -68,10 +65,15 @@ export const TeamMemberFields = ({
             )}
           >
             <div className="flex items-center justify-between gap-3 md:col-span-2">
-              <p className="font-heading text-sm font-semibold text-accent">
-                Member {index + 1}
-              </p>
-              {fields.length > COMPETITION.teamSizeMin ? (
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="font-heading text-sm font-semibold text-accent">
+                  {isLead ? 'Team Lead' : `Member ${index + 1}`}
+                </p>
+                <Badge variant={isLead ? 'info' : 'primary'}>
+                  {isLead ? 'Lead' : 'Member'}
+                </Badge>
+              </div>
+              {!isLead && fields.length > COMPETITION.teamSizeMin ? (
                 <Button
                   type="button"
                   variant="ghost"
@@ -106,24 +108,6 @@ export const TeamMemberFields = ({
               required
               error={memberErrors?.phone?.message}
               {...register(`members.${index}.phone`)}
-            />
-            <Controller
-              control={control}
-              name={`members.${index}.role`}
-              render={({ field: roleField }) => (
-                <Select
-                  id={`member-${index}-role`}
-                  label="Role"
-                  options={ROLE_OPTIONS}
-                  required
-                  value={roleField.value}
-                  onChange={roleField.onChange}
-                  onBlur={roleField.onBlur}
-                  name={roleField.name}
-                  ref={roleField.ref}
-                  error={memberErrors?.role?.message}
-                />
-              )}
             />
           </div>
         );

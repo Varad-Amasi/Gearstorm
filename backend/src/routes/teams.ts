@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import { randomUUID } from 'node:crypto';
-import { HttpError, requireAdmin, validateBody } from '../middleware/errorHandler.js';
+import { unlink } from 'node:fs/promises';
+import { HttpError, requireAdmin } from '../middleware/errorHandler.js';
 import { rateLimit } from '../middleware/rateLimit.js';
+import { singleImageUpload } from '../middleware/upload.js';
 import { registerTeamSchema } from '../schemas/index.js';
 import { appendRegistrationToSheet } from '../services/googleSheets.js';
 import { store } from '../store/jsonStore.js';
@@ -15,7 +17,7 @@ const registrationLimit = rateLimit({
   keyPrefix: 'teams-post',
 });
 
-/** Public team shape — no emails/phones. */
+/** Public team shape — no emails/phones/proof URLs. */
 const toPublicTeam = (team: TeamRecord) => ({
   id: team.id,
   name: team.name,
@@ -24,6 +26,26 @@ const toPublicTeam = (team: TeamRecord) => ({
   registrationDate: team.registrationDate,
   memberCount: team.members.length,
 });
+
+const parseMembersField = (raw: unknown): unknown => {
+  if (typeof raw !== 'string') {
+    return raw;
+  }
+  try {
+    return JSON.parse(raw) as unknown;
+  } catch {
+    throw new HttpError(400, 'members must be a valid JSON array');
+  }
+};
+
+const removeUploadedFile = (file: Express.Multer.File | undefined): void => {
+  if (!file?.path) {
+    return;
+  }
+  void unlink(file.path).catch((error: unknown) => {
+    console.error('[upload] Failed to remove orphaned file', file.path, error);
+  });
+};
 
 teamsRouter.get('/', (req, res) => {
   const college =
@@ -54,25 +76,44 @@ teamsRouter.get('/:teamId', (req, res) => {
 teamsRouter.post(
   '/',
   registrationLimit,
-  validateBody(registerTeamSchema),
+  (req, res, next) => {
+    singleImageUpload('paymentProof')(req, res, (err: unknown) => {
+      if (err) {
+        next(
+          new HttpError(
+            400,
+            err instanceof Error ? err.message : 'Payment proof upload failed'
+          )
+        );
+        return;
+      }
+      next();
+    });
+  },
   (req, res) => {
-    const body = req.body as {
-      teamName: string;
-      college: string;
-      contactEmail: string;
-      contactPhone: string;
-      members: Array<{
-        name: string;
-        email: string;
-        phone: string;
-        role: 'Lead' | 'Member';
-      }>;
-    };
+    if (!req.file) {
+      throw new HttpError(
+        400,
+        'Payment proof image is required (field name: paymentProof)'
+      );
+    }
+
+    const parsed = registerTeamSchema.safeParse({
+      ...req.body,
+      members: parseMembersField(req.body.members),
+    });
+    if (!parsed.success) {
+      removeUploadedFile(req.file);
+      throw new HttpError(400, 'Validation failed', parsed.error.flatten());
+    }
+
+    const body = parsed.data;
 
     const duplicate = store
       .listTeams()
       .some((team) => team.name.toLowerCase() === body.teamName.toLowerCase());
     if (duplicate) {
+      removeUploadedFile(req.file);
       throw new HttpError(409, 'A team with that name is already registered');
     }
 
@@ -81,12 +122,20 @@ teamsRouter.post(
       ...member,
     }));
 
+    const lead = members[0];
+    if (!lead) {
+      removeUploadedFile(req.file);
+      throw new HttpError(400, 'Team lead is required');
+    }
+
     const team: TeamRecord = {
       id: randomUUID(),
       name: body.teamName,
       college: body.college,
       contactEmail: body.contactEmail,
       contactPhone: body.contactPhone,
+      paymentUtr: body.paymentUtr,
+      paymentProofUrl: `/uploads/${req.file.filename}`,
       paymentStatus: 'pending',
       registrationDate: new Date().toISOString(),
       members,
@@ -109,7 +158,7 @@ teamsRouter.post(
         team: toPublicTeam(team),
         emailQueued: false,
         message:
-          'Team registered. Organisers will confirm by email once SMTP is configured.',
+          'Team registered. Organisers will confirm payment using UTR and proof.',
       },
     });
   }

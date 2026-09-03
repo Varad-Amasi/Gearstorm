@@ -61,14 +61,6 @@ describe('RegistrationForm', () => {
       screen.getByLabelText(/college \/ institution/i),
       'KLS GIT'
     );
-    await user.type(
-      screen.getByLabelText(/primary contact email/i),
-      'lead@example.com'
-    );
-    await user.type(
-      screen.getByLabelText(/primary contact phone/i),
-      '+91 90000 11111'
-    );
 
     const nameInputs = screen.getAllByLabelText(/^name/i);
     const emailInputs = screen.getAllByLabelText(/^email/i);
@@ -102,6 +94,21 @@ describe('RegistrationForm', () => {
       await user.type(phoneInputs[i]!, member.phone);
     }
 
+    expect(screen.getByText('Team Lead')).toBeInTheDocument();
+    expect(screen.getAllByText('Lead').length).toBeGreaterThan(0);
+
+    await user.type(
+      screen.getByLabelText(/utr \/ upi transaction id/i),
+      'AXIS1234567890'
+    );
+    const proof = new File(['fake-proof'], 'upi-proof.jpg', {
+      type: 'image/jpeg',
+    });
+    await user.upload(
+      screen.getByLabelText(/payment proof screenshot/i),
+      proof
+    );
+
     await user.click(
       screen.getByRole('button', { name: /submit registration/i })
     );
@@ -109,6 +116,13 @@ describe('RegistrationForm', () => {
     await waitFor(() => {
       expect(submitTeamRegistration).toHaveBeenCalledTimes(1);
     });
+    expect(submitTeamRegistration).toHaveBeenCalledWith(
+      expect.objectContaining({
+        teamName: 'Circuit Breakers',
+        paymentUtr: 'AXIS1234567890',
+        paymentProof: expect.any(File),
+      })
+    );
     expect(
       await screen.findByText(/registration received/i)
     ).toBeInTheDocument();

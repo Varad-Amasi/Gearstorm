@@ -9,7 +9,8 @@ export const teamMemberSchema = z.object({
   name: z.string().trim().min(2).max(80),
   email: z.string().trim().email(),
   phone: phoneSchema,
-  role: z.enum(['Lead', 'Member']),
+  // Role is forced by member order on transform; accept anything valid or missing.
+  role: z.enum(['Lead', 'Member']).optional().default('Member'),
 });
 
 /** Keep in sync with frontend `COMPETITION.teamSizeMin/Max`. */
@@ -22,17 +23,28 @@ export const registerTeamSchema = z
     college: z.string().trim().min(2).max(120),
     contactEmail: z.string().trim().email(),
     contactPhone: phoneSchema,
+    paymentUtr: z
+      .string()
+      .trim()
+      .min(8, 'Enter the UTR / UPI transaction ID')
+      .max(64)
+      .regex(/^[A-Za-z0-9/-]+$/, 'Invalid UTR format'),
     members: z.array(teamMemberSchema).min(TEAM_SIZE_MIN).max(TEAM_SIZE_MAX),
   })
-  .superRefine((data, ctx) => {
-    const leads = data.members.filter((member) => member.role === 'Lead');
-    if (leads.length !== 1) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Exactly one team member must be marked as Lead',
-        path: ['members'],
-      });
-    }
+  .transform((data) => {
+    const members = data.members.map((member, index) => ({
+      name: member.name,
+      email: member.email,
+      phone: member.phone,
+      role: (index === 0 ? 'Lead' : 'Member') as 'Lead' | 'Member',
+    }));
+    const lead = members[0]!;
+    return {
+      ...data,
+      members,
+      contactEmail: lead.email,
+      contactPhone: lead.phone,
+    };
   });
 
 export const contactSchema = z.object({

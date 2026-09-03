@@ -1,10 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { Badge } from '@/components/common/Badge';
-import { Card } from '@/components/common/Card';
 import { Modal } from '@/components/common/Modal';
 import { Tag } from '@/components/common/Tag';
-import { GalleryUploadForm } from '@/components/forms/GalleryUploadForm';
 import { PageContainer } from '@/components/layout/PageContainer';
 import { GALLERY_CATEGORIES, GALLERY_ITEMS } from '@/data/galleryImages';
 import { getErrorMessage } from '@/services/apiClient';
@@ -43,7 +41,6 @@ const GalleryPage = (): JSX.Element => {
     useState<(typeof GALLERY_CATEGORIES)[number]>('All');
   const [year, setYear] = useState<string>('All');
   const [selected, setSelected] = useState<GalleryViewItem | null>(null);
-  const [showUpload, setShowUpload] = useState(false);
 
   const galleryQuery = useQuery({
     queryKey: ['gallery'],
@@ -86,38 +83,15 @@ const GalleryPage = (): JSX.Element => {
       description="Photos from previous GearStorm runs, robot builds, and competition moments."
     >
       <div className="flex flex-col gap-8">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-text-subtle">
-            {galleryQuery.isError
-              ? `API offline (${getErrorMessage(galleryQuery.error)}) — showing local placeholders.`
-              : galleryQuery.isSuccess
-                ? galleryQuery.data.length === 0
-                  ? 'API connected — no gallery images yet.'
-                  : 'Loaded from the GearStorm API.'
-                : 'Loading gallery…'}
-          </p>
-          {import.meta.env.DEV ? (
-            <button
-              type="button"
-              className="font-heading text-sm font-semibold text-primary-500 hover:underline"
-              onClick={() => {
-                setShowUpload((open) => !open);
-              }}
-            >
-              {showUpload ? 'Hide organiser upload' : 'Organiser upload'}
-            </button>
-          ) : null}
-        </div>
-
-        {showUpload && import.meta.env.DEV ? (
-          <Card title="Upload to gallery">
-            <GalleryUploadForm
-              onUploaded={() => {
-                void galleryQuery.refetch();
-              }}
-            />
-          </Card>
-        ) : null}
+        <p className="text-sm text-text-subtle">
+          {galleryQuery.isError
+            ? `API offline (${getErrorMessage(galleryQuery.error)}) — showing local placeholders.`
+            : galleryQuery.isSuccess
+              ? galleryQuery.data.length === 0
+                ? 'No gallery images yet — past-event photos coming soon.'
+                : 'Loaded from the GearStorm API.'
+              : 'Loading gallery…'}
+        </p>
 
         <div className="flex flex-col gap-4">
           <div

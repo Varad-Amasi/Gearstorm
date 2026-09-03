@@ -25,6 +25,11 @@ export const appendRegistrationToSheet = async (
     )
     .join(' | ');
 
+  const publicBase = process.env.PUBLIC_BASE_URL?.replace(/\/+$/, '') ?? '';
+  const paymentProofUrl = publicBase
+    ? `${publicBase}${team.paymentProofUrl}`
+    : team.paymentProofUrl;
+
   const payload = JSON.stringify({
     registeredAt: team.registrationDate,
     teamId: team.id,
@@ -33,6 +38,8 @@ export const appendRegistrationToSheet = async (
     contactEmail: team.contactEmail,
     contactPhone: team.contactPhone,
     paymentStatus: team.paymentStatus,
+    paymentUtr: team.paymentUtr,
+    paymentProofUrl,
     memberCount: team.members.length,
     members: membersFlat,
     membersJson: JSON.stringify(team.members),

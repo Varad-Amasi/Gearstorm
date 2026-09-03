@@ -22,10 +22,48 @@ const DATA_DIR = join(__dirname, '../../data');
 const DATA_PATH = join(DATA_DIR, 'store.json');
 const DATA_TMP_PATH = join(DATA_DIR, 'store.json.tmp');
 
+const normalizeTeam = (raw: unknown): TeamRecord | null => {
+  if (!raw || typeof raw !== 'object') {
+    return null;
+  }
+  const team = raw as Partial<TeamRecord>;
+  if (
+    typeof team.id !== 'string' ||
+    typeof team.name !== 'string' ||
+    typeof team.college !== 'string' ||
+    !Array.isArray(team.members)
+  ) {
+    return null;
+  }
+
+  return {
+    id: team.id,
+    name: team.name,
+    college: team.college,
+    members: team.members as TeamRecord['members'],
+    registrationDate:
+      typeof team.registrationDate === 'string'
+        ? team.registrationDate
+        : new Date().toISOString(),
+    paymentStatus: team.paymentStatus === 'completed' ? 'completed' : 'pending',
+    paymentUtr: typeof team.paymentUtr === 'string' ? team.paymentUtr : '',
+    paymentProofUrl:
+      typeof team.paymentProofUrl === 'string' ? team.paymentProofUrl : '',
+    contactEmail:
+      typeof team.contactEmail === 'string' ? team.contactEmail : '',
+    contactPhone:
+      typeof team.contactPhone === 'string' ? team.contactPhone : '',
+  };
+};
+
 const normalizeStore = (raw: unknown): StoreData => {
   const data = (raw ?? {}) as Partial<StoreData> & { leaderboard?: unknown };
   return {
-    teams: Array.isArray(data.teams) ? data.teams : [],
+    teams: Array.isArray(data.teams)
+      ? data.teams
+          .map((team) => normalizeTeam(team))
+          .filter((team): team is TeamRecord => team !== null)
+      : [],
     contacts: Array.isArray(data.contacts) ? data.contacts : [],
     gallery: Array.isArray(data.gallery) ? data.gallery : [],
   };
