@@ -1,6 +1,6 @@
 # GearStorm
 
-Inter-college robotics competition website by **IEEE RAS, KLS GIT Belagavi**.
+Inter-college robotics competition website for **GearStorm 2.0**, organised in collaboration with **IEEE RAS and ISTE of KLS GIT Belagavi**.
 
 ## Quick start
 
@@ -8,7 +8,7 @@ Inter-college robotics competition website by **IEEE RAS, KLS GIT Belagavi**.
 
 ```bash
 cd gearstorm-website
-cp .env.example .env.local   # optional Firebase / GA / Sentry
+cp .env.example .env.local   # optional GA / Sentry
 npm install
 npm run dev
 ```
@@ -32,6 +32,7 @@ API: `http://localhost:3000` · Health: `/api/health` · Docs: [`backend/README.
 cd gearstorm-website
 npm run lint
 npm run type-check
+npm run format:check
 npm run test
 npm run test:coverage
 npm run test:e2e:install   # once
@@ -71,6 +72,6 @@ App: [`gearstorm-website/`](./gearstorm-website/) · Docs: [`docs/`](./docs/)
 - Phase 3 — Design system ✅
 - Phase 4 — Home + 3D robot ✅
 - Phase 5 — Content pages ✅
-- Phase 6 — Leaderboard + API ✅
+- Phase 6 — Registration API (Sheets-ready) ✅
 - Phase 7 — Testing, SEO & polish ✅
 - Phase 8 — Launch prep (deploy configs + hardening) ✅

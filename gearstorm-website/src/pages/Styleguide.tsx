@@ -240,7 +240,7 @@ const StyleguidePage = (): JSX.Element => {
             data={DEMO_TEAMS}
             columns={COLUMNS}
             rowKey="id"
-            caption="Demo leaderboard"
+            caption="Demo table"
             pageSize={3}
           />
         </Section>

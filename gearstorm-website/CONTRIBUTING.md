@@ -13,7 +13,7 @@ Use Conventional Commits:
 
 ```
 feat: add robot assembly scroll stages
-fix: correct leaderboard sort order
+fix: correct registration validation
 docs: update setup steps in README
 style: apply prettier
 refactor: extract design tokens

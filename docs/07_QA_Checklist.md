@@ -11,7 +11,7 @@ Use this after `npm run test`, `npm run test:e2e`, and `npm run build`.
 
 ## Cross-browser / device
 - [ ] Chrome latest — Home, 3D robot (or fallback), forms
-- [ ] Firefox latest — navigation + leaderboard table scroll
+- [ ] Firefox latest — navigation + gallery / register forms
 - [ ] Edge latest — same as Chrome
 - [ ] Safari (macOS/iOS) — Home sticky/auto robot, Register
 - [ ] Mobile width 375px — hamburger menu, Register fields stack
