@@ -34,6 +34,8 @@ export interface TeamDto extends PublicTeamDto {
   members: TeamMemberDto[];
   contactEmail: string;
   contactPhone: string;
+  paymentUtr: string;
+  paymentProofUrl: string;
 }
 
 export interface GalleryImageDto {

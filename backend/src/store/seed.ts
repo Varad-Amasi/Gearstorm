@@ -12,6 +12,8 @@ export const createSeedData = (): StoreData => ({
       contactEmail: 'circuit@example.com',
       contactPhone: '+91 98765 43210',
       paymentStatus: 'completed',
+      paymentUtr: 'SEED-UTR-0001',
+      paymentProofUrl: '/uploads/seed-payment-proof.jpg',
       registrationDate: now(),
       members: [
         {

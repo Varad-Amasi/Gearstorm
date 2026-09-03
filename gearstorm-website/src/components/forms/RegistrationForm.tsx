@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { Alert } from '@/components/common/Alert';
 import { Badge } from '@/components/common/Badge';
 import { Button } from '@/components/common/Button';
@@ -10,42 +10,77 @@ import { useToast } from '@/hooks/useToast';
 import { getErrorMessage } from '@/services/apiClient';
 import { submitTeamRegistration } from '@/services/registrationService';
 import {
+  emptyLead,
   emptyMember,
   registrationSchema,
   type RegistrationFormValues,
+  type RegistrationPayload,
 } from '@/schemas/registrationSchema';
+import { PAYMENT } from '@/utils/competition';
 
-const defaultValues = (): RegistrationFormValues => ({
+type RegistrationFormDefaults = Omit<RegistrationFormValues, 'paymentProof'> & {
+  paymentProof: undefined;
+};
+
+const defaultValues = (): RegistrationFormDefaults => ({
   teamName: '',
   college: '',
-  contactEmail: '',
-  contactPhone: '',
-  members: [{ ...emptyMember(), role: 'Lead' }, emptyMember(), emptyMember()],
+  paymentUtr: '',
+  paymentProof: undefined,
+  members: [emptyLead(), emptyMember(), emptyMember()],
 });
 
 /**
- * Team registration form — validates with Zod and POSTs to `/api/teams`.
+ * Team registration form — validates with Zod and POSTs multipart to `/api/teams`.
  */
 export const RegistrationForm = (): JSX.Element => {
   const { toast } = useToast();
   const [teamId, setTeamId] = useState<string | null>(null);
+  const [proofPreview, setProofPreview] = useState<string | null>(null);
   const {
     register,
     control,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
-  } = useForm<RegistrationFormValues>({
+  } = useForm<RegistrationFormValues, unknown, RegistrationPayload>({
     resolver: zodResolver(registrationSchema),
-    defaultValues: defaultValues(),
+    defaultValues: defaultValues() as unknown as RegistrationFormValues,
   });
 
-  const onSubmit = async (values: RegistrationFormValues): Promise<void> => {
+  const paymentProof = watch('paymentProof');
+
+  useEffect(() => {
+    if (!(paymentProof instanceof File)) {
+      setProofPreview((current) => {
+        if (current) {
+          URL.revokeObjectURL(current);
+        }
+        return null;
+      });
+      return;
+    }
+
+    const url = URL.createObjectURL(paymentProof);
+    setProofPreview((current) => {
+      if (current) {
+        URL.revokeObjectURL(current);
+      }
+      return url;
+    });
+
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [paymentProof]);
+
+  const onSubmit = async (values: RegistrationPayload): Promise<void> => {
     try {
       const result = await submitTeamRegistration(values);
       setTeamId(result.team.id);
       toast.success('Team registered successfully');
-      reset(defaultValues());
+      reset(defaultValues() as unknown as RegistrationFormValues);
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -69,13 +104,22 @@ export const RegistrationForm = (): JSX.Element => {
         >
           Your team is saved. Reference ID:{' '}
           <code className="text-text-light">{teamId}</code>. Organisers will
-          confirm by email once SMTP is configured.
+          verify your UPI payment and confirm your entry.
         </Alert>
       ) : null}
 
+      <div>
+        <h2 className="font-heading text-xl font-bold text-text-light">
+          Team details
+        </h2>
+        <p className="mt-1 text-sm text-text-muted">
+          Use a clear team name — it appears on certificates and communications.
+        </p>
+      </div>
+
       <div className="flex flex-wrap items-center gap-3">
-        <p className="text-sm text-text-muted">Payment status</p>
-        <Badge variant="warning">Pending — collected offline for now</Badge>
+        <p className="text-sm text-text-muted">Payment status on submit</p>
+        <Badge variant="warning">Pending verification</Badge>
       </div>
 
       <div className="grid gap-5 md:grid-cols-2">
@@ -93,32 +137,67 @@ export const RegistrationForm = (): JSX.Element => {
           error={errors.college?.message}
           {...register('college')}
         />
-        <Input
-          id="contact-email"
-          label="Primary contact email"
-          type="email"
-          autoComplete="email"
-          required
-          error={errors.contactEmail?.message}
-          {...register('contactEmail')}
-        />
-        <Input
-          id="contact-phone"
-          label="Primary contact phone"
-          type="tel"
-          autoComplete="tel"
-          required
-          error={errors.contactPhone?.message}
-          {...register('contactPhone')}
-        />
       </div>
 
       <TeamMemberFields control={control} register={register} errors={errors} />
 
-      <div>
+      <fieldset className="flex flex-col gap-4 rounded-lg border border-border bg-dark-900/40 p-4">
+        <legend className="px-1 font-heading text-lg font-semibold text-text-light">
+          Payment details
+        </legend>
+        <p className="text-sm text-text-muted">
+          Pay to{' '}
+          <span className="font-mono text-text-light">{PAYMENT.upiId}</span>{' '}
+          first, then enter the UTR and upload a payment screenshot.
+        </p>
+        <Input
+          id="payment-utr"
+          label="UTR / UPI transaction ID"
+          required
+          helperText="Found on your UPI payment success screen or bank SMS"
+          error={errors.paymentUtr?.message}
+          {...register('paymentUtr')}
+        />
+        <Controller
+          control={control}
+          name="paymentProof"
+          render={({ field: { onChange, onBlur, name, ref } }) => (
+            <div className="flex flex-col gap-3">
+              <Input
+                id="payment-proof"
+                label="Payment proof screenshot"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif"
+                required
+                helperText="JPEG, PNG, WebP, or GIF — max 5 MB"
+                error={errors.paymentProof?.message}
+                name={name}
+                ref={ref}
+                onBlur={onBlur}
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
+                  onChange(file);
+                }}
+              />
+              {proofPreview ? (
+                <img
+                  src={proofPreview}
+                  alt="Selected payment proof preview"
+                  className="max-h-48 w-auto max-w-full rounded-lg border border-border object-contain"
+                />
+              ) : null}
+            </div>
+          )}
+        />
+      </fieldset>
+
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <Button type="submit" loading={isSubmitting}>
           Submit registration
         </Button>
+        <p className="text-xs text-text-subtle">
+          By submitting you agree to the published competition rules.
+        </p>
       </div>
     </form>
   );
