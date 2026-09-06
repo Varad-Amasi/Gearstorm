@@ -26,9 +26,14 @@ export const ContentSection = ({
     id={id}
     className={clsx('scroll-mt-24 border-t border-border pt-10', className)}
   >
-    {' '}
-    <div className="flex flex-wrap items-start justify-between gap-4">
-      <div className="max-w-3xl">
+    <div className="relative flex flex-wrap items-start justify-between gap-4">
+      <p
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-8 left-0 hidden select-none font-display text-6xl font-extrabold uppercase leading-none text-vivid-purple/15 md:-top-10 md:block"
+      >
+        {title.slice(0, 6)}
+      </p>
+      <div className="relative z-10 max-w-3xl">
         <h2 className="font-heading text-2xl font-bold tracking-tight [letter-spacing:-0.01em] md:text-3xl">
           {title}
         </h2>

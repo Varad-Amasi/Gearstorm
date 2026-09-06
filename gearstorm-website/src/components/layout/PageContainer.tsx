@@ -32,17 +32,23 @@ export const PageContainer = ({
         className
       )}
     >
-      <header className="max-w-3xl">
+      <header className="relative max-w-3xl">
+        <p
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-3 -top-8 hidden select-none font-display text-7xl font-extrabold uppercase leading-none text-vivid-purple/15 md:block"
+        >
+          {title.slice(0, 4)}
+        </p>
         {eyebrow ? (
-          <p className="mb-2 font-subhead text-sm font-semibold uppercase tracking-widest text-accent">
+          <p className="relative z-10 mb-2 font-subhead text-sm font-semibold uppercase tracking-widest text-accent">
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="font-display text-3xl font-bold tracking-tight [letter-spacing:-0.02em] md:text-5xl">
+        <h1 className="relative z-10 break-words font-display text-3xl font-extrabold uppercase leading-none tracking-tight sm:text-4xl md:text-6xl">
           {title}
         </h1>
         {description ? (
-          <p className="mt-4 font-sans text-lg leading-relaxed text-text-muted [line-height:1.8]">
+          <p className="mt-4 max-w-xl font-sans text-lg leading-snug text-text-muted">
             {description}
           </p>
         ) : null}

@@ -28,7 +28,7 @@ const RulesPage = (): JSX.Element => (
   <PageContainer
     eyebrow="Competition"
     title="Rules & Regulations"
-    description="General rules, obstacle descriptions, the scoring formula, and disqualification criteria."
+    description="What counts. What costs time. What gets you pulled."
     className="print:max-w-none print:px-0"
   >
     <div className="flex flex-col gap-10 print:gap-6">

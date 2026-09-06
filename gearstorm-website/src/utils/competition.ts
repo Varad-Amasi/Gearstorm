@@ -13,12 +13,30 @@ export const COMPETITION = {
     'Specifications and scoring below are provisional and may be updated before the event. Final rules will be confirmed by IEEE RAS and ISTE, KLS GIT.',
 } as const;
 
+export const HOST_COLLEGE = 'KLS GIT' as const;
+
+export const COLLEGE_CHOICES = [
+  { value: HOST_COLLEGE, label: 'KLS GIT' },
+  { value: 'Other', label: 'Other' },
+] as const;
+
+export type CollegeChoice = (typeof COLLEGE_CHOICES)[number]['value'];
+
+export const ACADEMIC_YEARS = [
+  '1st Year',
+  '2nd Year',
+  '3rd Year',
+  '4th Year',
+] as const;
+
+export type AcademicYear = (typeof ACADEMIC_YEARS)[number];
+
 /** UPI payment details shown on the registration page. */
 export const PAYMENT = {
   upiId: 'gitupi@okaxis',
   qrSrc: '/upi-qr.jpg',
   qrAlt: 'UPI QR code for GearStorm 2.0 registration payment',
-  note: 'Pay the registration fee via UPI, then enter the UTR and upload a payment screenshot in the form below.',
+  note: 'Pay the registration fee via UPI, then enter the UTR and upload a payment screenshot below.',
 } as const;
 
 export const VENUE = {

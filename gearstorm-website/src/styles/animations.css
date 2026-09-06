@@ -84,13 +84,50 @@
   animation: pulse-soft 2s ease-in-out infinite;
 }
 
+@keyframes gs-glitch-shift {
+  0%,
+  88%,
+  100% {
+    transform: translate(0);
+    text-shadow:
+      0.04em 0 #00d9ff,
+      -0.04em 0 #ff4d1a;
+  }
+  90% {
+    transform: translate(-2px, 1px);
+    text-shadow:
+      0.08em 0 #00d9ff,
+      -0.06em 0 #ff4d1a;
+  }
+  94% {
+    transform: translate(2px, -1px);
+    text-shadow:
+      -0.06em 0 #b44cff,
+      0.05em 0 #00d9ff;
+  }
+}
+
+.gs-glitch {
+  display: inline-block;
+  text-shadow:
+    0.04em 0 #00d9ff,
+    -0.04em 0 #ff4d1a;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gs-glitch {
+    animation: gs-glitch-shift 4.5s steps(2, end) infinite;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in,
   .animate-slide-up,
   .animate-slide-down,
   .animate-slide-in-right,
   .animate-glow,
-  .animate-pulse-soft {
+  .animate-pulse-soft,
+  .gs-glitch {
     animation: none;
   }
 

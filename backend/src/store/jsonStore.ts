@@ -40,7 +40,13 @@ const normalizeTeam = (raw: unknown): TeamRecord | null => {
     id: team.id,
     name: team.name,
     college: team.college,
-    members: team.members as TeamRecord['members'],
+    members: team.members.map((member) => ({
+      ...member,
+      academicYear:
+        typeof member.academicYear === 'string' && member.academicYear
+          ? member.academicYear
+          : '',
+    })),
     registrationDate:
       typeof team.registrationDate === 'string'
         ? team.registrationDate

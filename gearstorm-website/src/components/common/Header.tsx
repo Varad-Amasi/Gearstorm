@@ -22,7 +22,7 @@ export const Header = (): JSX.Element => {
   }, [pathname, closeMenu]);
 
   return (
-    <header className="sticky top-0 z-header border-b border-border bg-dark-950/90 pt-[env(safe-area-inset-top)] backdrop-blur">
+    <header className="sticky top-0 z-header border-b border-accent/25 bg-dark-950/75 pt-[env(safe-area-inset-top)] shadow-[0_1px_24px_rgba(217,30,99,0.12)] backdrop-blur-md">
       <div className="container-page flex h-16 items-center justify-between gap-3">
         <Logo onNavigate={closeMenu} />
 
@@ -30,11 +30,11 @@ export const Header = (): JSX.Element => {
           <Navigation />
         </nav>
 
-        <div className="flex shrink-0 items-center gap-2">
+        <div className="flex shrink-0 items-center gap-3">
           <Link
             to={ROUTES.REGISTER}
             onClick={closeMenu}
-            className={getButtonClasses('secondary', 'sm')}
+            className={getButtonClasses('secondary', 'sm', 'max-md:px-2.5')}
           >
             Register
           </Link>

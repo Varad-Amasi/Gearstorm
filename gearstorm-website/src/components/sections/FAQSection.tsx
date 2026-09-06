@@ -40,8 +40,8 @@ export const FAQSection = ({
     <div className="mt-8 flex max-w-3xl flex-col gap-3">
       {items.map((item, index) => (
         <Reveal key={item.question} delay={index * 0.06}>
-          <details className="group rounded-lg border border-border bg-dark-800 transition-colors duration-normal open:border-primary/50 hover:border-primary/50">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-4 font-heading font-semibold text-text-light [&::-webkit-details-marker]:hidden">
+          <details className="group rounded-lg border border-border bg-dark-800/80 transition-colors duration-normal open:border-accent/50 hover:border-neon-orange/50">
+            <summary className="flex cursor-pointer list-none items-start justify-between gap-3 px-4 py-4 font-heading font-semibold text-text-light sm:items-center sm:px-6 [&::-webkit-details-marker]:hidden">
               {item.question}
               <span
                 aria-hidden="true"
@@ -50,7 +50,7 @@ export const FAQSection = ({
                 +
               </span>
             </summary>
-            <p className="px-6 pb-5 text-text-muted">{item.answer}</p>
+            <p className="px-4 pb-5 text-text-muted sm:px-6">{item.answer}</p>
           </details>
         </Reveal>
       ))}

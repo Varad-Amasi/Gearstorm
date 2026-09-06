@@ -3,8 +3,8 @@
   /* Brand colors */
   --color-primary-purple: #6b3a8c;
   --color-accent-magenta: #d91e63;
-  --color-dark-bg: #0f0f1e;
-  --color-dark-surface: #1a1a2e;
+  --color-dark-bg: #080810;
+  --color-dark-surface: #12121f;
   --color-text-light: #e0e0e0;
   --color-text-muted: #9ca3af;
   --color-text-subtle: #6b7280;
@@ -16,18 +16,19 @@
   --color-warning: #f59e0b;
   --color-info: #3b82f6;
 
-  /* Accents */
+  /* Accents — high-contrast neon against dark */
   --color-neon-cyan: #00d9ff;
-  --color-electric-green: #00ff88;
+  --color-neon-orange: #ff4d1a;
+  --color-vivid-purple: #b44cff;
 
-  /* Typography */
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-heading: 'Space Grotesk', system-ui, sans-serif;
-  --font-subhead: 'Inter', system-ui, sans-serif;
-  --font-body: 'Outfit', system-ui, sans-serif;
-  --font-sans: 'Outfit', system-ui, sans-serif;
-  --font-accent: 'Sora', system-ui, sans-serif;
-  --font-brand: 'Sora', system-ui, sans-serif;
+  /* Typography — robotic display + readable body */
+  --font-display: 'Orbitron', 'Chakra Petch', system-ui, sans-serif;
+  --font-heading: 'Chakra Petch', system-ui, sans-serif;
+  --font-subhead: 'Rajdhani', system-ui, sans-serif;
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
+  --font-sans: 'Space Grotesk', system-ui, sans-serif;
+  --font-accent: 'Audiowide', 'Chakra Petch', system-ui, sans-serif;
+  --font-brand: 'Chakra Petch', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --font-serif-accent: 'Playfair Display', Georgia, serif;
 

@@ -80,7 +80,7 @@ const GalleryPage = (): JSX.Element => {
     <PageContainer
       eyebrow="Past Events"
       title="Gallery"
-      description="Photos from previous GearStorm runs, robot builds, and competition moments."
+      description="Bots, pits, and chaos from past runs. More photos landing later."
     >
       <div className="flex flex-col gap-8">
         <p className="text-sm text-text-subtle">
@@ -106,7 +106,7 @@ const GalleryPage = (): JSX.Element => {
                 onClick={() => {
                   setCategory(option);
                 }}
-                className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                className="min-h-11 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
                 aria-pressed={category === option}
               >
                 <Tag
@@ -133,7 +133,7 @@ const GalleryPage = (): JSX.Element => {
                 onClick={() => {
                   setYear(option);
                 }}
-                className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                className="min-h-11 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
                 aria-pressed={year === option}
               >
                 <Tag

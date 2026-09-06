@@ -1,20 +1,27 @@
 import { clsx } from 'clsx';
 import type { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
-import { useFieldArray } from 'react-hook-form';
+import { Controller, useFieldArray } from 'react-hook-form';
 import { Badge } from '@/components/common/Badge';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
+import { Select } from '@/components/common/Select';
 import {
   emptyMember,
   type RegistrationFormValues,
+  type RegistrationPayload,
 } from '@/schemas/registrationSchema';
-import { COMPETITION } from '@/utils/competition';
+import { ACADEMIC_YEARS, COMPETITION } from '@/utils/competition';
 
 export interface TeamMemberFieldsProps {
-  control: Control<RegistrationFormValues>;
+  control: Control<RegistrationFormValues, unknown, RegistrationPayload>;
   register: UseFormRegister<RegistrationFormValues>;
   errors: FieldErrors<RegistrationFormValues>;
 }
+
+const YEAR_OPTIONS = ACADEMIC_YEARS.map((year) => ({
+  value: year,
+  label: year,
+}));
 
 /**
  * Dynamic team-member field set for registration (3–5 members).
@@ -109,6 +116,25 @@ export const TeamMemberFields = ({
               error={memberErrors?.phone?.message}
               {...register(`members.${index}.phone`)}
             />
+            <Controller
+              control={control}
+              name={`members.${index}.academicYear`}
+              render={({ field: yearField }) => (
+                <Select
+                  id={`member-${index}-year`}
+                  label="Academic year"
+                  required
+                  placeholder="Select year"
+                  options={YEAR_OPTIONS}
+                  value={yearField.value}
+                  onChange={yearField.onChange}
+                  onBlur={yearField.onBlur}
+                  name={yearField.name}
+                  ref={yearField.ref}
+                  error={memberErrors?.academicYear?.message}
+                />
+              )}
+            />
           </div>
         );
       })}
@@ -120,7 +146,9 @@ export const TeamMemberFields = ({
             variant="secondary"
             size="sm"
             onClick={() => {
-              append(emptyMember());
+              append(
+                emptyMember() as RegistrationFormValues['members'][number]
+              );
             }}
           >
             Add member

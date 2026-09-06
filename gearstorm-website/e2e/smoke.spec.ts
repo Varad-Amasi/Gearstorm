@@ -17,7 +17,7 @@ test.describe('GearStorm smoke', () => {
       page.getByRole('heading', { name: 'GearStorm 2.0' })
     ).toBeVisible();
     await expect(
-      page.getByRole('link', { name: /register now/i }).first()
+      page.getByRole('link', { name: /register your team/i }).first()
     ).toBeVisible();
   });
 
@@ -44,7 +44,7 @@ test.describe('GearStorm smoke', () => {
       page.getByRole('heading', { level: 1, name: 'Contact' })
     ).toBeVisible();
     await expect(
-      page.getByRole('button', { name: /send message/i })
+      page.getByRole('heading', { name: /organiser details/i })
     ).toBeVisible();
   });
 

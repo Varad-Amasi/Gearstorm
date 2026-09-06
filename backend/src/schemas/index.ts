@@ -5,10 +5,18 @@ const phoneSchema = z
   .trim()
   .regex(/^[+]?[\d\s()-]{8,20}$/, 'Enter a valid phone number');
 
+const ACADEMIC_YEARS = [
+  '1st Year',
+  '2nd Year',
+  '3rd Year',
+  '4th Year',
+] as const;
+
 export const teamMemberSchema = z.object({
   name: z.string().trim().min(2).max(80),
   email: z.string().trim().email(),
   phone: phoneSchema,
+  academicYear: z.enum(ACADEMIC_YEARS),
   // Role is forced by member order on transform; accept anything valid or missing.
   role: z.enum(['Lead', 'Member']).optional().default('Member'),
 });
@@ -36,6 +44,7 @@ export const registerTeamSchema = z
       name: member.name,
       email: member.email,
       phone: member.phone,
+      academicYear: member.academicYear,
       role: (index === 0 ? 'Lead' : 'Member') as 'Lead' | 'Member',
     }));
     const lead = members[0]!;
