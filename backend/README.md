@@ -1,6 +1,6 @@
 # GearStorm API
 
-Express backend for registration, contact, and gallery uploads.
+Express backend for registration and contact.
 
 ## Quick start
 
@@ -29,8 +29,6 @@ npm start   # node dist/server.js
 | GET | `/api/teams/:teamId/full` | Full team + PII (`x-admin-key`) |
 | POST | `/api/teams` | Register team (rate-limited) |
 | POST | `/api/contact` | Contact form (rate-limited) |
-| GET | `/api/gallery` | Gallery metadata |
-| POST | `/api/gallery` | Admin image upload (`multipart`, `x-admin-key`) |
 
 ## Admin key
 

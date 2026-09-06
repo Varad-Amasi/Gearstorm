@@ -38,13 +38,3 @@ export interface TeamDto extends PublicTeamDto {
   paymentUtr: string;
   paymentProofUrl: string;
 }
-
-export interface GalleryImageDto {
-  id: string;
-  imageUrl: string;
-  alt: string;
-  category: string;
-  year: number;
-  caption: string;
-  uploadedAt: string;
-}

@@ -5,8 +5,8 @@ import {
   parseCorsOrigins,
 } from './middleware/corsOrigin.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { UPLOADS_DIR } from './middleware/upload.js';
 import { contactRouter } from './routes/contact.js';
-import { galleryRouter, UPLOADS_DIR } from './routes/gallery.js';
 import { teamsRouter } from './routes/teams.js';
 import { store } from './store/jsonStore.js';
 
@@ -35,7 +35,6 @@ export const createApp = (): express.Express => {
         counts: {
           teams: data.teams.length,
           contacts: data.contacts.length,
-          gallery: data.gallery.length,
         },
       },
     });
@@ -43,7 +42,6 @@ export const createApp = (): express.Express => {
 
   app.use('/api/teams', teamsRouter);
   app.use('/api/contact', contactRouter);
-  app.use('/api/gallery', galleryRouter);
 
   app.use(errorHandler);
   return app;

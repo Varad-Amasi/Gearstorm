@@ -17,7 +17,6 @@ const probeTmp = join(dataDir, 'store.json.tmp');
 const sample = {
   teams: [{ id: 't1', name: 'Alpha' }],
   contacts: [],
-  gallery: [],
 };
 
 writeFileSync(probeTmp, JSON.stringify(sample, null, 2), 'utf8');
@@ -37,11 +36,10 @@ const before = store.getAll();
 const healthShape = {
   teams: before.teams.length,
   contacts: before.contacts.length,
-  gallery: before.gallery.length,
 };
 
-if (!Array.isArray(before.teams) || !Array.isArray(before.gallery)) {
-  throw new Error('Store shape missing teams or gallery arrays');
+if (!Array.isArray(before.teams) || !Array.isArray(before.contacts)) {
+  throw new Error('Store shape missing teams or contacts arrays');
 }
 
 rmSync(tmpRoot, { recursive: true, force: true });

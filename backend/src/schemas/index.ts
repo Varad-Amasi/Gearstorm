@@ -63,9 +63,3 @@ export const contactSchema = z.object({
   message: z.string().trim().min(20).max(2000),
 });
 
-export const galleryMetaSchema = z.object({
-  alt: z.string().trim().min(3).max(160),
-  category: z.string().trim().min(2).max(40),
-  year: z.coerce.number().int().min(2020).max(2100),
-  caption: z.string().trim().min(3).max(160),
-});

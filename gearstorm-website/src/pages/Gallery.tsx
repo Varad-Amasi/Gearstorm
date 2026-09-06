@@ -1,79 +1,33 @@
-import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { Badge } from '@/components/common/Badge';
 import { Modal } from '@/components/common/Modal';
 import { Tag } from '@/components/common/Tag';
 import { PageContainer } from '@/components/layout/PageContainer';
 import { GALLERY_CATEGORIES, GALLERY_ITEMS } from '@/data/galleryImages';
-import { getErrorMessage } from '@/services/apiClient';
-import { fetchGalleryImages, resolveMediaUrl } from '@/services/imageService';
-import type { GalleryImageDto } from '@/types/api';
-
-interface GalleryViewItem {
-  id: string;
-  src: string;
-  alt: string;
-  category: string;
-  year: number;
-  caption: string;
-}
-
-const toViewItem = (item: GalleryImageDto): GalleryViewItem => ({
-  id: item.id,
-  src: resolveMediaUrl(item.imageUrl),
-  alt: item.alt,
-  category: item.category,
-  year: item.year,
-  caption: item.caption,
-});
-
-const fallbackItems: GalleryViewItem[] = GALLERY_ITEMS.map((item) => ({
-  id: item.id,
-  src: item.src,
-  alt: item.alt,
-  category: item.category,
-  year: item.year,
-  caption: item.caption,
-}));
 
 const GalleryPage = (): JSX.Element => {
   const [category, setCategory] =
     useState<(typeof GALLERY_CATEGORIES)[number]>('All');
   const [year, setYear] = useState<string>('All');
-  const [selected, setSelected] = useState<GalleryViewItem | null>(null);
-
-  const galleryQuery = useQuery({
-    queryKey: ['gallery'],
-    queryFn: fetchGalleryImages,
-    staleTime: 30_000,
-    retry: 1,
-  });
-
-  const items = useMemo(() => {
-    if (galleryQuery.isSuccess) {
-      return galleryQuery.data.map(toViewItem);
-    }
-    if (galleryQuery.isError) {
-      return fallbackItems;
-    }
-    return [];
-  }, [galleryQuery.data, galleryQuery.isError, galleryQuery.isSuccess]);
+  const [selected, setSelected] = useState<
+    (typeof GALLERY_ITEMS)[number] | null
+  >(null);
 
   const yearOptions = useMemo(() => {
     const years = Array.from(
-      new Set(items.map((item) => String(item.year)))
+      new Set(GALLERY_ITEMS.map((item) => String(item.year)))
     ).sort((a, b) => b.localeCompare(a));
     return ['All', ...years];
-  }, [items]);
+  }, []);
 
   const filtered = useMemo(
     () =>
-      items.filter((item) => {
+      GALLERY_ITEMS.filter((item) => {
         const categoryOk = category === 'All' || item.category === category;
         const yearOk = year === 'All' || String(item.year) === year;
         return categoryOk && yearOk;
       }),
-    [category, items, year]
+    [category, year]
   );
 
   return (
@@ -83,16 +37,6 @@ const GalleryPage = (): JSX.Element => {
       description="Bots, pits, and chaos from past runs. More photos landing later."
     >
       <div className="flex flex-col gap-8">
-        <p className="text-sm text-text-subtle">
-          {galleryQuery.isError
-            ? `API offline (${getErrorMessage(galleryQuery.error)}) — showing local placeholders.`
-            : galleryQuery.isSuccess
-              ? galleryQuery.data.length === 0
-                ? 'No gallery images yet — past-event photos coming soon.'
-                : 'Loaded from the GearStorm API.'
-              : 'Loading gallery…'}
-        </p>
-
         <div className="flex flex-col gap-4">
           <div
             className="flex flex-wrap gap-2"

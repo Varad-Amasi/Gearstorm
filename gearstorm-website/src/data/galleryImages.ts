@@ -10,8 +10,7 @@ export interface GalleryItem {
 }
 
 /**
- * Local SVG placeholders until event photography is supplied.
- * Paths point at files in `public/gallery/`.
+ * Static gallery. Add files under `public/gallery/` and list them here.
  */
 export const GALLERY_ITEMS: readonly GalleryItem[] = [
   {

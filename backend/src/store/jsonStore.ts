@@ -9,12 +9,7 @@ import {
 } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type {
-  ContactRecord,
-  GalleryRecord,
-  StoreData,
-  TeamRecord,
-} from '../types.js';
+import type { ContactRecord, StoreData, TeamRecord } from '../types.js';
 import { createSeedData } from './seed.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -71,7 +66,6 @@ const normalizeStore = (raw: unknown): StoreData => {
           .filter((team): team is TeamRecord => team !== null)
       : [],
     contacts: Array.isArray(data.contacts) ? data.contacts : [],
-    gallery: Array.isArray(data.gallery) ? data.gallery : [],
   };
 };
 
@@ -80,7 +74,8 @@ const hasLegacyKeys = (raw: unknown): boolean =>
     raw &&
       typeof raw === 'object' &&
       !Array.isArray(raw) &&
-      Object.prototype.hasOwnProperty.call(raw, 'leaderboard')
+      (Object.prototype.hasOwnProperty.call(raw, 'leaderboard') ||
+        Object.prototype.hasOwnProperty.call(raw, 'gallery'))
   );
 
 const readStore = (): StoreData => {
@@ -94,7 +89,7 @@ const readStore = (): StoreData => {
     const raw = readFileSync(DATA_PATH, 'utf8');
     const parsed: unknown = JSON.parse(raw);
     const normalized = normalizeStore(parsed);
-    // Drop removed collections (e.g. legacy leaderboard) from disk once.
+    // Drop removed collections (leaderboard, gallery) from disk once.
     if (hasLegacyKeys(parsed)) {
       writeStore(normalized);
     }
@@ -155,18 +150,5 @@ export const store = {
       contacts: [contact, ...data.contacts],
     }));
     return contact;
-  },
-
-  listGallery: (): GalleryRecord[] =>
-    [...readStore().gallery].sort((a, b) =>
-      b.uploadedAt.localeCompare(a.uploadedAt)
-    ),
-
-  addGalleryItem: (item: GalleryRecord): GalleryRecord => {
-    mutate((data) => ({
-      ...data,
-      gallery: [item, ...data.gallery],
-    }));
-    return item;
   },
 };

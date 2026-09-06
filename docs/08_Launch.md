@@ -51,7 +51,7 @@ VITE_SENTRY_DSN=https://...@....ingest.sentry.io/...   # optional
 - [ ] `/api/health` OK from production API
 - [ ] Register + Contact forms succeed (Network tab → 201)
 - [ ] Registration form submits to API (and Sheet webhook if configured)
-- [ ] Gallery images resolve (static `/gallery/*` + any `/uploads/*`)
+- [ ] Gallery images resolve from static `/gallery/*` (listed in `galleryImages.ts`)
 - [ ] CORS: browser console clean on form submit
 - [ ] OG preview uses `/og-image.png`
 - [ ] Custom domain + HTTPS on Vercel
