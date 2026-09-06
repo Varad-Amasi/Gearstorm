@@ -1,6 +1,9 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { ROUTES } from '@/config/routes';
+import { isLowPowerClient } from '@/utils/lowPower';
 import { isWebGLAvailable } from '@/utils/webgl';
 
 const Hyperspeed = lazy(
@@ -22,8 +25,8 @@ const GEARSTORM_HYPERSPEED = {
   fovSpeedUp: 150,
   speedUp: 2,
   carLightsFade: 0.45,
-  totalSideLightSticks: 14,
-  lightPairsPerRoadWay: 22,
+  totalSideLightSticks: 8,
+  lightPairsPerRoadWay: 12,
   shoulderLinesWidthPercentage: 0.05,
   brokenLinesWidthPercentage: 0.1,
   brokenLinesLengthPercentage: 0.5,
@@ -51,18 +54,25 @@ const GEARSTORM_HYPERSPEED = {
 /**
  * Fixed full-viewport Hyperspeed backdrop for the whole site.
  * Decorative only — pointer events are disabled so forms/nav keep working.
- * Skipped on small viewports to avoid fighting Home’s Robot3D WebGL context.
+ * Skipped on Home (Robot3D already uses a WebGL context), phones, and
+ * low-memory machines so we never run two GPU scenes at once.
  */
 export const SiteHyperspeedBackground = (): JSX.Element | null => {
+  const { pathname } = useLocation();
   const prefersReducedMotion = usePrefersReducedMotion();
   const isCompactViewport = useMediaQuery('(max-width: 768px)');
-  const [webglOk, setWebglOk] = useState(false);
+  const [webglOk] = useState(isWebGLAvailable);
+  const [lowPower] = useState(isLowPowerClient);
 
-  useEffect(() => {
-    setWebglOk(isWebGLAvailable());
-  }, []);
+  const skipForHome = pathname === ROUTES.HOME;
 
-  if (prefersReducedMotion || isCompactViewport || !webglOk) {
+  if (
+    prefersReducedMotion ||
+    isCompactViewport ||
+    skipForHome ||
+    lowPower ||
+    !webglOk
+  ) {
     return null;
   }
 

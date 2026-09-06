@@ -64,7 +64,21 @@ export const useCursor = (): CursorState & {
     setState((current) => ({ ...current, enabled: true }));
     document.documentElement.classList.add('gs-cursor-active');
 
+    const applyCursor = (): void => {
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate3d(${cursorPos.current.x}px, ${cursorPos.current.y}px, 0)`;
+      }
+      if (trailRef.current) {
+        trailRef.current.style.transform = `translate3d(${trailPos.current.x}px, ${trailPos.current.y}px, 0)`;
+      }
+    };
+
     const tick = (): void => {
+      if (document.hidden) {
+        rafRef.current = 0;
+        return;
+      }
+
       cursorPos.current.x +=
         (target.current.x - cursorPos.current.x) * LERP_CURSOR;
       cursorPos.current.y +=
@@ -74,20 +88,26 @@ export const useCursor = (): CursorState & {
       trailPos.current.y +=
         (target.current.y - trailPos.current.y) * LERP_TRAIL;
 
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${cursorPos.current.x}px, ${cursorPos.current.y}px, 0)`;
-      }
-      if (trailRef.current) {
-        trailRef.current.style.transform = `translate3d(${trailPos.current.x}px, ${trailPos.current.y}px, 0)`;
-      }
+      applyCursor();
 
-      rafRef.current = requestAnimationFrame(tick);
+      const stillMoving =
+        Math.abs(target.current.x - cursorPos.current.x) > 0.15 ||
+        Math.abs(target.current.y - cursorPos.current.y) > 0.15 ||
+        Math.abs(target.current.x - trailPos.current.x) > 0.15 ||
+        Math.abs(target.current.y - trailPos.current.y) > 0.15;
+
+      rafRef.current = stillMoving ? requestAnimationFrame(tick) : 0;
     };
 
-    rafRef.current = requestAnimationFrame(tick);
+    const startTick = (): void => {
+      if (!rafRef.current && !document.hidden) {
+        rafRef.current = requestAnimationFrame(tick);
+      }
+    };
 
     const onMove = (event: MouseEvent): void => {
       target.current = { x: event.clientX, y: event.clientY };
+      startTick();
       setState((current) =>
         current.visible ? current : { ...current, visible: true }
       );
@@ -132,9 +152,17 @@ export const useCursor = (): CursorState & {
       setState((current) => ({ ...current, visible: false }));
     };
 
+    const onVisibility = (): void => {
+      if (document.hidden && rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = 0;
+      }
+    };
+
     window.addEventListener('mousemove', onMove, { passive: true });
     window.addEventListener('mouseover', onOver, { passive: true });
     window.addEventListener('mousedown', onDown, { passive: true });
+    document.addEventListener('visibilitychange', onVisibility);
     document.documentElement.addEventListener('mouseleave', onLeave);
 
     return () => {
@@ -142,6 +170,7 @@ export const useCursor = (): CursorState & {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseover', onOver);
       window.removeEventListener('mousedown', onDown);
+      document.removeEventListener('visibilitychange', onVisibility);
       document.documentElement.removeEventListener('mouseleave', onLeave);
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
