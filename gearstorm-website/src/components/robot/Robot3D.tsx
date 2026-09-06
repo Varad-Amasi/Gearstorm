@@ -1,6 +1,6 @@
 import { Canvas } from '@react-three/fiber';
 import type { MotionValue } from 'framer-motion';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { CanvasTexture } from 'three';
 import { RobotFallback } from './RobotFallback';
 import { RobotModel, type RobotMode } from './RobotModel';
@@ -69,19 +69,51 @@ const GroundShadow = (): JSX.Element | null => {
  */
 const Robot3D = ({ progress, mode, active }: Robot3DProps): JSX.Element => {
   const [webglSupported] = useState(isWebGLAvailable);
+  const [tabVisible, setTabVisible] = useState(
+    () => typeof document === 'undefined' || !document.hidden
+  );
+  const invalidateRef = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    const onVisibility = (): void => {
+      setTabVisible(!document.hidden);
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (active && tabVisible) {
+      invalidateRef.current?.();
+    }
+  }, [active, tabVisible]);
 
   if (!webglSupported) {
     return <RobotFallback />;
   }
 
+  const running = active && tabVisible;
+
   return (
     <Canvas
-      // Pausing off-screen keeps the GPU idle while reading the rest of the
-      // page; a static robot only needs the one frame `demand` renders.
-      frameloop={!active ? 'never' : mode === 'static' ? 'demand' : 'always'}
-      dpr={[1, 1.75]}
+      // Pausing off-screen or in a hidden tab keeps the GPU idle.
+      // A static robot only needs the one frame `demand` renders.
+      frameloop={!running ? 'never' : mode === 'static' ? 'demand' : 'always'}
+      dpr={[1, 1.25]}
       camera={{ position: [3.4, 1.9, 4.6], fov: 42 }}
-      gl={{ antialias: true, powerPreference: 'high-performance' }}
+      gl={{
+        antialias: false,
+        powerPreference: 'low-power',
+        stencil: false,
+      }}
+      onCreated={(state) => {
+        invalidateRef.current = () => {
+          state.invalidate();
+        };
+        state.invalidate();
+      }}
       aria-hidden="true"
     >
       <ambientLight intensity={0.55} />

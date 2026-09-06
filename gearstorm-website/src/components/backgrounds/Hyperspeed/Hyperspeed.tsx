@@ -3,8 +3,6 @@ import {
   EffectComposer,
   EffectPass,
   RenderPass,
-  SMAAEffect,
-  SMAAPreset,
 } from 'postprocessing';
 import { type FC, useEffect, useRef } from 'react';
 import * as THREE from 'three';
@@ -964,21 +962,28 @@ const roadVertex = `
   }
 `;
 
+/** Cap the drawing buffer so 1440p/4K displays do not allocate huge GPU textures. */
+const MAX_DRAW_WIDTH = 1280;
+
+const drawingSize = (cssW: number, cssH: number): { w: number; h: number } => {
+  const scale = cssW > MAX_DRAW_WIDTH ? MAX_DRAW_WIDTH / cssW : 1;
+  return {
+    w: Math.max(1, Math.round(cssW * scale)),
+    h: Math.max(1, Math.round(cssH * scale)),
+  };
+};
+
 function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer): boolean {
   const canvas = renderer.domElement;
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
   if (width <= 0 || height <= 0) return false;
 
-  // Compare against the drawing buffer (CSS size × pixel ratio). Comparing to
-  // clientWidth alone forces a resize every frame when devicePixelRatio > 1.
-  const pixelRatio = renderer.getPixelRatio();
-  const needResize =
-    canvas.width !== Math.floor(width * pixelRatio) ||
-    canvas.height !== Math.floor(height * pixelRatio);
+  const { w, h } = drawingSize(width, height);
+  const needResize = canvas.width !== w || canvas.height !== h;
 
   if (needResize) {
-    renderer.setSize(width, height, false);
+    renderer.setSize(w, h, false);
   }
   return needResize;
 }
@@ -1005,6 +1010,8 @@ class App {
   speedUp: number;
   timeOffset: number;
   hasValidSize: boolean;
+  rafId: number;
+  paused: boolean;
 
   constructor(container: HTMLElement, options: HyperspeedOptions) {
     this.options = options;
@@ -1023,9 +1030,12 @@ class App {
     this.renderer = new THREE.WebGLRenderer({
       antialias: false,
       alpha: true,
+      powerPreference: 'low-power',
+      stencil: false,
     });
-    this.renderer.setSize(initW, initH, false);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    this.renderer.setPixelRatio(1);
+    const initDraw = drawingSize(initW, initH);
+    this.renderer.setSize(initDraw.w, initDraw.h, false);
 
     this.composer = new EffectComposer(this.renderer);
     container.appendChild(this.renderer.domElement);
@@ -1059,6 +1069,8 @@ class App {
     this.clock = new THREE.Clock();
     this.assets = {};
     this.disposed = false;
+    this.rafId = 0;
+    this.paused = document.hidden;
 
     this.road = new Road(this, options);
     this.leftCarLights = new CarLights(
@@ -1092,7 +1104,9 @@ class App {
     this.onContextMenu = this.onContextMenu.bind(this);
 
     this.onWindowResize = this.onWindowResize.bind(this);
+    this.onVisibilityChange = this.onVisibilityChange.bind(this);
     window.addEventListener('resize', this.onWindowResize);
+    document.addEventListener('visibilitychange', this.onVisibilityChange);
 
     if (container.offsetWidth > 0 && container.offsetHeight > 0) {
       this.hasValidSize = true;
@@ -1108,11 +1122,29 @@ class App {
       return;
     }
 
-    this.renderer.setSize(width, height);
+    const draw = drawingSize(width, height);
+    this.renderer.setSize(draw.w, draw.h, false);
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
-    this.composer.setSize(width, height);
+    this.composer.setSize(draw.w, draw.h);
     this.hasValidSize = true;
+  }
+
+  onVisibilityChange() {
+    if (document.hidden) {
+      this.paused = true;
+      if (this.rafId) {
+        cancelAnimationFrame(this.rafId);
+        this.rafId = 0;
+      }
+      return;
+    }
+    if (this.disposed || !this.paused) {
+      return;
+    }
+    this.paused = false;
+    this.clock.getDelta();
+    this.tick();
   }
 
   initPasses() {
@@ -1120,52 +1152,21 @@ class App {
     this.bloomPass = new EffectPass(
       this.camera,
       new BloomEffect({
-        luminanceThreshold: 0.2,
-        luminanceSmoothing: 0,
-        resolutionScale: 1,
+        luminanceThreshold: 0.35,
+        luminanceSmoothing: 0.2,
+        resolutionScale: 0.4,
       })
     );
 
-    const smaaPass = new EffectPass(
-      this.camera,
-      new SMAAEffect({
-        preset: SMAAPreset.MEDIUM,
-      })
-    );
     this.renderPass.renderToScreen = false;
-    this.bloomPass.renderToScreen = false;
-    smaaPass.renderToScreen = true;
+    this.bloomPass.renderToScreen = true;
 
     this.composer.addPass(this.renderPass);
     this.composer.addPass(this.bloomPass);
-    this.composer.addPass(smaaPass);
   }
 
   loadAssets(): Promise<void> {
-    const assets = this.assets;
-    return new Promise((resolve) => {
-      const manager = new THREE.LoadingManager(resolve);
-
-      const searchImage = new Image();
-      const areaImage = new Image();
-      assets.smaa = {};
-
-      searchImage.addEventListener('load', function () {
-        assets.smaa.search = this;
-        manager.itemEnd('smaa-search');
-      });
-
-      areaImage.addEventListener('load', function () {
-        assets.smaa.area = this;
-        manager.itemEnd('smaa-area');
-      });
-
-      manager.itemStart('smaa-search');
-      manager.itemStart('smaa-area');
-
-      searchImage.src = SMAAEffect.searchImageDataURL;
-      areaImage.src = SMAAEffect.areaImageDataURL;
-    });
+    return Promise.resolve();
   }
 
   init() {
@@ -1317,7 +1318,12 @@ class App {
       this.composer.dispose();
     }
 
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = 0;
+    }
     window.removeEventListener('resize', this.onWindowResize);
+    document.removeEventListener('visibilitychange', this.onVisibilityChange);
     if (this.container) {
       this.container.removeEventListener('mousedown', this.onMouseDown);
       this.container.removeEventListener('mouseup', this.onMouseUp);
@@ -1331,27 +1337,20 @@ class App {
   }
 
   tick() {
-    if (this.disposed) return;
-
-    // Pause the RAF loop while the tab is hidden to save GPU.
-    if (typeof document !== 'undefined' && document.hidden) {
-      // Discard the large delta so returning to the tab doesn't jump the scene.
-      this.clock.getDelta();
-      requestAnimationFrame(this.tick);
-      return;
-    }
+    if (this.disposed || this.paused) return;
 
     if (!this.hasValidSize) {
       const w = this.container.offsetWidth;
       const h = this.container.offsetHeight;
       if (w > 0 && h > 0) {
-        this.renderer.setSize(w, h, false);
+        const draw = drawingSize(w, h);
+        this.renderer.setSize(draw.w, draw.h, false);
         this.camera.aspect = w / h;
         this.camera.updateProjectionMatrix();
-        this.composer.setSize(w, h);
+        this.composer.setSize(draw.w, draw.h);
         this.hasValidSize = true;
       } else {
-        requestAnimationFrame(this.tick);
+        this.rafId = requestAnimationFrame(this.tick);
         return;
       }
     }
@@ -1360,7 +1359,8 @@ class App {
       const canvas = this.renderer.domElement;
       this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
       this.camera.updateProjectionMatrix();
-      this.composer.setSize(canvas.clientWidth, canvas.clientHeight);
+      const draw = drawingSize(canvas.clientWidth, canvas.clientHeight);
+      this.composer.setSize(draw.w, draw.h);
     }
 
     if (this.hasValidSize) {
@@ -1369,7 +1369,7 @@ class App {
       this.update(delta);
     }
 
-    requestAnimationFrame(this.tick);
+    this.rafId = requestAnimationFrame(this.tick);
   }
 }
 

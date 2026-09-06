@@ -184,11 +184,11 @@ const HomePage = (): JSX.Element => {
           >
             <motion.div
               style={{ y: orbNearY }}
-              className="absolute -top-16 right-[-10%] h-56 w-56 rounded-full bg-primary/20 blur-3xl sm:-top-20 sm:right-[8%] sm:h-96 sm:w-96"
+              className="absolute -top-16 right-[-10%] h-40 w-40 rounded-full bg-primary/20 blur-xl sm:-top-20 sm:right-[8%] sm:h-64 sm:w-64"
             />
             <motion.div
               style={{ y: orbFarY }}
-              className="absolute left-[-8%] top-[40%] h-44 w-44 rounded-full bg-neon-orange/20 blur-3xl sm:left-[4%] sm:top-[35%] sm:h-72 sm:w-72"
+              className="absolute left-[-8%] top-[40%] h-32 w-32 rounded-full bg-neon-orange/20 blur-xl sm:left-[4%] sm:top-[35%] sm:h-52 sm:w-52"
             />
           </div>
         ) : null}
