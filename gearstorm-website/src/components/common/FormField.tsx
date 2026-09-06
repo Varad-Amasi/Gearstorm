@@ -24,7 +24,7 @@ export const FormField = ({
   <div className="flex w-full flex-col gap-1.5">
     <label
       htmlFor={id}
-      className="font-heading text-sm font-semibold text-text-light"
+      className="font-subhead text-sm font-semibold uppercase tracking-wide text-text-light"
     >
       {label}
       {required ? (

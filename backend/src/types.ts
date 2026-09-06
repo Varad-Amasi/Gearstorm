@@ -16,6 +16,7 @@ export interface TeamMemberRecord {
   name: string;
   email: string;
   phone: string;
+  academicYear: string;
   role: 'Lead' | 'Member';
 }
 

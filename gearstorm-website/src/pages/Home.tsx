@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import { motion, useTransform } from 'framer-motion';
 import { lazy, Suspense, useRef } from 'react';
 import { Link } from 'react-router-dom';
@@ -24,19 +25,23 @@ const Robot3D = lazy(() => import('@/components/robot/Robot3D'));
 
 const HIGHLIGHTS = [
   {
-    title: 'Two Rounds',
-    description:
-      'Qualifiers open the field, finals raise the difficulty for the top teams.',
+    title: 'Two rounds. No mercy.',
+    description: 'Qualifiers first. Finals hit harder. Top times only.',
+    variant: 'featured' as const,
+    className: 'md:col-span-4 lg:-rotate-1 lg:-translate-y-1',
   },
   {
-    title: 'Time-Based Scoring',
-    description:
-      'Fastest clean run wins. Skipped obstacles and bot handling add penalties.',
+    title: 'Speed is the meta.',
+    description: 'Clock wins. Touches and skips cost you.',
+    variant: 'gradient' as const,
+    className: 'md:col-span-2 md:mt-6 lg:mt-10 lg:rotate-2',
   },
   {
-    title: 'Build Your Own Bot',
-    description:
-      'Design within the spec, then prove it on the course against every college.',
+    title: 'You build it.',
+    description: 'No kits. Your bot, your run, your problem.',
+    variant: 'standard' as const,
+    className:
+      'md:col-span-3 md:col-start-2 lg:col-start-3 lg:-mt-6 lg:-rotate-1',
   },
 ] as const;
 
@@ -48,64 +53,60 @@ const STATS = [
 ] as const;
 
 const QUICK_RULES = [
-  'Bot must fit within a 30 cm cube at the start of each run.',
-  'Teams of 3-5 students, all from the same college.',
-  'The bot must be designed and built by the team - no ready-made kits.',
-  'Scoring is time-based, with penalties for skipped obstacles and bot handling.',
-  'Top qualifier teams advance to a harder finals course.',
+  '30 cm cube. Start of the run. No exceptions.',
+  '3–5 students. Same college. That’s the squad.',
+  'You build it. Kits are out.',
+  'Time wins. Touches and skips add seconds.',
+  'Top qualifier times get the harder finals course.',
 ] as const;
 
 const TIMELINE = [
   {
-    meta: 'Step 1',
-    title: 'Registrations open',
-    description: 'Sign your team up on this site and start building your bot.',
+    meta: '01',
+    title: 'Lock your team',
+    description: 'Register here. Then start building.',
   },
   {
-    meta: 'Step 2',
-    title: 'Technical inspection',
-    description:
-      'Bots are checked against the size, weight, and safety spec before racing.',
+    meta: '02',
+    title: 'Inspection',
+    description: 'Size, weight, safety. Pass or you don’t run.',
   },
   {
-    meta: 'Step 3',
-    title: 'Round 1 - Qualifiers',
-    description:
-      'Every team runs the standard obstacle course against the clock.',
+    meta: '03',
+    title: 'Qualifiers',
+    description: 'Standard course. Against the clock.',
   },
   {
-    meta: 'Step 4',
-    title: 'Round 2 - Finals',
-    description:
-      'Top teams face the harder course. The fastest clean run takes the title.',
+    meta: '04',
+    title: 'Finals',
+    description: 'Harder track. Fastest clean run takes it.',
   },
   {
-    meta: 'Step 5',
-    title: 'Awards ceremony',
-    description: 'The ₹15K prize pool is awarded and finalists are recognised.',
+    meta: '05',
+    title: 'Podium',
+    description: '₹15K on the line. Names get called.',
   },
 ] as const;
 
 const FAQS = [
   {
-    question: 'Who can participate?',
+    question: 'Who can run?',
     answer:
-      'Any team of 3-5 students from the same engineering college. GearStorm 2.0 is inter-college, so teams from any institution are welcome.',
+      '3–5 students from the same college. Any engineering campus. That’s it.',
   },
   {
-    question: 'Do we need to bring our own bot?',
+    question: 'Do we bring our own bot?',
     answer:
-      'Yes. Each team designs and builds its own bot within the published specification. Check the Bot Specs page for dimensions, weight, and allowed components.',
+      'Yes. You design it, you build it, you race it. Specs live on the Bot Specs page.',
   },
   {
-    question: 'Can we use a ready-made robot kit?',
-    answer:
-      'No. The bot must be built by the team. Off-the-shelf components like motors and sensors are fine, but pre-assembled kits are not allowed.',
+    question: 'Can we use a kit?',
+    answer: 'No. Motors and sensors are fine. A pre-built kit is not.',
   },
   {
-    question: 'What happens if our bot gets stuck mid-run?',
+    question: 'Stuck mid-run?',
     answer:
-      'You may handle the bot to free it, but each touch adds a time penalty. Skipping an obstacle entirely adds a larger penalty.',
+      'You can touch it. Every touch costs time. Skip an obstacle and it costs more.',
   },
 ] as const;
 
@@ -140,10 +141,16 @@ const HomePage = (): JSX.Element => {
   const orbFarY = useTransform(progress, [0, 100], [0, 90]);
 
   const robotMedia = (
-    <div className="w-full">
+    <div className="relative w-full">
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-2 top-4 z-20 hidden rotate-[-8deg] rounded-md border border-accent/50 bg-dark-950/80 px-3 py-1 font-accent text-xs text-accent shadow-magenta sm:block lg:-left-6 lg:top-8"
+      >
+        LIVE BUILD
+      </span>
       <div
         ref={canvasRef}
-        className="h-56 overflow-hidden rounded-xl border border-primary/30 bg-dark-900/60 shadow-purple sm:h-72 lg:h-[25rem]"
+        className="h-56 overflow-hidden rounded-xl border border-vivid-purple/40 bg-dark-900/60 shadow-purple sm:h-72 lg:h-[25rem]"
       >
         <Suspense fallback={<RobotFallback loading />}>
           <Robot3D progress={progress} mode={robotMode} active={canvasInView} />
@@ -177,7 +184,7 @@ const HomePage = (): JSX.Element => {
             />
             <motion.div
               style={{ y: orbFarY }}
-              className="absolute left-[-8%] top-[40%] h-44 w-44 rounded-full bg-accent/10 blur-3xl sm:left-[4%] sm:top-[35%] sm:h-72 sm:w-72"
+              className="absolute left-[-8%] top-[40%] h-44 w-44 rounded-full bg-neon-orange/20 blur-3xl sm:left-[4%] sm:top-[35%] sm:h-72 sm:w-72"
             />
           </div>
         ) : null}
@@ -192,7 +199,7 @@ const HomePage = (): JSX.Element => {
           <HeroSection
             eyebrow={ORGANIZER.byline}
             title={EVENT.name}
-            description="An inter-college robotics competition where teams build custom bots and race them through an obstacle course. Fastest clean run takes the title."
+            description="Build it. Race it. Don’t stall."
             className="w-full"
             actions={
               <>
@@ -204,7 +211,7 @@ const HomePage = (): JSX.Element => {
                     'w-full sm:w-auto'
                   )}
                 >
-                  Register Now
+                  Register your team
                 </Link>
                 <Link
                   to={ROUTES.RULES}
@@ -214,7 +221,7 @@ const HomePage = (): JSX.Element => {
                     'w-full sm:w-auto'
                   )}
                 >
-                  Learn More
+                  The rulebook
                 </Link>
               </>
             }
@@ -223,27 +230,37 @@ const HomePage = (): JSX.Element => {
         </div>
       </div>
 
-      <StatsSection stats={STATS} title="Competition at a glance" />
+      <StatsSection stats={STATS} title="The numbers" />
 
-      <section className="container-page py-16" aria-labelledby="highlights">
+      <section
+        className="container-page relative py-16"
+        aria-labelledby="highlights"
+      >
+        <p
+          aria-hidden="true"
+          className="pointer-events-none absolute left-4 top-4 hidden select-none font-display text-7xl font-extrabold uppercase leading-none text-vivid-purple/15 md:block"
+        >
+          RUN
+        </p>
         <Reveal>
           <h2
             id="highlights"
-            className="font-heading text-2xl font-bold md:text-3xl"
+            className="relative z-10 font-heading text-2xl font-bold md:text-3xl"
           >
-            Event Highlights
+            The format
           </h2>
         </Reveal>
-        <div className="mt-6 grid gap-6 md:grid-cols-3">
+        <div className="mt-8 grid items-stretch gap-5 overflow-x-clip md:grid-cols-6">
           {HIGHLIGHTS.map((highlight, index) => (
             <Reveal
               key={highlight.title}
               delay={index * 0.1}
-              className="h-full"
+              className={clsx('h-full min-w-0', highlight.className)}
             >
               <FeatureCard
                 title={highlight.title}
                 description={highlight.description}
+                variant={highlight.variant}
                 className="h-full"
               />
             </Reveal>
@@ -258,18 +275,16 @@ const HomePage = (): JSX.Element => {
               id="quick-rules"
               className="font-heading text-2xl font-bold md:text-3xl"
             >
-              Rules at a Glance
+              The short version
             </h2>
             <p className="mt-4 max-w-md text-text-muted">
-              The essentials every team should know before building. The full
-              rulebook covers scoring, penalties, and disqualification in
-              detail.
+              Enough to start building. The rulebook has the rest.
             </p>
             <Link
               to={ROUTES.RULES}
               className={getButtonClasses('ghost', 'md', 'mt-6')}
             >
-              Read the Full Rules
+              Full rules
             </Link>
           </Reveal>
           <ul className="flex flex-col gap-4">
@@ -277,14 +292,14 @@ const HomePage = (): JSX.Element => {
               <li key={rule}>
                 <Reveal
                   delay={index * 0.06}
-                  className="flex items-start gap-3 rounded-lg border border-border bg-dark-800 p-4"
+                  className="flex items-start gap-3 rounded-lg border border-border bg-dark-800/80 p-4 transition-colors duration-normal hover:border-accent/40"
                 >
                   <svg
                     width="20"
                     height="20"
                     viewBox="0 0 20 20"
                     fill="none"
-                    stroke="#00FF88"
+                    stroke="#D91E63"
                     strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -302,22 +317,22 @@ const HomePage = (): JSX.Element => {
       </section>
 
       <TimelineSection
-        title="Event Timeline"
+        title="How it goes down"
         items={TIMELINE}
-        footnote="Exact dates will be announced on this page and to registered teams."
+        footnote="Dates drop here and in your inbox once you register."
       />
 
       <FAQSection
-        title="Frequently Asked Questions"
+        title="Quick answers"
         items={FAQS}
         footer={
           <p className="text-text-muted">
-            Have another question?{' '}
+            Still stuck?{' '}
             <Link
               to={ROUTES.CONTACT}
-              className="font-semibold text-primary-500 underline-offset-4 hover:underline"
+              className="font-semibold text-accent underline-offset-4 hover:underline"
             >
-              Contact the organisers
+              Ping the organisers
             </Link>
             .
           </p>
@@ -325,21 +340,21 @@ const HomePage = (): JSX.Element => {
       />
 
       <CTASection
-        title="Ready to compete?"
-        description="Registration is open to all engineering colleges. Lock in your team before the deadline."
+        title="Your bot. Your run."
+        description="Squads of 3–5. Deadline hits whether you’re ready or not."
         actions={
           <>
             <Link
               to={ROUTES.REGISTER}
               className={getButtonClasses('primary', 'lg', 'w-full sm:w-auto')}
             >
-              Register Your Team
+              Register your team
             </Link>
             <Link
               to={ROUTES.BOT_SPECS}
               className={getButtonClasses('ghost', 'lg', 'w-full sm:w-auto')}
             >
-              Read Bot Specs
+              Bot specs
             </Link>
           </>
         }

@@ -30,6 +30,9 @@ Thumbs.db
 *.sln
 *.sw?
 
+# Local extract scratch
+tmp-fonts/
+
 # Testing
 coverage/
 playwright-report/

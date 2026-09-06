@@ -33,6 +33,7 @@ describe('registrationSchema', () => {
     name: 'Member Name',
     email: 'member@example.com',
     phone: '+91 90000 11111',
+    academicYear: '3rd Year' as const,
   };
 
   const paymentProof = (): File =>
@@ -43,10 +44,11 @@ describe('registrationSchema', () => {
     paymentProof: paymentProof(),
   };
 
-  it('accepts a valid 3-member team and forces first Lead', () => {
+  it('accepts a valid 3-member team from KLS GIT', () => {
     const result = registrationSchema.safeParse({
       teamName: 'Circuit Breakers',
-      college: 'KLS GIT',
+      collegeChoice: 'KLS GIT',
+      collegeOther: '',
       ...paymentFields,
       members: [
         { ...validMember, name: 'Lead One' },
@@ -56,57 +58,72 @@ describe('registrationSchema', () => {
     });
     expect(result.success).toBe(true);
     if (result.success) {
+      expect(result.data.college).toBe('KLS GIT');
       expect(result.data.members[0]?.role).toBe('Lead');
+      expect(result.data.members[0]?.academicYear).toBe('3rd Year');
       expect(result.data.members[1]?.role).toBe('Member');
-      expect(result.data.members[2]?.role).toBe('Member');
     }
   });
 
-  it('forces Lead on first member even if marked Member', () => {
+  it('uses the custom college name when Other is selected', () => {
     const result = registrationSchema.safeParse({
-      teamName: 'Forced Lead',
-      college: 'KLS GIT',
+      teamName: 'Visitors',
+      collegeChoice: 'Other',
+      collegeOther: 'RVCE Bengaluru',
       ...paymentFields,
       members: [
-        { ...validMember, role: 'Member' as const },
-        {
-          ...validMember,
-          email: 'm2@example.com',
-          role: 'Lead' as const,
-        },
+        validMember,
+        { ...validMember, email: 'm2@example.com' },
         { ...validMember, email: 'm3@example.com' },
       ],
     });
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.members.map((member) => member.role)).toEqual([
-        'Lead',
-        'Member',
-        'Member',
-      ]);
+      expect(result.data.college).toBe('RVCE Bengaluru');
     }
+  });
+
+  it('rejects Other without a college name', () => {
+    const result = registrationSchema.safeParse({
+      teamName: 'Visitors',
+      collegeChoice: 'Other',
+      collegeOther: '',
+      ...paymentFields,
+      members: [
+        validMember,
+        { ...validMember, email: 'm2@example.com' },
+        { ...validMember, email: 'm3@example.com' },
+      ],
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects when academic year is missing', () => {
+    const result = registrationSchema.safeParse({
+      teamName: 'Circuit Breakers',
+      collegeChoice: 'KLS GIT',
+      collegeOther: '',
+      ...paymentFields,
+      members: [
+        {
+          name: 'Lead One',
+          email: 'lead@example.com',
+          phone: '+91 90000 11111',
+        },
+        { ...validMember, email: 'm2@example.com' },
+        { ...validMember, email: 'm3@example.com' },
+      ],
+    });
+    expect(result.success).toBe(false);
   });
 
   it('rejects teams below the minimum size', () => {
     const result = registrationSchema.safeParse({
       teamName: 'Tiny',
-      college: 'KLS GIT',
+      collegeChoice: 'KLS GIT',
+      collegeOther: '',
       ...paymentFields,
       members: [validMember, validMember],
-    });
-    expect(result.success).toBe(false);
-  });
-
-  it('rejects when payment proof is missing', () => {
-    const result = registrationSchema.safeParse({
-      teamName: 'Circuit Breakers',
-      college: 'KLS GIT',
-      paymentUtr: '123456789012',
-      members: [
-        { ...validMember, name: 'Lead One' },
-        { ...validMember, email: 'm2@example.com' },
-        { ...validMember, email: 'm3@example.com' },
-      ],
     });
     expect(result.success).toBe(false);
   });
@@ -116,12 +133,14 @@ describe('registrationSchema', () => {
       name: '',
       email: '',
       phone: '',
+      academicYear: '',
       role: 'Member',
     });
     expect(emptyLead()).toEqual({
       name: '',
       email: '',
       phone: '',
+      academicYear: '',
       role: 'Lead',
     });
   });

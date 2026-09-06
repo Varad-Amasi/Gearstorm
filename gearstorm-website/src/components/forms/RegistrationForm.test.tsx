@@ -57,7 +57,7 @@ describe('RegistrationForm', () => {
     render(<RegistrationForm />);
 
     await user.type(screen.getByLabelText(/team name/i), 'Circuit Breakers');
-    await user.type(
+    await user.selectOptions(
       screen.getByLabelText(/college \/ institution/i),
       'KLS GIT'
     );
@@ -65,22 +65,26 @@ describe('RegistrationForm', () => {
     const nameInputs = screen.getAllByLabelText(/^name/i);
     const emailInputs = screen.getAllByLabelText(/^email/i);
     const phoneInputs = screen.getAllByLabelText(/^phone/i);
+    const yearInputs = screen.getAllByLabelText(/academic year/i);
 
     const members = [
       {
         name: 'Lead One',
         email: 'lead@example.com',
         phone: '+91 90000 11111',
+        year: '4th Year',
       },
       {
         name: 'Member Two',
         email: 'm2@example.com',
         phone: '+91 90000 11112',
+        year: '3rd Year',
       },
       {
         name: 'Member Three',
         email: 'm3@example.com',
         phone: '+91 90000 11113',
+        year: '2nd Year',
       },
     ];
 
@@ -92,6 +96,7 @@ describe('RegistrationForm', () => {
       await user.type(nameInputs[i]!, member.name);
       await user.type(emailInputs[i]!, member.email);
       await user.type(phoneInputs[i]!, member.phone);
+      await user.selectOptions(yearInputs[i]!, member.year);
     }
 
     expect(screen.getByText('Team Lead')).toBeInTheDocument();
@@ -119,8 +124,16 @@ describe('RegistrationForm', () => {
     expect(submitTeamRegistration).toHaveBeenCalledWith(
       expect.objectContaining({
         teamName: 'Circuit Breakers',
+        college: 'KLS GIT',
         paymentUtr: 'AXIS1234567890',
         paymentProof: expect.any(File),
+        members: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Lead One',
+            academicYear: '4th Year',
+            role: 'Lead',
+          }),
+        ]),
       })
     );
     expect(

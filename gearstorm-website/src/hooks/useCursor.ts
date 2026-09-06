@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
+import type { RefObject } from 'react';
 
 export type CursorMode = 'default' | 'hover' | 'text' | 'focus';
 
 export interface CursorState {
-  x: number;
-  y: number;
   mode: CursorMode;
   visible: boolean;
   enabled: boolean;
@@ -17,6 +16,9 @@ const TEXTISH =
 const FOCUSABLE =
   'input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]), textarea, select';
 
+const LERP_CURSOR = 0.28;
+const LERP_TRAIL = 0.14;
+
 const isTouchDevice = (): boolean =>
   typeof window !== 'undefined' &&
   (window.matchMedia('(hover: none)').matches ||
@@ -28,14 +30,15 @@ const prefersReducedMotion = (): boolean =>
 
 /**
  * Tracks pointer position and hover/focus modes for the custom cursor.
- * Disabled on touch devices and when reduced-motion is preferred.
+ * Position is applied on the DOM node (lerp) so React does not re-render
+ * every frame. Disabled on touch devices and when reduced-motion is preferred.
  */
 export const useCursor = (): CursorState & {
   ripples: Array<{ id: number; x: number; y: number }>;
+  cursorRef: RefObject<HTMLDivElement>;
+  trailRef: RefObject<HTMLDivElement>;
 } => {
   const [state, setState] = useState<CursorState>({
-    x: 0,
-    y: 0,
     mode: 'default',
     visible: false,
     enabled: false,
@@ -43,8 +46,12 @@ export const useCursor = (): CursorState & {
   const [ripples, setRipples] = useState<
     Array<{ id: number; x: number; y: number }>
   >([]);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const trailRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef(0);
-  const pending = useRef({ x: 0, y: 0 });
+  const target = useRef({ x: -80, y: -80 });
+  const cursorPos = useRef({ x: -80, y: -80 });
+  const trailPos = useRef({ x: -80, y: -80 });
   const modeRef = useRef<CursorMode>('default');
   const rippleId = useRef(0);
 
@@ -57,42 +64,58 @@ export const useCursor = (): CursorState & {
     setState((current) => ({ ...current, enabled: true }));
     document.documentElement.classList.add('gs-cursor-active');
 
-    const flush = (): void => {
-      rafRef.current = 0;
-      setState((current) => ({
-        ...current,
-        x: pending.current.x,
-        y: pending.current.y,
-        mode: modeRef.current,
-        visible: true,
-      }));
+    const tick = (): void => {
+      cursorPos.current.x +=
+        (target.current.x - cursorPos.current.x) * LERP_CURSOR;
+      cursorPos.current.y +=
+        (target.current.y - cursorPos.current.y) * LERP_CURSOR;
+      trailPos.current.x +=
+        (target.current.x - trailPos.current.x) * LERP_TRAIL;
+      trailPos.current.y +=
+        (target.current.y - trailPos.current.y) * LERP_TRAIL;
+
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate3d(${cursorPos.current.x}px, ${cursorPos.current.y}px, 0)`;
+      }
+      if (trailRef.current) {
+        trailRef.current.style.transform = `translate3d(${trailPos.current.x}px, ${trailPos.current.y}px, 0)`;
+      }
+
+      rafRef.current = requestAnimationFrame(tick);
     };
+
+    rafRef.current = requestAnimationFrame(tick);
 
     const onMove = (event: MouseEvent): void => {
-      pending.current = { x: event.clientX, y: event.clientY };
-      if (!rafRef.current) {
-        rafRef.current = requestAnimationFrame(flush);
-      }
+      target.current = { x: event.clientX, y: event.clientY };
+      setState((current) =>
+        current.visible ? current : { ...current, visible: true }
+      );
     };
 
-    const resolveMode = (target: EventTarget | null): CursorMode => {
-      if (!(target instanceof Element)) {
+    const resolveMode = (targetEl: EventTarget | null): CursorMode => {
+      if (!(targetEl instanceof Element)) {
         return 'default';
       }
-      if (target.closest(FOCUSABLE)) {
+      if (targetEl.closest(FOCUSABLE)) {
         return 'focus';
       }
-      if (target.closest(INTERACTIVE)) {
+      if (targetEl.closest(INTERACTIVE)) {
         return 'hover';
       }
-      if (target.closest(TEXTISH)) {
+      if (targetEl.closest(TEXTISH)) {
         return 'text';
       }
       return 'default';
     };
 
     const onOver = (event: MouseEvent): void => {
-      modeRef.current = resolveMode(event.target);
+      const next = resolveMode(event.target);
+      if (modeRef.current === next) {
+        return;
+      }
+      modeRef.current = next;
+      setState((current) => ({ ...current, mode: next }));
     };
 
     const onDown = (event: MouseEvent): void => {
@@ -126,5 +149,5 @@ export const useCursor = (): CursorState & {
     };
   }, []);
 
-  return { ...state, ripples };
+  return { ...state, ripples, cursorRef, trailRef };
 };

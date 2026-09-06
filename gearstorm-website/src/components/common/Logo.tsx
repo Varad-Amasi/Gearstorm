@@ -12,11 +12,11 @@ export const Logo = ({ onNavigate }: LogoProps): JSX.Element => (
   <Link
     to={ROUTES.HOME}
     onClick={onNavigate}
-    className="group inline-flex min-w-0 items-center gap-2 rounded-md"
+    className="group inline-flex min-w-0 max-w-[46%] items-center gap-2 rounded-md sm:max-w-none"
     aria-label={`${EVENT.name} home`}
   >
     <span
-      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary font-brand text-lg font-bold text-white transition-colors duration-normal group-hover:bg-accent"
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent font-brand text-lg font-bold text-white shadow-magenta transition-colors duration-normal group-hover:bg-neon-orange"
       aria-hidden="true"
     >
       G

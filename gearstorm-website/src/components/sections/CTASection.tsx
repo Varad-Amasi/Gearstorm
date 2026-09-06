@@ -18,16 +18,22 @@ export const CTASection = ({
   className,
 }: CTASectionProps): JSX.Element => (
   <section className={clsx('container-page py-16', className)}>
-    <div className="rounded-lg border border-primary/30 bg-gradient-to-br from-dark-800 to-dark-900 p-6 text-center shadow-purple sm:p-8 md:p-12">
-      <h2 className="font-heading text-2xl font-bold tracking-tight [letter-spacing:-0.01em] md:text-3xl">
+    <div className="relative overflow-hidden rounded-lg border border-neon-orange/30 bg-gradient-to-br from-dark-800 to-dark-900 p-6 text-left shadow-orange sm:p-8 md:p-12">
+      <p
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-2 -top-4 select-none font-display text-6xl font-extrabold uppercase leading-none text-neon-orange/15 sm:text-7xl md:text-9xl"
+      >
+        GO
+      </p>
+      <h2 className="relative z-10 max-w-xl break-words font-display text-2xl font-extrabold uppercase leading-none tracking-tight sm:text-3xl md:text-5xl">
         {title}
       </h2>
       {description ? (
-        <p className="mx-auto mt-3 max-w-2xl font-sans leading-relaxed text-text-muted">
+        <p className="relative z-10 mt-3 max-w-md font-sans text-lg leading-snug text-text-muted">
           {description}
         </p>
       ) : null}
-      <div className="mt-8 flex w-full flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+      <div className="relative z-10 mt-8 flex w-full flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
         {actions}
       </div>
     </div>

@@ -21,6 +21,7 @@ export const createSeedData = (): StoreData => ({
           name: 'Asha Kulkarni',
           email: 'asha@example.com',
           phone: '+91 98765 43210',
+          academicYear: '4th Year',
           role: 'Lead',
         },
         {
@@ -28,6 +29,7 @@ export const createSeedData = (): StoreData => ({
           name: 'Rohit Patil',
           email: 'rohit@example.com',
           phone: '+91 98765 43211',
+          academicYear: '3rd Year',
           role: 'Member',
         },
         {
@@ -35,6 +37,7 @@ export const createSeedData = (): StoreData => ({
           name: 'Neha Desai',
           email: 'neha@example.com',
           phone: '+91 98765 43212',
+          academicYear: '3rd Year',
           role: 'Member',
         },
       ],

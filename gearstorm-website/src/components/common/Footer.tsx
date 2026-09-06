@@ -8,11 +8,12 @@ export const Footer = (): JSX.Element => (
   <footer className="border-t border-border bg-dark-950 pb-[env(safe-area-inset-bottom)]">
     <div className="container-page grid gap-10 py-12 md:grid-cols-3">
       <div>
-        <p className="font-brand text-lg font-bold text-text-light">
+        <p className="whitespace-nowrap font-brand text-lg font-bold text-text-light">
           {EVENT.name}
         </p>
         <p className="mt-2 max-w-xs text-sm text-text-muted">
-          Inter-college robotics competition organised {ORGANIZER.credit}.
+          College bots. Real course. Fastest clean run wins. Organised{' '}
+          {ORGANIZER.credit}.
         </p>
       </div>
 

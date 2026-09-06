@@ -37,12 +37,12 @@ export const TimelineSection = ({
         {title}
       </h2>
     </Reveal>
-    <ol className="ml-3 mt-10 border-l border-border">
+    <ol className="ml-3 mt-10 border-l border-accent/30">
       {items.map((item, index) => (
         <li key={item.title} className="relative pb-10 pl-8 last:pb-0">
           <span
             aria-hidden="true"
-            className="absolute -left-2 top-1 h-4 w-4 rounded-full border-2 border-primary-500 bg-dark-950"
+            className="absolute -left-2 top-1 h-4 w-4 rounded-full border-2 border-accent bg-dark-950 shadow-magenta"
           />
           <Reveal delay={index * 0.08}>
             {item.meta ? (

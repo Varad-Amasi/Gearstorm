@@ -1,21 +1,20 @@
 import { Alert } from '@/components/common/Alert';
 import { Card } from '@/components/common/Card';
-import { PaymentDetails } from '@/components/forms/PaymentDetails';
 import { RegistrationForm } from '@/components/forms/RegistrationForm';
 import { PageContainer } from '@/components/layout/PageContainer';
 import { ContentSection } from '@/components/sections/ContentSection';
-import { EVENT, ORGANIZER, ROUTES } from '@/config/routes';
+import { ORGANIZER, ROUTES } from '@/config/routes';
 import { COMPETITION, PAYMENT } from '@/utils/competition';
 import { Link } from 'react-router-dom';
 
 const STEPS = [
   {
-    title: 'Pay the registration fee',
-    description: `Scan the UPI QR or pay to ${PAYMENT.upiId}, then note your UTR / transaction ID.`,
+    title: 'Fill team details',
+    description: `Add your team name, college, and ${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} members. The first member is the Lead; the rest are Members.`,
   },
   {
-    title: 'Fill team details',
-    description: `Add ${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} members from the same college. The first member is the Lead; the rest are Members.`,
+    title: 'Pay the registration fee',
+    description: `After the member details, scan the UPI QR or pay to ${PAYMENT.upiId}, then note your UTR / transaction ID.`,
   },
   {
     title: 'Submit UTR + payment screenshot',
@@ -28,7 +27,7 @@ const RegisterPage = (): JSX.Element => (
   <PageContainer
     eyebrow="Entries Open"
     title="Team Registration"
-    description={`Register for ${EVENT.name}. Teams of ${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} students from the same college. Organised ${ORGANIZER.credit}.`}
+    description={`${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} people. Same college. Pay, upload proof, you’re in. Organised ${ORGANIZER.credit}.`}
   >
     <div className="mx-auto flex max-w-3xl flex-col gap-10">
       {import.meta.env.DEV ? (
@@ -79,10 +78,6 @@ const RegisterPage = (): JSX.Element => (
           .
         </p>
       </ContentSection>
-
-      <Card>
-        <PaymentDetails />
-      </Card>
 
       <Card>
         <RegistrationForm />

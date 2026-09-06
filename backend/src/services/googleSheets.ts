@@ -21,7 +21,7 @@ export const appendRegistrationToSheet = async (
   const membersFlat = team.members
     .map(
       (member) =>
-        `${member.role}: ${member.name} <${member.email}> ${member.phone}`
+        `${member.role}: ${member.name} (${member.academicYear}) <${member.email}> ${member.phone}`
     )
     .join(' | ');
 

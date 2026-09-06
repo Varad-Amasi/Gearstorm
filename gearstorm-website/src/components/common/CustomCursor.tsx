@@ -4,11 +4,11 @@ import { useCursor } from '@/hooks/useCursor';
 import '@/styles/cursor.css';
 
 /**
- * Magenta ring cursor with hover expand, text mode, and click ripples.
+ * Neon ring cursor with a lagged trail, hover expand, and click ripples.
  * Renders nothing on touch devices or when reduced-motion is preferred.
  */
 export const CustomCursor = (): JSX.Element | null => {
-  const { x, y, mode, visible, enabled, ripples } = useCursor();
+  const { mode, visible, enabled, ripples, cursorRef, trailRef } = useCursor();
 
   if (!enabled) {
     return null;
@@ -17,6 +17,11 @@ export const CustomCursor = (): JSX.Element | null => {
   return (
     <div className="gs-cursor-root" aria-hidden="true">
       <div
+        ref={trailRef}
+        className={clsx('gs-cursor-trail', !visible && 'opacity-0')}
+      />
+      <div
+        ref={cursorRef}
         className={clsx(
           'gs-cursor',
           mode === 'hover' && 'gs-cursor--hover',
@@ -24,9 +29,6 @@ export const CustomCursor = (): JSX.Element | null => {
           mode === 'focus' && 'gs-cursor--focus',
           !visible && 'opacity-0'
         )}
-        style={{
-          transform: `translate3d(${x}px, ${y}px, 0)`,
-        }}
       >
         <span className="gs-cursor-dot" />
       </div>

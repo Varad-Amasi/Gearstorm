@@ -52,13 +52,14 @@ export const Card = ({
     return (
       <div
         className={clsx(
-          'rounded-lg bg-gradient-to-br from-primary via-accent to-primary p-px transition-transform duration-normal',
-          interactive && 'hover:-translate-y-1 hover:shadow-purple',
+          'rounded-lg bg-gradient-to-br from-vivid-purple via-accent to-neon-orange p-px transition-transform duration-normal',
+          interactive &&
+            'hover:shadow-orange motion-safe:hover:-translate-y-1.5 lg:motion-safe:hover:rotate-1',
           className
         )}
         {...props}
       >
-        <div className="h-full rounded-[calc(0.5rem-1px)] bg-dark-800 p-6 md:p-8">
+        <div className="h-full rounded-[calc(0.5rem-1px)] bg-dark-800 p-4 sm:p-6 md:p-8">
           {body}
         </div>
       </div>
@@ -68,12 +69,12 @@ export const Card = ({
   return (
     <div
       className={clsx(
-        'rounded-lg border p-6 transition-all duration-normal md:p-8',
-        'bg-dark-800',
+        'rounded-lg border p-4 transition-all duration-normal sm:p-6 md:p-8',
+        'bg-dark-800/80 backdrop-blur-sm',
         resolvedVariant === 'featured'
-          ? 'border-primary/30 shadow-purple'
-          : 'border-border shadow-md hover:border-primary/60 hover:shadow-lg',
-        interactive && 'hover:-translate-y-1',
+          ? 'border-accent/40 shadow-magenta'
+          : 'border-border shadow-md hover:border-neon-orange/70 hover:shadow-orange',
+        interactive && 'motion-safe:hover:-translate-y-1.5',
         className
       )}
       {...props}

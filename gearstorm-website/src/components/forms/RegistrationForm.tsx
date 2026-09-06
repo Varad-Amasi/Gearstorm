@@ -5,6 +5,8 @@ import { Alert } from '@/components/common/Alert';
 import { Badge } from '@/components/common/Badge';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
+import { Select } from '@/components/common/Select';
+import { PaymentDetails } from '@/components/forms/PaymentDetails';
 import { TeamMemberFields } from '@/components/forms/TeamMemberFields';
 import { useToast } from '@/hooks/useToast';
 import { getErrorMessage } from '@/services/apiClient';
@@ -16,7 +18,7 @@ import {
   type RegistrationFormValues,
   type RegistrationPayload,
 } from '@/schemas/registrationSchema';
-import { PAYMENT } from '@/utils/competition';
+import { COLLEGE_CHOICES, PAYMENT } from '@/utils/competition';
 
 type RegistrationFormDefaults = Omit<RegistrationFormValues, 'paymentProof'> & {
   paymentProof: undefined;
@@ -24,7 +26,8 @@ type RegistrationFormDefaults = Omit<RegistrationFormValues, 'paymentProof'> & {
 
 const defaultValues = (): RegistrationFormDefaults => ({
   teamName: '',
-  college: '',
+  collegeChoice: '',
+  collegeOther: '',
   paymentUtr: '',
   paymentProof: undefined,
   members: [emptyLead(), emptyMember(), emptyMember()],
@@ -50,6 +53,7 @@ export const RegistrationForm = (): JSX.Element => {
   });
 
   const paymentProof = watch('paymentProof');
+  const collegeChoice = watch('collegeChoice');
 
   useEffect(() => {
     if (!(paymentProof instanceof File)) {
@@ -130,25 +134,50 @@ export const RegistrationForm = (): JSX.Element => {
           error={errors.teamName?.message}
           {...register('teamName')}
         />
-        <Input
-          id="college"
-          label="College / Institution"
-          required
-          error={errors.college?.message}
-          {...register('college')}
+        <Controller
+          control={control}
+          name="collegeChoice"
+          render={({ field }) => (
+            <Select
+              id="college-choice"
+              label="College / Institution"
+              required
+              placeholder="Select college"
+              options={[...COLLEGE_CHOICES]}
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              name={field.name}
+              ref={field.ref}
+              error={errors.collegeChoice?.message}
+            />
+          )}
         />
+        {collegeChoice === 'Other' ? (
+          <div className="md:col-span-2">
+            <Input
+              id="college-other"
+              label="College name"
+              required
+              helperText="Enter the full name of your college"
+              error={errors.collegeOther?.message}
+              {...register('collegeOther')}
+            />
+          </div>
+        ) : null}
       </div>
 
       <TeamMemberFields control={control} register={register} errors={errors} />
 
       <fieldset className="flex flex-col gap-4 rounded-lg border border-border bg-dark-900/40 p-4">
         <legend className="px-1 font-heading text-lg font-semibold text-text-light">
-          Payment details
+          Payment
         </legend>
+        <PaymentDetails />
         <p className="text-sm text-text-muted">
-          Pay to{' '}
-          <span className="font-mono text-text-light">{PAYMENT.upiId}</span>{' '}
-          first, then enter the UTR and upload a payment screenshot.
+          After paying to{' '}
+          <span className="font-mono text-text-light">{PAYMENT.upiId}</span>,
+          enter the UTR and upload a payment screenshot.
         </p>
         <Input
           id="payment-utr"
@@ -192,7 +221,11 @@ export const RegistrationForm = (): JSX.Element => {
       </fieldset>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Button type="submit" loading={isSubmitting}>
+        <Button
+          type="submit"
+          loading={isSubmitting}
+          className="w-full sm:w-auto"
+        >
           Submit registration
         </Button>
         <p className="text-xs text-text-subtle">

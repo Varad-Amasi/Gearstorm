@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { COMPETITION } from '@/utils/competition';
+import { ACADEMIC_YEARS, COMPETITION, HOST_COLLEGE } from '@/utils/competition';
 
 const phoneSchema = z
   .string()
@@ -14,6 +14,15 @@ const PROOF_MIME_TYPES = new Set([
   'image/gif',
 ]);
 
+const academicYearSchema = z
+  .string()
+  .min(1, 'Select an academic year')
+  .refine(
+    (value): value is (typeof ACADEMIC_YEARS)[number] =>
+      (ACADEMIC_YEARS as readonly string[]).includes(value),
+    { message: 'Select an academic year' }
+  );
+
 const memberInputSchema = z.object({
   name: z
     .string()
@@ -22,6 +31,7 @@ const memberInputSchema = z.object({
     .max(80, 'Name is too long'),
   email: z.string().trim().email('Enter a valid email'),
   phone: phoneSchema,
+  academicYear: academicYearSchema,
   // Fixed by position on transform; keep optional so UI need not bind role inputs.
   role: z.enum(['Lead', 'Member']).optional(),
 });
@@ -33,11 +43,15 @@ export const registrationSchema = z
       .trim()
       .min(2, 'Enter a team name')
       .max(60, 'Team name is too long'),
-    college: z
+    collegeChoice: z
       .string()
-      .trim()
-      .min(2, 'Enter your college or institution')
-      .max(120, 'College name is too long'),
+      .min(1, 'Select your college')
+      .refine(
+        (value): value is typeof HOST_COLLEGE | 'Other' =>
+          value === HOST_COLLEGE || value === 'Other',
+        { message: 'Select your college' }
+      ),
+    collegeOther: z.string().trim().max(120, 'College name is too long'),
     paymentUtr: z
       .string()
       .trim()
@@ -68,19 +82,37 @@ export const registrationSchema = z
         `Teams are limited to ${COMPETITION.teamSizeMax} members`
       ),
   })
+  .superRefine((data, ctx) => {
+    if (data.collegeChoice === 'Other' && data.collegeOther.length < 2) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Enter your college or institution',
+        path: ['collegeOther'],
+      });
+    }
+  })
   .transform((data) => ({
-    ...data,
+    teamName: data.teamName,
+    college:
+      data.collegeChoice === HOST_COLLEGE ? HOST_COLLEGE : data.collegeOther,
+    paymentUtr: data.paymentUtr,
+    paymentProof: data.paymentProof,
     members: data.members.map((member, index) => ({
       name: member.name,
       email: member.email,
       phone: member.phone,
+      academicYear: member.academicYear,
       role: (index === 0 ? 'Lead' : 'Member') as 'Lead' | 'Member',
     })),
   }));
 
 export type RegistrationFormValues = z.input<typeof registrationSchema>;
 export type RegistrationPayload = z.output<typeof registrationSchema>;
-export type TeamMemberFormValues = z.infer<typeof memberInputSchema> & {
+export type TeamMemberFormValues = {
+  name: string;
+  email: string;
+  phone: string;
+  academicYear: (typeof ACADEMIC_YEARS)[number] | '';
   role: 'Lead' | 'Member';
 };
 
@@ -88,6 +120,7 @@ export const emptyMember = (): TeamMemberFormValues => ({
   name: '',
   email: '',
   phone: '',
+  academicYear: '',
   role: 'Member',
 });
 

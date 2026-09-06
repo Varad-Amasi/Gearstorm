@@ -21,7 +21,7 @@ const BotSpecsPage = (): JSX.Element => (
   <PageContainer
     eyebrow="Build Guide"
     title="Bot Specifications"
-    description="Dimensions, weight limits, power options, and the components you are allowed to use."
+    description="Size, weight, power, parts. Build inside this box."
   >
     <div className="flex flex-col gap-10">
       <Alert variant="info" title="Provisional specification">
