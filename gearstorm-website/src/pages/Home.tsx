@@ -14,7 +14,7 @@ import { Reveal } from '@/components/sections/Reveal';
 import { StatsSection } from '@/components/sections/StatsSection';
 import { TimelineSection } from '@/components/sections/TimelineSection';
 import { EVENT, ORGANIZER, ROUTES } from '@/config/routes';
-import { REGISTRATION_OPEN } from '@/utils/competition';
+import { COMPETITION, REGISTRATION_OPEN } from '@/utils/competition';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useInView } from '@/hooks/useInView';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
@@ -203,7 +203,7 @@ const HomePage = (): JSX.Element => {
           <HeroSection
             eyebrow={ORGANIZER.byline}
             title={EVENT.name}
-            description="Build it. Race it. Don’t stall."
+            description="An inter-college robotics race at KLS GIT Belagavi. Build your bot, run the course, beat the clock."
             className="w-full"
             actions={
               <>
@@ -230,6 +230,93 @@ const HomePage = (): JSX.Element => {
           />
         </div>
       </div>
+
+      <section
+        className="container-page relative py-16"
+        aria-labelledby="about-event"
+      >
+        <Reveal>
+          <p className="font-subhead text-sm font-semibold uppercase tracking-widest text-accent">
+            The event
+          </p>
+          <h2
+            id="about-event"
+            className="mt-2 font-heading text-2xl font-bold md:text-3xl"
+          >
+            What is GearStorm?
+          </h2>
+        </Reveal>
+        <div className="mt-6 grid gap-8 lg:grid-cols-12">
+          <Reveal className="lg:col-span-7">
+            <div className="space-y-4 font-sans text-base leading-relaxed text-text-muted md:text-lg">
+              <p>
+                GearStorm is an inter-college robotics competition at{' '}
+                {ORGANIZER.chapter}. {ORGANIZER.societiesJoined} run it: teams
+                of {COMPETITION.teamSizeMin}–{COMPETITION.teamSizeMax} students
+                design and build their own robot, then race it through a live
+                obstacle course against the clock.
+              </p>
+              <p>
+                There are two rounds. Qualifiers are a standard course. The
+                fastest clean times move to a harder finals track. Touches and
+                skipped obstacles add seconds. Kits are out — you build the bot
+                you race.
+              </p>
+              <p>
+                GearStorm 2.0 is the next edition. Last year’s 1.0 filled the
+                hall with custom bots and a night course. Same idea, tighter
+                runs.
+              </p>
+            </div>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <Link
+                to={ROUTES.GALLERY}
+                className={getButtonClasses('ghost', 'md', 'w-full sm:w-auto')}
+              >
+                GearStorm 1.0 recap
+              </Link>
+              <Link
+                to={ROUTES.RULES}
+                className={getButtonClasses('ghost', 'md', 'w-full sm:w-auto')}
+              >
+                How scoring works
+              </Link>
+            </div>
+          </Reveal>
+          <Reveal delay={0.08} className="lg:col-span-5">
+            <ul className="flex flex-col gap-3">
+              {[
+                {
+                  label: 'Who',
+                  value: `${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} students, same college`,
+                },
+                {
+                  label: 'Where',
+                  value: `${ORGANIZER.chapterShort}`,
+                },
+                {
+                  label: 'What you do',
+                  value: 'Build a bot, then race the course',
+                },
+                {
+                  label: 'How you win',
+                  value: 'Fastest clean time across two rounds',
+                },
+              ].map((item) => (
+                <li
+                  key={item.label}
+                  className="rounded-lg border border-border bg-dark-800/80 px-4 py-3"
+                >
+                  <p className="font-subhead text-xs font-semibold uppercase tracking-widest text-accent">
+                    {item.label}
+                  </p>
+                  <p className="mt-1 text-text-light">{item.value}</p>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+      </section>
 
       <StatsSection stats={STATS} title="The numbers" />
 

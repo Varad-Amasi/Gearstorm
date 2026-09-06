@@ -9,82 +9,89 @@ export interface GalleryItem {
   caption: string;
 }
 
+const gs10 = (
+  file: string,
+  id: string,
+  category: GalleryCategory,
+  caption: string,
+  alt: string
+): GalleryItem => ({
+  id,
+  src: `/gallery/2025/${file}`,
+  alt,
+  category,
+  year: 2025,
+  caption,
+});
+
+/** Hero image for the GearStorm 1.0 recap. */
+export const GALLERY_RECAP: GalleryItem = gs10(
+  '20250529_173326.jpg',
+  'gs10-recap',
+  'Awards',
+  'GearStorm 1.0 — the full house',
+  'Teams and organisers on stage at the close of GearStorm 1.0'
+);
+
 /**
- * Static gallery. Add files under `public/gallery/` and list them here.
+ * Moving strip under the recap. Duplicates, GPS-stamped shots, and
+ * near-identical stage frames were dropped. Track photos are new.
  */
 export const GALLERY_ITEMS: readonly GalleryItem[] = [
-  {
-    id: 'g1',
-    src: '/gallery/build-01.svg',
-    alt: 'Compact four-wheel competition bot on a workbench',
-    category: 'Builds',
-    year: 2025,
-    caption: 'Prototype chassis ahead of technical inspection',
-  },
-  {
-    id: 'g2',
-    src: '/gallery/course-01.svg',
-    alt: 'Obstacle course lane with gates and a ramp',
-    category: 'Course',
-    year: 2025,
-    caption: 'Qualifier lane layout',
-  },
-  {
-    id: 'g3',
-    src: '/gallery/team-01.svg',
-    alt: 'Student team gathered around their robot',
-    category: 'Teams',
-    year: 2025,
-    caption: 'Pit-area strategy huddle',
-  },
-  {
-    id: 'g4',
-    src: '/gallery/build-02.svg',
-    alt: 'Close-up of a gripper and sensor mast',
-    category: 'Builds',
-    year: 2024,
-    caption: 'Sensor mast and servo gripper detail',
-  },
-  {
-    id: 'g5',
-    src: '/gallery/awards-01.svg',
-    alt: 'Trophy and medals on a presentation table',
-    category: 'Awards',
-    year: 2024,
-    caption: 'Prize presentation',
-  },
-  {
-    id: 'g6',
-    src: '/gallery/course-02.svg',
-    alt: 'Finals course with precision stop zone',
-    category: 'Course',
-    year: 2024,
-    caption: 'Finals precision zone',
-  },
-  {
-    id: 'g7',
-    src: '/gallery/team-02.svg',
-    alt: 'Operators at the control desk during a run',
-    category: 'Teams',
-    year: 2025,
-    caption: 'Drivers locked in during a timed run',
-  },
-  {
-    id: 'g8',
-    src: '/gallery/build-03.svg',
-    alt: 'Electronics deck with microcontroller and wiring',
-    category: 'Builds',
-    year: 2024,
-    caption: 'Clean wiring pass before race day',
-  },
+  gs10(
+    'track-01.jpg',
+    'gs10-track-01',
+    'Course',
+    'GearStorm 1.0 — night course',
+    'LED-lined obstacle course from GearStorm 1.0'
+  ),
+  gs10(
+    'track-02.jpg',
+    'gs10-track-02',
+    'Course',
+    'GearStorm 1.0 — arena lights',
+    'Yellow-tape course and obstacles at GearStorm 1.0'
+  ),
+  gs10(
+    '20250529_115337.jpg',
+    'gs10-build',
+    'Builds',
+    'GearStorm 1.0 — chassis',
+    'Robot chassis and wiring at GearStorm 1.0'
+  ),
+  gs10(
+    '20250529_115342.jpg',
+    'gs10-course-side',
+    'Course',
+    'GearStorm 1.0 — course side',
+    'Arena and course area at GearStorm 1.0'
+  ),
+  gs10(
+    '20250529_121925.jpg',
+    'gs10-run',
+    'Course',
+    'GearStorm 1.0 — timed run',
+    'A timed run on the GearStorm 1.0 course'
+  ),
+  gs10(
+    '20250529_171057.jpg',
+    'gs10-bot',
+    'Builds',
+    'GearStorm 1.0 — after a run',
+    'A competition robot after a GearStorm 1.0 run'
+  ),
+  gs10(
+    '20250529_172745.jpg',
+    'gs10-awards',
+    'Awards',
+    'GearStorm 1.0 — trophies',
+    'Winning team with trophies at GearStorm 1.0'
+  ),
+  gs10(
+    '20250529_172920.jpg',
+    'gs10-stage',
+    'Awards',
+    'GearStorm 1.0 — presentations',
+    'Prize presentation at GearStorm 1.0'
+  ),
 ] as const;
-
-export const GALLERY_CATEGORIES = [
-  'All',
-  'Builds',
-  'Course',
-  'Teams',
-  'Awards',
-] as const;
-
-export const GALLERY_YEARS = ['All', '2025', '2024'] as const;
