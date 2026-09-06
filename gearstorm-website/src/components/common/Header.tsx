@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { getButtonClasses } from '@/components/common/buttonStyles';
+import { useLocation } from 'react-router-dom';
 import { Logo } from '@/components/common/Logo';
 import { MobileMenu } from '@/components/common/MobileMenu';
 import { Navigation } from '@/components/common/Navigation';
-import { ROUTES } from '@/config/routes';
+import { RegisterCta } from '@/components/common/RegisterCta';
 
 const MOBILE_MENU_ID = 'mobile-navigation';
 
@@ -31,13 +30,14 @@ export const Header = (): JSX.Element => {
         </nav>
 
         <div className="flex shrink-0 items-center gap-3">
-          <Link
-            to={ROUTES.REGISTER}
+          <RegisterCta
+            variant="secondary"
+            size="sm"
+            className="max-md:px-2.5"
             onClick={closeMenu}
-            className={getButtonClasses('secondary', 'sm', 'max-md:px-2.5')}
           >
             Register
-          </Link>
+          </RegisterCta>
           <button
             type="button"
             className="flex h-11 w-11 items-center justify-center rounded-lg border border-border text-text-light transition-colors duration-normal hover:bg-dark-800 md:hidden"

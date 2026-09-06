@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { EVENT, NAV_LINKS, ORGANIZER, ROUTES } from '@/config/routes';
+import { REGISTRATION_OPEN } from '@/utils/competition';
 
 /**
  * Site footer with navigation, organizer details, and chapter branding.
@@ -33,12 +34,21 @@ export const Footer = (): JSX.Element => (
             </li>
           ))}
           <li>
-            <Link
-              to={ROUTES.REGISTER}
-              className="text-sm text-text-muted transition-colors duration-normal hover:text-accent"
-            >
-              Register
-            </Link>
+            {REGISTRATION_OPEN ? (
+              <Link
+                to={ROUTES.REGISTER}
+                className="text-sm text-text-muted transition-colors duration-normal hover:text-accent"
+              >
+                Register
+              </Link>
+            ) : (
+              <span
+                className="cursor-not-allowed text-sm text-text-subtle"
+                title="Registration opens soon"
+              >
+                Register (soon)
+              </span>
+            )}
           </li>
         </ul>
       </nav>

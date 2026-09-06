@@ -1,4 +1,9 @@
 /**
+ * Flip to `true` when registrations should go live (header, CTAs, and form).
+ */
+export const REGISTRATION_OPEN = false;
+
+/**
  * Provisional competition limits used across Bot Specs, Rules, and Home.
  * Values mirror the published Home copy and are subject to organizer confirmation.
  */

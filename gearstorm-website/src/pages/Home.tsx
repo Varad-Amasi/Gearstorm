@@ -3,6 +3,7 @@ import { motion, useTransform } from 'framer-motion';
 import { lazy, Suspense, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { getButtonClasses } from '@/components/common/buttonStyles';
+import { RegisterCta } from '@/components/common/RegisterCta';
 import { AssemblyProgress } from '@/components/robot/AssemblyProgress';
 import { RobotFallback } from '@/components/robot/RobotFallback';
 import { CTASection } from '@/components/sections/CTASection';
@@ -13,6 +14,7 @@ import { Reveal } from '@/components/sections/Reveal';
 import { StatsSection } from '@/components/sections/StatsSection';
 import { TimelineSection } from '@/components/sections/TimelineSection';
 import { EVENT, ORGANIZER, ROUTES } from '@/config/routes';
+import { REGISTRATION_OPEN } from '@/utils/competition';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useInView } from '@/hooks/useInView';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
@@ -64,7 +66,9 @@ const TIMELINE = [
   {
     meta: '01',
     title: 'Lock your team',
-    description: 'Register here. Then start building.',
+    description: REGISTRATION_OPEN
+      ? 'Register here. Then start building.'
+      : 'Registration opens soon. Then start building.',
   },
   {
     meta: '02',
@@ -203,16 +207,13 @@ const HomePage = (): JSX.Element => {
             className="w-full"
             actions={
               <>
-                <Link
-                  to={ROUTES.REGISTER}
-                  className={getButtonClasses(
-                    'primary',
-                    'lg',
-                    'w-full sm:w-auto'
-                  )}
+                <RegisterCta
+                  variant="primary"
+                  size="lg"
+                  className="w-full sm:w-auto"
                 >
                   Register your team
-                </Link>
+                </RegisterCta>
                 <Link
                   to={ROUTES.RULES}
                   className={getButtonClasses(
@@ -319,7 +320,11 @@ const HomePage = (): JSX.Element => {
       <TimelineSection
         title="How it goes down"
         items={TIMELINE}
-        footnote="Dates drop here and in your inbox once you register."
+        footnote={
+          REGISTRATION_OPEN
+            ? 'Dates drop here and in your inbox once you register.'
+            : 'Dates drop here once registration opens.'
+        }
       />
 
       <FAQSection
@@ -344,12 +349,13 @@ const HomePage = (): JSX.Element => {
         description="Squads of 3–5. Deadline hits whether you’re ready or not."
         actions={
           <>
-            <Link
-              to={ROUTES.REGISTER}
-              className={getButtonClasses('primary', 'lg', 'w-full sm:w-auto')}
+            <RegisterCta
+              variant="primary"
+              size="lg"
+              className="w-full sm:w-auto"
             >
               Register your team
-            </Link>
+            </RegisterCta>
             <Link
               to={ROUTES.BOT_SPECS}
               className={getButtonClasses('ghost', 'lg', 'w-full sm:w-auto')}

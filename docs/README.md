@@ -19,6 +19,7 @@ This folder contains complete project documentation for the **GearStorm Website*
 | **08_Launch.md** | Vercel + API deploy, backups, monitoring | Phase 8 |
 | **09_ANIME_TYPOGRAPHY_CURSOR.md** | Anime.js robot, typography, custom cursor | Visual polish |
 | **10_QUICK_REFERENCE.md** | Short implementation guide for #09 | Quick start |
+| **11_TURN_ON_REGISTRATION.md** | Checklist to open team registration | When going live |
 
 ---
 
