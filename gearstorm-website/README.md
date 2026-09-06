@@ -25,7 +25,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173). Start the API in another terminal (`cd ../backend && npm run dev`) for registration, contact, and gallery.
+Open [http://localhost:5173](http://localhost:5173). Start the API in another terminal (`cd ../backend && npm run dev`) for registration.
 
 ## Scripts
 

@@ -16,12 +16,3 @@ export interface Team {
   contactEmail: string;
   contactPhone: string;
 }
-
-export interface GalleryImage {
-  id: string;
-  imageUrl: string;
-  alt: string;
-  category: string;
-  year: number;
-  uploadedAt: Date;
-}

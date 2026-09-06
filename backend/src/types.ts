@@ -44,18 +44,7 @@ export interface ContactRecord {
   createdAt: string;
 }
 
-export interface GalleryRecord {
-  id: string;
-  imageUrl: string;
-  alt: string;
-  category: string;
-  year: number;
-  caption: string;
-  uploadedAt: string;
-}
-
 export interface StoreData {
   teams: TeamRecord[];
   contacts: ContactRecord[];
-  gallery: GalleryRecord[];
 }

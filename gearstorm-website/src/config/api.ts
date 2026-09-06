@@ -7,5 +7,4 @@ export const APP_CONFIG = {
 export const API_ENDPOINTS = {
   TEAMS: '/teams',
   CONTACT: '/contact',
-  GALLERY: '/gallery',
 } as const;

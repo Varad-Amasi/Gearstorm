@@ -4,4 +4,4 @@ export interface ApiResponse<T> {
   error?: string;
 }
 
-export type { GalleryImage, Team, TeamMember } from './models';
+export type { Team, TeamMember } from './models';

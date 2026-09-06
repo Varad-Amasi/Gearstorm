@@ -39,6 +39,11 @@ test.describe('GearStorm smoke', () => {
       page.getByRole('heading', { level: 1, name: 'Bot Specifications' })
     ).toBeVisible();
 
+    await page.goto('/gallery');
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Gallery' })
+    ).toBeVisible();
+
     await page.goto('/contact');
     await expect(
       page.getByRole('heading', { level: 1, name: 'Contact' })
