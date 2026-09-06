@@ -17,8 +17,8 @@ test.describe('GearStorm smoke', () => {
       page.getByRole('heading', { name: 'GearStorm 2.0' })
     ).toBeVisible();
     await expect(
-      page.getByRole('link', { name: /register your team/i }).first()
-    ).toBeVisible();
+      page.getByRole('button', { name: /register your team/i }).first()
+    ).toBeDisabled();
   });
 
   test('primary nav reaches content pages', async ({ page }) => {
@@ -53,13 +53,15 @@ test.describe('GearStorm smoke', () => {
     ).toBeVisible();
   });
 
-  test('register page shows validation form', async ({ page }) => {
+  test('register page is closed until entries open', async ({ page }) => {
     await page.goto('/register');
     await expect(
       page.getByRole('heading', { name: /team registration/i })
     ).toBeVisible();
-    await page.getByRole('button', { name: /submit registration/i }).click();
-    await expect(page.getByRole('alert').first()).toBeVisible();
+    await expect(page.getByText(/registration is closed/i)).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: /submit registration/i })
+    ).toHaveCount(0);
   });
 
   test('skip link targets main content', async ({ page }) => {

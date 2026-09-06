@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Alert } from '@/components/common/Alert';
-import { getButtonClasses } from '@/components/common/buttonStyles';
+import { RegisterCta } from '@/components/common/RegisterCta';
 import { Card } from '@/components/common/Card';
 import { PageContainer } from '@/components/layout/PageContainer';
 import { BotPreview } from '@/components/sections/BotPreview';
@@ -49,12 +49,9 @@ const BotSpecsPage = (): JSX.Element => (
               </Link>{' '}
               page.
             </p>
-            <Link
-              to={ROUTES.REGISTER}
-              className={getButtonClasses('primary', 'md', 'inline-flex')}
-            >
+            <RegisterCta variant="primary" size="md" className="inline-flex">
               Register your team
-            </Link>
+            </RegisterCta>
           </div>
           <div>
             <BotPreview />
