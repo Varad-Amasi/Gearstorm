@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="560" viewBox="0 0 800 560" role="img">
-  <rect width="800" height="560" fill="#141422"/>
-  <polygon points="400,140 460,260 340,260" fill="#D91E63"/>
-  <rect x="370" y="260" width="60" height="120" fill="#6B3A8C"/>
-  <rect x="300" y="380" width="200" height="24" rx="8" fill="#00D9FF"/>
-  <text x="400" y="500" text-anchor="middle" fill="#E0E0E0" font-family="Segoe UI, Arial, sans-serif" font-size="28">Awards · Podium</text>
-</svg>

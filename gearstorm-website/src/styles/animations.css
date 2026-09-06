@@ -84,6 +84,24 @@
   animation: pulse-soft 2s ease-in-out infinite;
 }
 
+@keyframes gallery-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.gallery-marquee {
+  animation: gallery-marquee 46s linear infinite;
+}
+
+.gallery-marquee:hover,
+.gallery-marquee:focus-within {
+  animation-play-state: paused;
+}
+
 @keyframes gs-glitch-shift {
   0%,
   88%,
@@ -127,6 +145,7 @@
   .animate-slide-in-right,
   .animate-glow,
   .animate-pulse-soft,
+  .gallery-marquee,
   .gs-glitch {
     animation: none;
   }

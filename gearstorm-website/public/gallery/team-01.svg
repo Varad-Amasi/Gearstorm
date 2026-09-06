@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="560" viewBox="0 0 800 560" role="img">
-  <rect width="800" height="560" fill="#12121F"/>
-  <circle cx="280" cy="240" r="48" fill="#6B3A8C"/>
-  <circle cx="400" cy="220" r="56" fill="#D91E63"/>
-  <circle cx="520" cy="240" r="48" fill="#6B3A8C"/>
-  <rect x="230" y="320" width="340" height="90" rx="45" fill="#1A1A2E" stroke="#00D9FF" stroke-width="3"/>
-  <text x="400" y="500" text-anchor="middle" fill="#E0E0E0" font-family="Segoe UI, Arial, sans-serif" font-size="28">Teams · Pit area</text>
-</svg>

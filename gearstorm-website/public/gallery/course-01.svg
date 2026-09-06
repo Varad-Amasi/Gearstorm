@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="560" viewBox="0 0 800 560" role="img">
-  <rect width="800" height="560" fill="#0F0F1E"/>
-  <path d="M80 420 H720" stroke="#6B3A8C" stroke-width="10" stroke-dasharray="24 16"/>
-  <rect x="180" y="280" width="90" height="140" rx="8" fill="#1A1A2E" stroke="#D91E63" stroke-width="4"/>
-  <rect x="360" y="300" width="200" height="40" rx="6" fill="#2A2A3E"/>
-  <polygon points="560,340 700,340 640,420 500,420" fill="#6B3A8C" opacity="0.7"/>
-  <text x="400" y="500" text-anchor="middle" fill="#E0E0E0" font-family="Segoe UI, Arial, sans-serif" font-size="28">Course · Qualifiers</text>
-</svg>
