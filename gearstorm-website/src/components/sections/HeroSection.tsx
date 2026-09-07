@@ -1,11 +1,11 @@
 import { clsx } from 'clsx';
 import type { ReactNode } from 'react';
-import { Badge } from '@/components/common/Badge';
 
 export interface HeroSectionProps {
   title: string;
   description: string;
   eyebrow?: string;
+  eyebrowDetail?: string;
   actions?: ReactNode;
   media?: ReactNode;
   className?: string;
@@ -18,6 +18,7 @@ export const HeroSection = ({
   title,
   description,
   eyebrow,
+  eyebrowDetail,
   actions,
   media,
   className,
@@ -43,27 +44,32 @@ export const HeroSection = ({
         <div
           className={clsx(
             'relative z-20 min-w-0 space-y-6',
-            media && 'lg:col-span-7 lg:pr-8'
+            media ? 'lg:col-span-7 lg:pr-8' : 'max-w-5xl'
           )}
         >
           {eyebrow ? (
-            <Badge variant="accent" className="max-w-full whitespace-normal">
+            <p className="font-heading text-xl font-semibold tracking-tight text-accent sm:text-2xl md:text-3xl">
               {eyebrow}
-            </Badge>
+              {eyebrowDetail ? (
+                <span className="mt-1 block font-subhead text-base font-medium text-text-muted sm:text-lg">
+                  {eyebrowDetail}
+                </span>
+              ) : null}
+            </p>
           ) : null}
           <h1
             id="hero-title"
             aria-label={title}
-            className="font-display text-4xl font-extrabold uppercase leading-none tracking-tight text-text-light sm:text-5xl md:text-6xl"
+            className="font-display text-5xl font-extrabold uppercase leading-[0.9] tracking-tight text-text-light sm:text-6xl md:text-7xl lg:text-8xl"
           >
             <span>{mainTitle.trim()}</span>
             {edition ? (
-              <span className="ml-2 font-accent text-[0.38em] text-accent">
+              <span className="ml-2 font-accent text-[0.45em] text-accent sm:text-[0.5em]">
                 {edition}
               </span>
             ) : null}
           </h1>
-          <p className="max-w-xl font-sans text-base leading-relaxed text-text-muted md:text-lg">
+          <p className="max-w-2xl font-sans text-base leading-relaxed text-text-muted md:text-xl">
             {description}
           </p>
           {actions ? (

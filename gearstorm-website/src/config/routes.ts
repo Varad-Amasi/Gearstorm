@@ -2,6 +2,7 @@ export const ROUTES = {
   HOME: '/',
   BOT_SPECS: '/bot-specs',
   RULES: '/rules',
+  TIMELINE: '/timeline',
   REGISTER: '/register',
   GALLERY: '/gallery',
   CONTACT: '/contact',
@@ -18,8 +19,8 @@ export interface NavLinkItem {
 export const NAV_LINKS: readonly NavLinkItem[] = [
   { label: 'Home', path: ROUTES.HOME },
   { label: 'Rules', path: ROUTES.RULES },
+  { label: 'Timeline', path: ROUTES.TIMELINE },
   { label: 'Bot Specs', path: ROUTES.BOT_SPECS },
-  { label: 'Gallery', path: ROUTES.GALLERY },
   { label: 'Contact', path: ROUTES.CONTACT },
 ] as const;
 

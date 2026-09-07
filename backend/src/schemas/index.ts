@@ -22,8 +22,8 @@ export const teamMemberSchema = z.object({
 });
 
 /** Keep in sync with frontend `COMPETITION.teamSizeMin/Max`. */
-const TEAM_SIZE_MIN = 3;
-const TEAM_SIZE_MAX = 5;
+const TEAM_SIZE_MIN = 2;
+const TEAM_SIZE_MAX = 4;
 
 export const registerTeamSchema = z
   .object({

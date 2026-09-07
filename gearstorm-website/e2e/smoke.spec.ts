@@ -37,7 +37,15 @@ test.describe('GearStorm smoke', () => {
       .first()
       .click();
     await expect(
-      page.getByRole('heading', { level: 1, name: 'Rules & Regulations' })
+      page.getByRole('heading', { level: 1, name: 'Rules' })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: /download full rulebook \(pdf\)/i })
+    ).toBeVisible();
+
+    await page.goto('/timeline');
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Timeline' })
     ).toBeVisible();
 
     await page.goto('/bot-specs');
@@ -46,12 +54,11 @@ test.describe('GearStorm smoke', () => {
     ).toBeVisible();
 
     await page.goto('/gallery');
-    await expect(
-      page.getByRole('heading', { level: 1, name: 'Gallery' })
-    ).toBeVisible();
+    await expect(page).toHaveURL(/\/#from-1-0$/);
     await expect(
       page.getByRole('heading', { name: 'GearStorm 1.0', exact: true })
     ).toBeVisible();
+    await expect(page.locator('#from-1-0')).toBeInViewport();
 
     await page.goto('/contact');
     await expect(

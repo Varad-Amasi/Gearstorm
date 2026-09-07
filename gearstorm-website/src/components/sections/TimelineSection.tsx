@@ -13,6 +13,8 @@ export interface TimelineSectionProps {
   items: readonly TimelineItem[];
   /** Note rendered under the timeline, e.g. "dates announced soon". */
   footnote?: string;
+  /** When false, skip page gutters (already inside PageContainer). */
+  contained?: boolean;
   className?: string;
 }
 
@@ -23,10 +25,11 @@ export const TimelineSection = ({
   title,
   items,
   footnote,
+  contained = true,
   className,
 }: TimelineSectionProps): JSX.Element => (
   <section
-    className={clsx('container-page py-16', className)}
+    className={clsx(contained && 'container-page py-16', className)}
     aria-labelledby="timeline-title"
   >
     <Reveal>

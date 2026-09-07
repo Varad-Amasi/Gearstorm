@@ -16,24 +16,25 @@ export const PHYSICAL_SPECS: SpecGroup = {
   id: 'physical',
   title: 'Physical specifications',
   description:
-    'Every bot is measured at technical inspection before it can race.',
+    'Measured at inspection. Full wording is in the official rulebook (section 2).',
   rows: [
     {
       label: 'Max envelope',
-      value: `${COMPETITION.maxBotSizeCm} cm × ${COMPETITION.maxBotSizeCm} cm × ${COMPETITION.maxBotSizeCm} cm cube at the start of each run`,
+      value: `${COMPETITION.maxBotSizeCm} cm × ${COMPETITION.maxBotSizeCm} cm × ${COMPETITION.maxBotSizeCm} cm, including antennas. ±${COMPETITION.dimensionTolerancePct}% per side. The robot must stay inside this size for the whole race — no deployable extras.`,
     },
     {
       label: 'Max weight',
-      value: `${COMPETITION.maxWeightKg} kg including battery`,
+      value: `${COMPETITION.maxWeightKg} kg including battery. +${COMPETITION.weightTolerancePct}% allowed (${COMPETITION.maxWeightWithToleranceKg} kg absolute max).`,
     },
     {
-      label: 'Allowed materials',
+      label: 'Chassis',
       value:
-        'Acrylic, 3D-printed PLA/PETG, aluminium sections, wood, and similar hobby materials',
+        'Designed and built by the team. Ready-made robots, RC cars, kits, and commercial chassis are not allowed. Individual parts (motors, wheels, boards, sensors) are fine.',
     },
     {
-      label: 'Prohibited materials',
-      value: 'Glass edges, exposed sharp metal, liquid ballast, explosives',
+      label: 'Track safety',
+      value:
+        'Nothing that can cut, scratch, or damage the arena. A part left on the track is a disqualification.',
     },
   ],
 };
@@ -41,78 +42,82 @@ export const PHYSICAL_SPECS: SpecGroup = {
 export const ELECTRICAL_SPECS: SpecGroup = {
   id: 'electrical',
   title: 'Electrical specifications',
-  description: 'Power systems must be safe to handle on the course.',
+  description: 'Battery rules from rulebook section 2.3–2.4.',
   rows: [
     {
       label: 'Battery',
-      value: 'Li-ion / LiPo / NiMH packs up to 12 V nominal',
+      value: COMPETITION.battery,
     },
     {
-      label: 'Onboard voltage',
-      value: 'Maximum 12 V DC on any rail; no AC mains power',
+      label: 'Packs',
+      value:
+        'One pack during a run. Series/parallel extra packs need organiser approval. Li-ion packs need protection/BMS. Charge only in designated areas.',
     },
     {
-      label: 'Kill switch',
-      value: 'A clearly marked, reachable kill switch is mandatory',
-    },
-    {
-      label: 'Wiring',
-      value: 'Insulated, strain-relieved, and secured to the chassis',
+      label: 'Other chemistries',
+      value: 'Any other battery type needs prior organiser approval.',
     },
   ],
 };
 
 export const COMPONENT_SPECS: SpecGroup = {
   id: 'components',
-  title: 'Component specifications',
-  description: 'Off-the-shelf parts are fine. Pre-built robot kits are not.',
+  title: 'Control & construction',
+  description: 'Beginner and Advanced share the size/weight/battery limits.',
   rows: [
     {
-      label: 'Microcontrollers',
-      value: 'Arduino, ESP32, Raspberry Pi Pico, STM32, and similar boards',
+      label: 'Wired or wireless',
+      value:
+        'Both are allowed. A wired cable must stay slack — pulling it to help the robot is a DQ.',
     },
     {
-      label: 'Motors',
-      value: 'DC geared, stepper, or servo motors within the weight limit',
+      label: 'Beginner control',
+      value:
+        'No dedicated RF/RC driving (FlySky, nRF24, 433 MHz remotes, and similar). Arduino / ESP32 / STM32 onboard is fine for sensing and autonomy.',
     },
     {
-      label: 'Sensors',
-      value: 'Ultrasonic, IR, line, IMU, encoders, cameras — all allowed',
+      label: 'Advanced control',
+      value:
+        'Manual, wireless, autonomous, or hybrid. Dedicated RF, Bluetooth, and Wi-Fi are allowed if they do not jam other teams.',
     },
     {
-      label: 'Gripper / actuator',
-      value: 'Optional. Must retract inside the size cube at the start line',
+      label: 'Beginner budget',
+      value: `Reference value ₹${COMPETITION.beginnerBudgetMax.toLocaleString('en-IN')} or less (up to ₹${COMPETITION.beginnerBudgetCeiling.toLocaleString('en-IN')} with tolerance). Submit a BOM. Robu.in prices are the usual reference.`,
+    },
+    {
+      label: 'Advanced budget',
+      value: `Reference value above ₹${COMPETITION.advancedBudgetMin.toLocaleString('en-IN')}. No upper cap.`,
     },
   ],
 };
 
 export const DESIGN_TIPS: readonly string[] = [
-  'Design for the size cube first, then add capability — oversize bots fail inspection.',
-  'Keep the centre of mass low; tall sensor masts tip on ramps.',
-  'Protect wiring from the ground and from gripper motion.',
-  'Practice starts and recoveries — bot-handling penalties add up fast.',
-  'Label the kill switch and battery polarity so marshals can inspect quickly.',
+  'Fit the 25 cm cube with antennas on, then add capability.',
+  'Beginner teams: keep a BOM with names, quantities, and reference prices.',
+  'Do not plan to unfold or extend past the size limit after the start.',
+  'Charge Li-Po/Li-ion only where marshals allow, in a fire-safe way.',
+  'Label the pack and keep terminals insulated for a fast inspection.',
 ] as const;
 
 export const BOT_SPEC_FAQS = [
   {
-    question: 'Does the gripper count toward the size limit?',
+    question: 'Do antennas count in the size check?',
     answer:
-      'Yes. The entire bot, including any gripper or mast, must fit inside the size cube at the start of a run. Mechanisms may extend after the run begins.',
+      'Yes. Everything attached to the robot counts. Deployable parts that grow the robot during the run are not allowed.',
   },
   {
-    question: 'Can we swap batteries between runs?',
+    question: 'Can we use a ready-made chassis?',
     answer:
-      'Yes, as long as the replacement pack stays within the voltage and weight limits and is installed before your next call.',
+      'No. The chassis must be designed and built by the team. Individual motors, wheels, and boards are allowed.',
   },
   {
-    question: 'Are wireless controllers allowed?',
+    question: 'What battery can we use?',
     answer:
-      'Yes. Bluetooth, Wi-Fi, and RF controllers are allowed. Autonomous modes are also welcome.',
+      'A single 3S Li-Po or 3S Li-ion pack (11.1 V nominal, 12.6 V fully charged), unless the organisers approve something else in writing.',
   },
   {
-    question: 'What if our bot is slightly over weight at inspection?',
+    question: 'Can Beginner teams use a FlySky or nRF remote?',
     answer:
-      'You will be asked to modify it before racing. There is no grace period once the course opens for your slot.',
+      'No. Dedicated RF/RC driving is an Advanced-only option. See the rulebook section 6.',
   },
 ] as const;

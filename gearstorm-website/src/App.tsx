@@ -1,6 +1,6 @@
 import { MotionConfig } from 'framer-motion';
 import { lazy } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { ROUTES } from '@/config/routes';
 import ContactPage from '@/pages/Contact';
@@ -8,9 +8,9 @@ import { ThemeProvider } from '@/theme/ThemeProvider';
 
 const HomePage = lazy(() => import('@/pages/Home'));
 const RulesPage = lazy(() => import('@/pages/Rules'));
+const TimelinePage = lazy(() => import('@/pages/Timeline'));
 const BotSpecsPage = lazy(() => import('@/pages/BotSpecs'));
 const RegisterPage = lazy(() => import('@/pages/Register'));
-const GalleryPage = lazy(() => import('@/pages/Gallery'));
 const NotFoundPage = lazy(() => import('@/pages/NotFound'));
 
 /**
@@ -30,9 +30,18 @@ const App = (): JSX.Element => (
           <Route element={<MainLayout />}>
             <Route path={ROUTES.HOME} element={<HomePage />} />
             <Route path={ROUTES.RULES} element={<RulesPage />} />
+            <Route path={ROUTES.TIMELINE} element={<TimelinePage />} />
             <Route path={ROUTES.BOT_SPECS} element={<BotSpecsPage />} />
             <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
-            <Route path={ROUTES.GALLERY} element={<GalleryPage />} />
+            <Route
+              path={ROUTES.GALLERY}
+              element={
+                <Navigate
+                  to={{ pathname: ROUTES.HOME, hash: 'from-1-0' }}
+                  replace
+                />
+              }
+            />
             <Route path={ROUTES.CONTACT} element={<ContactPage />} />
             {StyleguidePage ? (
               <Route path={ROUTES.STYLEGUIDE} element={<StyleguidePage />} />
