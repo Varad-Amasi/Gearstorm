@@ -14,7 +14,7 @@ const GalleryPage = (): JSX.Element => {
     <PageContainer
       eyebrow="Past Events"
       title="Gallery"
-      description="GearStorm 1.0 recap first — then the night course, builds, and awards in motion."
+      description="Photos from GearStorm 1.0 at KLS GIT: the course, the pits, and the closing group on stage."
     >
       <div className="flex flex-col gap-12">
         <section aria-labelledby="gs10-recap-heading">

@@ -8,34 +8,12 @@
     overflow-x: clip;
   }
 
-  html.gs-cursor-active,
-  html.gs-cursor-active * {
-    cursor: none !important;
-  }
-
   body {
-    @apply m-0 min-h-dvh bg-dark-950 font-sans text-text-light;
+    @apply m-0 min-h-dvh font-sans;
+    background-color: var(--c-page);
+    color: var(--c-text);
     font-family: var(--font-sans);
     overflow-x: clip;
-  }
-
-  body::after {
-    content: '';
-    pointer-events: none;
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    opacity: 0.04;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 180px 180px;
-    mix-blend-mode: overlay;
-  }
-
-  @media (max-width: 768px), (prefers-reduced-motion: reduce) {
-    body::after {
-      display: none;
-    }
   }
 
   h1 {
@@ -56,6 +34,73 @@
   :focus-visible {
     @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-dark-950;
   }
+}
+
+/* Light mode: Tailwind still emits the dark hex for these utilities, so remap them. */
+html.light .text-text-light,
+html.light h1,
+html.light h2,
+html.light h3,
+html.light h4,
+html.light h5,
+html.light h6 {
+  color: var(--c-text);
+}
+
+html.light h1 .text-accent {
+  color: #d91e63;
+}
+
+html.light .text-text-muted {
+  color: var(--c-muted);
+}
+
+html.light .text-text-subtle {
+  color: var(--c-subtle);
+}
+
+html.light .bg-accent\/20 {
+  background-color: #fce7f3;
+  color: #9d174d;
+}
+
+html.light .bg-dark-950,
+html.light .bg-dark-950\/95 {
+  background-color: rgb(var(--c-page-rgb) / 0.72);
+}
+
+html.light .bg-dark-950\/80,
+html.light .bg-dark-950\/85 {
+  background-color: rgb(var(--c-page-rgb) / 0.88);
+}
+
+html.light .bg-dark-900,
+html.light .bg-dark-900\/40 {
+  background-color: var(--c-page-2);
+}
+
+html.light .bg-dark-800,
+html.light .bg-dark-800\/80,
+html.light .bg-dark-800\/60,
+html.light .bg-dark-800\/40 {
+  background-color: var(--c-surface);
+}
+
+html.light .from-dark-950 {
+  --tw-gradient-from: var(--c-page) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(var(--c-page-rgb) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+html.light .shadow-magenta,
+html.light .shadow-orange {
+  box-shadow: none;
+}
+
+/* Keep the home robot stage dark so the 3D scene does not sit on paper. */
+html.light .robot-stage .bg-dark-900\/60,
+html.light .robot-stage .bg-dark-950\/80 {
+  background-color: rgb(11 11 20 / 0.88);
 }
 
 @layer components {
@@ -102,10 +147,6 @@
   body {
     background: white !important;
     color: black !important;
-  }
-
-  body::after {
-    display: none;
   }
 
   a {

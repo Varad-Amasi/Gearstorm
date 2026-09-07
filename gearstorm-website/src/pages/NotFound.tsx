@@ -12,10 +12,10 @@ const NotFoundPage = (): JSX.Element => {
         404
       </p>
       <h1 className="mt-4 font-heading text-2xl font-bold md:text-3xl">
-        This page took a wrong turn on the course
+        This page does not exist
       </h1>
       <p className="mx-auto mt-4 max-w-md text-text-muted">
-        The page you are looking for does not exist or has been moved.
+        Check the address, or go back to the home page.
       </p>
       <div className="mt-8 flex justify-center">
         <Link to={ROUTES.HOME} className={getButtonClasses('primary')}>

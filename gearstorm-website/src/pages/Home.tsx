@@ -1,4 +1,3 @@
-import { clsx } from 'clsx';
 import { motion, useTransform } from 'framer-motion';
 import { lazy, Suspense, useRef } from 'react';
 import { Link } from 'react-router-dom';
@@ -20,6 +19,7 @@ import { useInView } from '@/hooks/useInView';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { useScrollTrigger } from '@/hooks/useScrollTrigger';
+import { useTheme } from '@/theme/ThemeProvider';
 import type { RobotMode } from '@/components/robot/RobotModel';
 
 /** Keeps Three.js (~150KB gzip) out of the initial bundle. */
@@ -27,90 +27,87 @@ const Robot3D = lazy(() => import('@/components/robot/Robot3D'));
 
 const HIGHLIGHTS = [
   {
-    title: 'Two rounds. No mercy.',
-    description: 'Qualifiers first. Finals hit harder. Top times only.',
-    variant: 'featured' as const,
-    className: 'md:col-span-4 lg:-rotate-1 lg:-translate-y-1',
+    title: 'Two rounds',
+    description:
+      'Everyone runs the qualifier course. The fastest clean times go through to a harder finals track.',
   },
   {
-    title: 'Speed is the meta.',
-    description: 'Clock wins. Touches and skips cost you.',
-    variant: 'gradient' as const,
-    className: 'md:col-span-2 md:mt-6 lg:mt-10 lg:rotate-2',
+    title: 'You build the bot',
+    description:
+      'Teams design and assemble their own robot. Off-the-shelf motors and sensors are fine. Ready-made kits are not.',
   },
   {
-    title: 'You build it.',
-    description: 'No kits. Your bot, your run, your problem.',
-    variant: 'standard' as const,
-    className:
-      'md:col-span-3 md:col-start-2 lg:col-start-3 lg:-mt-6 lg:-rotate-1',
+    title: 'Time is the score',
+    description:
+      'The clock decides the ranking. Touching the bot or skipping an obstacle adds seconds.',
   },
 ] as const;
 
 const STATS = [
   { value: '2', label: 'Rounds' },
-  { value: '3-5', label: 'Team Size' },
-  { value: '30 cm', label: 'Max Bot Size' },
-  { value: '₹15K', label: 'Prize Pool' },
+  { value: '3–5', label: 'Team size' },
+  { value: '30 cm', label: 'Max bot size' },
+  { value: '₹15K', label: 'Prize pool' },
 ] as const;
 
 const QUICK_RULES = [
-  '30 cm cube. Start of the run. No exceptions.',
-  '3–5 students. Same college. That’s the squad.',
-  'You build it. Kits are out.',
-  'Time wins. Touches and skips add seconds.',
-  'Top qualifier times get the harder finals course.',
+  `The bot must fit a ${COMPETITION.maxBotSizeCm} cm cube at the start of a run.`,
+  `${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} students, all from the same college.`,
+  'You build the robot. Kits are not allowed.',
+  'Fastest time wins. Touches and skipped obstacles add seconds.',
+  'Top qualifier times move on to the finals course.',
 ] as const;
 
 const TIMELINE = [
   {
-    meta: '01',
-    title: 'Lock your team',
+    meta: '1',
+    title: 'Register',
     description: REGISTRATION_OPEN
-      ? 'Register here. Then start building.'
-      : 'Registration opens soon. Then start building.',
+      ? 'Submit your team on this site, then start building.'
+      : 'Registration is not open yet. Build against the published specs in the meantime.',
   },
   {
-    meta: '02',
+    meta: '2',
     title: 'Inspection',
-    description: 'Size, weight, safety. Pass or you don’t run.',
+    description: 'Size, weight, and safety are checked before you can run.',
   },
   {
-    meta: '03',
+    meta: '3',
     title: 'Qualifiers',
-    description: 'Standard course. Against the clock.',
+    description: 'A standard obstacle course, timed.',
   },
   {
-    meta: '04',
+    meta: '4',
     title: 'Finals',
-    description: 'Harder track. Fastest clean run takes it.',
+    description: 'A harder course for the fastest qualifier times.',
   },
   {
-    meta: '05',
-    title: 'Podium',
-    description: '₹15K on the line. Names get called.',
+    meta: '5',
+    title: 'Results',
+    description: `${COMPETITION.prizePoolLabel} prize pool. Places are announced on the day.`,
   },
 ] as const;
 
 const FAQS = [
   {
-    question: 'Who can run?',
+    question: 'Who can take part?',
     answer:
-      '3–5 students from the same college. Any engineering campus. That’s it.',
+      'Teams of 3–5 students from the same college. Any engineering campus can enter.',
   },
   {
-    question: 'Do we bring our own bot?',
+    question: 'Do we bring our own robot?',
     answer:
-      'Yes. You design it, you build it, you race it. Specs live on the Bot Specs page.',
+      'Yes. You design it and build it. Limits are on the Bot Specs page.',
   },
   {
     question: 'Can we use a kit?',
-    answer: 'No. Motors and sensors are fine. A pre-built kit is not.',
+    answer:
+      'No. Individual motors and sensors are allowed. A pre-built kit robot is not.',
   },
   {
-    question: 'Stuck mid-run?',
+    question: 'What if the bot gets stuck?',
     answer:
-      'You can touch it. Every touch costs time. Skip an obstacle and it costs more.',
+      'You may touch it. Each touch adds time. Skipping an obstacle adds more.',
   },
 ] as const;
 
@@ -121,18 +118,13 @@ const HomePage = (): JSX.Element => {
   );
 
   const reducedMotion = usePrefersReducedMotion();
-  /** Matches the `lg` breakpoint, where the hero becomes a two-column grid. */
+  const { theme } = useTheme();
   const isWide = useMediaQuery('(min-width: 1024px)');
   const heroTrackRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const progress = useScrollTrigger(heroTrackRef);
   const canvasInView = useInView(canvasRef);
 
-  /**
-   * Only wide screens have room to pin the hero and drive assembly by scroll.
-   * Narrower layouts would push the robot below the fold, so it plays through
-   * on its own instead.
-   */
   const pinned = !reducedMotion && isWide;
   const robotMode: RobotMode = reducedMotion
     ? 'static'
@@ -140,12 +132,11 @@ const HomePage = (): JSX.Element => {
       ? 'scroll'
       : 'auto';
 
-  /** Background orbs drift slower than the content for a parallax feel. */
   const orbNearY = useTransform(progress, [0, 100], [0, 220]);
   const orbFarY = useTransform(progress, [0, 100], [0, 90]);
 
   const robotMedia = (
-    <div className="relative w-full">
+    <div className="robot-stage relative w-full">
       <span
         aria-hidden="true"
         className="pointer-events-none absolute -left-2 top-4 z-20 hidden rotate-[-8deg] rounded-md border border-accent/50 bg-dark-950/80 px-3 py-1 font-accent text-xs text-accent shadow-magenta sm:block lg:-left-6 lg:top-8"
@@ -171,13 +162,11 @@ const HomePage = (): JSX.Element => {
 
   return (
     <div className="animate-fade-in">
-      {/* Tall track: the hero stays pinned while scroll drives the robot
-          assembly. Collapses to normal flow when not pinned. */}
       <div
         ref={heroTrackRef}
         className={pinned ? 'relative h-[240vh]' : 'relative'}
       >
-        {!reducedMotion ? (
+        {!reducedMotion && theme === 'dark' ? (
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 overflow-hidden"
@@ -203,7 +192,7 @@ const HomePage = (): JSX.Element => {
           <HeroSection
             eyebrow={ORGANIZER.byline}
             title={EVENT.name}
-            description="An inter-college robotics race at KLS GIT Belagavi. Build your bot, run the course, beat the clock."
+            description="Inter-college robotics at KLS Gogte Institute of Technology, Belagavi. Teams build a robot and race it on a live obstacle course."
             className="w-full"
             actions={
               <>
@@ -222,7 +211,7 @@ const HomePage = (): JSX.Element => {
                     'w-full sm:w-auto'
                   )}
                 >
-                  The rulebook
+                  Rules
                 </Link>
               </>
             }
@@ -237,7 +226,7 @@ const HomePage = (): JSX.Element => {
       >
         <Reveal>
           <p className="font-subhead text-sm font-semibold uppercase tracking-widest text-accent">
-            The event
+            About
           </p>
           <h2
             id="about-event"
@@ -250,22 +239,20 @@ const HomePage = (): JSX.Element => {
           <Reveal className="lg:col-span-7">
             <div className="space-y-4 font-sans text-base leading-relaxed text-text-muted md:text-lg">
               <p>
-                GearStorm is an inter-college robotics competition at{' '}
-                {ORGANIZER.chapter}. {ORGANIZER.societiesJoined} run it: teams
-                of {COMPETITION.teamSizeMin}–{COMPETITION.teamSizeMax} students
-                design and build their own robot, then race it through a live
-                obstacle course against the clock.
+                GearStorm is run by {ORGANIZER.societiesJoined} at{' '}
+                {ORGANIZER.chapter}. It is a timed robotics race: squads of{' '}
+                {COMPETITION.teamSizeMin}–{COMPETITION.teamSizeMax} students
+                bring a robot they built, clear a physical course, and try to
+                post the lowest time.
               </p>
               <p>
-                There are two rounds. Qualifiers are a standard course. The
-                fastest clean times move to a harder finals track. Touches and
-                skipped obstacles add seconds. Kits are out — you build the bot
-                you race.
+                Qualifiers use one course. Finals use a harder layout. The
+                published rules cover size limits, inspection, and how touches
+                are scored.
               </p>
               <p>
-                GearStorm 2.0 is the next edition. Last year’s 1.0 filled the
-                hall with custom bots and a night course. Same idea, tighter
-                runs.
+                2.0 is the next edition. Last year’s event (1.0) was held on
+                campus in 2025 — photos are in the gallery.
               </p>
             </div>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -273,13 +260,13 @@ const HomePage = (): JSX.Element => {
                 to={ROUTES.GALLERY}
                 className={getButtonClasses('ghost', 'md', 'w-full sm:w-auto')}
               >
-                GearStorm 1.0 recap
+                GearStorm 1.0 photos
               </Link>
               <Link
                 to={ROUTES.RULES}
                 className={getButtonClasses('ghost', 'md', 'w-full sm:w-auto')}
               >
-                How scoring works
+                Scoring and rules
               </Link>
             </div>
           </Reveal>
@@ -292,22 +279,22 @@ const HomePage = (): JSX.Element => {
                 },
                 {
                   label: 'Where',
-                  value: `${ORGANIZER.chapterShort}`,
+                  value: ORGANIZER.chapter,
                 },
                 {
-                  label: 'What you do',
-                  value: 'Build a bot, then race the course',
+                  label: 'Format',
+                  value: 'Build a robot, race two rounds against the clock',
                 },
                 {
-                  label: 'How you win',
-                  value: 'Fastest clean time across two rounds',
+                  label: 'Organised by',
+                  value: ORGANIZER.societiesJoined,
                 },
               ].map((item) => (
                 <li
                   key={item.label}
-                  className="rounded-lg border border-border bg-dark-800/80 px-4 py-3"
+                  className="rounded-md border border-border bg-dark-800/80 px-4 py-3"
                 >
-                  <p className="font-subhead text-xs font-semibold uppercase tracking-widest text-accent">
+                  <p className="font-subhead text-xs font-semibold uppercase tracking-widest text-text-muted">
                     {item.label}
                   </p>
                   <p className="mt-1 text-text-light">{item.value}</p>
@@ -318,37 +305,30 @@ const HomePage = (): JSX.Element => {
         </div>
       </section>
 
-      <StatsSection stats={STATS} title="The numbers" />
+      <StatsSection stats={STATS} title="Competition snapshot" />
 
       <section
         className="container-page relative py-16"
         aria-labelledby="highlights"
       >
-        <p
-          aria-hidden="true"
-          className="pointer-events-none absolute left-4 top-4 hidden select-none font-display text-7xl font-extrabold uppercase leading-none text-vivid-purple/15 md:block"
-        >
-          RUN
-        </p>
         <Reveal>
           <h2
             id="highlights"
-            className="relative z-10 font-heading text-2xl font-bold md:text-3xl"
+            className="font-heading text-2xl font-bold md:text-3xl"
           >
-            The format
+            Format
           </h2>
         </Reveal>
-        <div className="mt-8 grid items-stretch gap-5 overflow-x-clip md:grid-cols-6">
+        <div className="mt-8 grid items-stretch gap-5 md:grid-cols-3">
           {HIGHLIGHTS.map((highlight, index) => (
             <Reveal
               key={highlight.title}
-              delay={index * 0.1}
-              className={clsx('h-full min-w-0', highlight.className)}
+              delay={index * 0.08}
+              className="h-full"
             >
               <FeatureCard
                 title={highlight.title}
                 description={highlight.description}
-                variant={highlight.variant}
                 className="h-full"
               />
             </Reveal>
@@ -363,10 +343,11 @@ const HomePage = (): JSX.Element => {
               id="quick-rules"
               className="font-heading text-2xl font-bold md:text-3xl"
             >
-              The short version
+              Before you build
             </h2>
             <p className="mt-4 max-w-md text-text-muted">
-              Enough to start building. The rulebook has the rest.
+              The points teams ask about first. The full document is on the
+              Rules page.
             </p>
             <Link
               to={ROUTES.RULES}
@@ -375,28 +356,14 @@ const HomePage = (): JSX.Element => {
               Full rules
             </Link>
           </Reveal>
-          <ul className="flex flex-col gap-4">
+          <ul className="flex flex-col gap-3">
             {QUICK_RULES.map((rule, index) => (
               <li key={rule}>
                 <Reveal
-                  delay={index * 0.06}
-                  className="flex items-start gap-3 rounded-lg border border-border bg-dark-800/80 p-4 transition-colors duration-normal hover:border-accent/40"
+                  delay={index * 0.05}
+                  className="rounded-md border border-border bg-dark-800/80 p-4 text-text-light"
                 >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    stroke="#D91E63"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                    className="mt-0.5 shrink-0"
-                  >
-                    <path d="M4 10.5l4 4 8-9" />
-                  </svg>
-                  <span className="text-text-light">{rule}</span>
+                  {rule}
                 </Reveal>
               </li>
             ))}
@@ -405,26 +372,26 @@ const HomePage = (): JSX.Element => {
       </section>
 
       <TimelineSection
-        title="How it goes down"
+        title="How the day is structured"
         items={TIMELINE}
         footnote={
           REGISTRATION_OPEN
-            ? 'Dates drop here and in your inbox once you register.'
-            : 'Dates drop here once registration opens.'
+            ? 'Exact dates are sent after you register.'
+            : 'Dates will be posted here when registration opens.'
         }
       />
 
       <FAQSection
-        title="Quick answers"
+        title="Questions"
         items={FAQS}
         footer={
           <p className="text-text-muted">
-            Still stuck?{' '}
+            Something else?{' '}
             <Link
               to={ROUTES.CONTACT}
               className="font-semibold text-accent underline-offset-4 hover:underline"
             >
-              Ping the organisers
+              Contact the organisers
             </Link>
             .
           </p>
@@ -432,8 +399,8 @@ const HomePage = (): JSX.Element => {
       />
 
       <CTASection
-        title="Your bot. Your run."
-        description="Squads of 3–5. Deadline hits whether you’re ready or not."
+        title="Enter as a team"
+        description={`${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} students from the same college. Registration opens on this site.`}
         actions={
           <>
             <RegisterCta

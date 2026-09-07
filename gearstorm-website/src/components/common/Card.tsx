@@ -8,8 +8,6 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   description?: string;
   variant?: CardVariant;
   featured?: boolean;
-  /** Adds lift-on-hover motion for cards that link somewhere. */
-  interactive?: boolean;
   children?: ReactNode;
 }
 
@@ -22,7 +20,6 @@ export const Card = ({
   description,
   variant = 'standard',
   featured = false,
-  interactive = false,
   children,
   className,
   ...props
@@ -52,9 +49,7 @@ export const Card = ({
     return (
       <div
         className={clsx(
-          'rounded-lg bg-gradient-to-br from-vivid-purple via-accent to-neon-orange p-px transition-transform duration-normal',
-          interactive &&
-            'hover:shadow-orange motion-safe:hover:-translate-y-1.5 lg:motion-safe:hover:rotate-1',
+          'rounded-md bg-gradient-to-br from-primary-700 via-accent to-primary-500 p-px',
           className
         )}
         {...props}
@@ -69,12 +64,9 @@ export const Card = ({
   return (
     <div
       className={clsx(
-        'rounded-lg border p-4 transition-all duration-normal sm:p-6 md:p-8',
-        'bg-dark-800/80 backdrop-blur-sm',
-        resolvedVariant === 'featured'
-          ? 'border-accent/40 shadow-magenta'
-          : 'border-border shadow-md hover:border-neon-orange/70 hover:shadow-orange',
-        interactive && 'motion-safe:hover:-translate-y-1.5',
+        'rounded-md border p-4 sm:p-6 md:p-8',
+        'bg-dark-800/80',
+        resolvedVariant === 'featured' ? 'border-accent/50' : 'border-border',
         className
       )}
       {...props}

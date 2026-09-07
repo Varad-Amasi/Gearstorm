@@ -1,8 +1,10 @@
 import { lazy, Suspense, useState } from 'react';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { useTheme } from '@/theme/ThemeProvider';
 import { isLowPowerClient } from '@/utils/lowPower';
 import { isWebGLAvailable } from '@/utils/webgl';
+import '@/components/backgrounds/SiteLightBackground.css';
 
 const Hyperspeed = lazy(
   () => import('@/components/backgrounds/Hyperspeed/Hyperspeed')
@@ -52,13 +54,29 @@ const GEARSTORM_HYPERSPEED = {
 /**
  * Fixed full-viewport Hyperspeed backdrop for the whole site, including Home.
  * Decorative only — pointer events are disabled so forms/nav keep working.
- * Skipped on phones, reduced-motion, and low-memory machines.
+ * Light mode uses a CSS studio backdrop. Hyperspeed is skipped on phones,
+ * reduced-motion, and low-memory machines.
  */
 export const SiteHyperspeedBackground = (): JSX.Element | null => {
+  const { theme } = useTheme();
   const prefersReducedMotion = usePrefersReducedMotion();
   const isCompactViewport = useMediaQuery('(max-width: 768px)');
   const [webglOk] = useState(isWebGLAvailable);
   const [lowPower] = useState(isLowPowerClient);
+
+  if (theme === 'light') {
+    return (
+      <div
+        className="site-light-bg pointer-events-none fixed inset-0 z-0 overflow-hidden print:hidden"
+        aria-hidden="true"
+      >
+        <div className="site-light-bg__wash" />
+        <div className="site-light-bg__glow" />
+        <div className="site-light-bg__grid" />
+        <div className="site-light-bg__beams" />
+      </div>
+    );
+  }
 
   if (prefersReducedMotion || isCompactViewport || lowPower || !webglOk) {
     return null;
@@ -73,7 +91,7 @@ export const SiteHyperspeedBackground = (): JSX.Element | null => {
         <Hyperspeed effectOptions={GEARSTORM_HYPERSPEED} />
       </Suspense>
       {/* Keep copy readable over the moving lights */}
-      <div className="absolute inset-0 bg-dark-950/75" />
+      <div className="absolute inset-0 bg-dark-950/85" />
     </div>
   );
 };

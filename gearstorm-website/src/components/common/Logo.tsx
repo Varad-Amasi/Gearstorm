@@ -16,7 +16,7 @@ export const Logo = ({ onNavigate }: LogoProps): JSX.Element => (
     aria-label={`${EVENT.name} home`}
   >
     <span
-      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent font-brand text-lg font-bold text-white shadow-magenta transition-colors duration-normal group-hover:bg-neon-orange"
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent font-brand text-lg font-bold text-white transition-colors duration-normal group-hover:bg-primary-700"
       aria-hidden="true"
     >
       G

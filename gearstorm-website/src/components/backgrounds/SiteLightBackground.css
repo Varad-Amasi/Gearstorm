@@ -1,0 +1,76 @@
+.site-light-bg {
+  background-color: #cbbfb0;
+}
+
+.site-light-bg__wash,
+.site-light-bg__grid,
+.site-light-bg__beams,
+.site-light-bg__glow {
+  position: absolute;
+  inset: 0;
+}
+
+.site-light-bg__wash {
+  background:
+    radial-gradient(
+      ellipse 95% 75% at 100% -5%,
+      rgba(217, 30, 99, 0.52),
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse 80% 65% at -8% 105%,
+      rgba(107, 58, 140, 0.5),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 60% 50% at 78% 82%,
+      rgba(0, 170, 196, 0.34),
+      transparent 52%
+    ),
+    linear-gradient(160deg, #e4d4c6 0%, #c9b7ad 38%, #c3b4cc 100%);
+}
+
+.site-light-bg__glow {
+  background:
+    radial-gradient(
+      circle at 16% 18%,
+      rgba(255, 90, 40, 0.32),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 84% 36%,
+      rgba(180, 76, 255, 0.28),
+      transparent 30%
+    );
+  filter: blur(10px);
+}
+
+.site-light-bg__grid {
+  background-image:
+    linear-gradient(rgba(90, 40, 70, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(90, 40, 70, 0.16) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(
+    ellipse 90% 80% at 50% 28%,
+    #000 25%,
+    transparent 82%
+  );
+}
+
+.site-light-bg__beams {
+  background: repeating-linear-gradient(
+    118deg,
+    transparent 0,
+    transparent 48px,
+    rgba(217, 30, 99, 0.12) 49px,
+    rgba(0, 150, 190, 0.1) 52px,
+    transparent 60px
+  );
+  opacity: 0.95;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-light-bg__glow {
+    filter: none;
+  }
+}

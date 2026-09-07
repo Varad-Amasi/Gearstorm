@@ -4,12 +4,11 @@ export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary:
-    'bg-accent text-white shadow-magenta hover:bg-accent-600 focus-visible:ring-accent',
+  primary: 'bg-accent text-white hover:bg-accent-600 focus-visible:ring-accent',
   secondary:
-    'bg-neon-orange text-white shadow-orange hover:bg-[#ff703d] focus-visible:ring-neon-orange',
+    'bg-primary-700 text-white hover:bg-primary-800 focus-visible:ring-primary',
   ghost:
-    'border border-white/40 bg-dark-800/80 text-white hover:border-neon-orange hover:bg-neon-orange/15 hover:text-white focus-visible:ring-vivid-purple',
+    'border border-border bg-dark-800/80 text-text-light hover:border-text-muted hover:bg-dark-800 focus-visible:ring-primary',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -28,11 +27,9 @@ export const getButtonClasses = (
   className?: string
 ): string =>
   clsx(
-    'inline-flex items-center justify-center rounded-lg font-subhead font-semibold',
-    'transition-[color,background-color,border-color,box-shadow,transform] duration-normal',
-    'motion-safe:hover:-translate-y-0.5',
+    'inline-flex items-center justify-center rounded-md font-subhead font-semibold',
+    'transition-[color,background-color,border-color] duration-normal',
     'disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50',
-    'motion-safe:disabled:hover:translate-y-0',
     variantStyles[variant],
     sizeStyles[size],
     className

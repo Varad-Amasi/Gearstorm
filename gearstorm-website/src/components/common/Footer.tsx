@@ -13,7 +13,7 @@ export const Footer = (): JSX.Element => (
           {EVENT.name}
         </p>
         <p className="mt-2 max-w-xs text-sm text-text-muted">
-          College bots. Real course. Fastest clean run wins. Organised{' '}
+          Inter-college robotics at {ORGANIZER.chapterShort}. Organised{' '}
           {ORGANIZER.credit}.
         </p>
       </div>

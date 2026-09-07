@@ -35,6 +35,24 @@
       rel="stylesheet"
     />
     <title>GearStorm 2.0 | IEEE RAS & ISTE Robotics Competition</title>
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('gs-theme');
+          var light =
+            stored === 'light' ||
+            (stored !== 'dark' &&
+              window.matchMedia('(prefers-color-scheme: light)').matches);
+          document.documentElement.classList.add(light ? 'light' : 'dark');
+          var themeMeta = document.querySelector('meta[name="theme-color"]');
+          if (themeMeta) {
+            themeMeta.setAttribute('content', light ? '#d9d0c4' : '#080810');
+          }
+        } catch (e) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
