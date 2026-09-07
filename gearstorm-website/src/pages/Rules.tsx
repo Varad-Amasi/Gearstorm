@@ -1,174 +1,111 @@
-import { Alert } from '@/components/common/Alert';
-import { Badge } from '@/components/common/Badge';
-import { Button } from '@/components/common/Button';
 import { Card } from '@/components/common/Card';
+import { getButtonClasses } from '@/components/common/buttonStyles';
+import { ArenaDiagram } from '@/components/rules/ArenaDiagram';
 import { PageContainer } from '@/components/layout/PageContainer';
 import { ContentSection } from '@/components/sections/ContentSection';
-import { InlineFAQ } from '@/components/sections/InlineFAQ';
 import {
-  DISQUALIFICATION,
-  GENERAL_RULES,
-  OBSTACLES,
-  ROUND_DIFFERENCES,
-  RULES_FAQS,
-  SAFETY_RULES,
+  ARENA_SPECS,
+  QUICK_REFERENCE,
   SCORING_ROWS,
-  SUBMISSION_PROCESS,
 } from '@/data/rulesContent';
-import { COMPETITION } from '@/utils/competition';
-
-const roundLabel = (round: '1' | '2' | 'both'): string => {
-  if (round === 'both') {
-    return 'Both rounds';
-  }
-  return `Round ${round}`;
-};
+import { RULEBOOK } from '@/utils/competition';
 
 const RulesPage = (): JSX.Element => (
   <PageContainer
     eyebrow="Competition"
-    title="Rules & Regulations"
-    description="Eligibility, the course, scoring, and what happens at inspection."
-    className="print:max-w-none print:px-0"
+    title="Rules"
+    description="What teams check most often. The full wording lives in the PDF."
   >
-    <div className="flex flex-col gap-10 print:gap-6">
-      <Alert variant="info" title="Provisional rules" className="print:hidden">
-        {COMPETITION.provisionalNotice}
-      </Alert>
-
+    <div className="flex flex-col gap-12">
       <ContentSection
-        id="general"
-        title={GENERAL_RULES.title}
-        actions={
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            className="print:hidden"
-            onClick={() => {
-              window.print();
-            }}
-          >
-            Print rules
-          </Button>
-        }
+        id="quick"
+        title="Quick reference"
+        className="border-0 pt-0"
       >
         <Card>
-          <ul className="list-disc space-y-2 pl-5 text-text-muted">
-            {GENERAL_RULES.bullets?.map((item) => (
+          <ul className="list-disc space-y-3 pl-5 text-text-muted">
+            {QUICK_REFERENCE.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
         </Card>
       </ContentSection>
 
+      <div className="flex flex-col items-start gap-2">
+        <a
+          href={RULEBOOK.href}
+          download={RULEBOOK.downloadName}
+          className={getButtonClasses('primary', 'md')}
+        >
+          Download Full Rulebook (PDF)
+        </a>
+        <p className="text-sm text-text-subtle">
+          Official GearStorm {RULEBOOK.version} document
+        </p>
+      </div>
+
       <ContentSection
-        id="obstacles"
-        title="Obstacle types"
-        description="Illustrative set for briefing — final course maps are published at the venue."
+        id="arena"
+        title="Track and arena"
+        description="Spec sheet from the rulebook. Final measurements are given at the venue."
       >
-        <div className="grid gap-4 md:grid-cols-2">
-          {OBSTACLES.map((obstacle) => (
-            <Card key={obstacle.name} title={obstacle.name}>
-              <div className="mb-3">
-                <Badge variant="primary">{roundLabel(obstacle.round)}</Badge>
+        <div className="grid gap-6 lg:grid-cols-2">
+          <dl className="divide-y divide-border rounded-xl border border-border bg-dark-800/80">
+            {ARENA_SPECS.map((row) => (
+              <div key={row.label} className="px-5 py-4">
+                <dt className="font-heading text-sm font-semibold text-text-light">
+                  {row.label}
+                </dt>
+                <dd className="mt-1 text-sm text-text-muted">{row.value}</dd>
               </div>
-              <p className="text-text-muted">{obstacle.description}</p>
-            </Card>
-          ))}
+            ))}
+          </dl>
+          <ArenaDiagram />
         </div>
       </ContentSection>
 
       <ContentSection
         id="scoring"
-        title="Scoring system"
-        description="Lower adjusted time wins. Penalties are added to the raw finish clock."
+        title="Scoring at a glance"
+        description="Adjusted time decides the ranking. Full penalty tables are in the PDF."
       >
-        <Card className="overflow-x-auto p-0 md:p-0">
+        <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full min-w-[28rem] text-left text-sm">
-            <caption className="sr-only">
-              Scoring items and how they affect adjusted time
-            </caption>
+            <caption className="sr-only">Scoring and penalty summary</caption>
             <thead className="border-b border-border bg-dark-900/60 font-heading text-text-light">
               <tr>
-                <th scope="col" className="px-6 py-4">
+                <th scope="col" className="px-5 py-3">
                   Item
                 </th>
-                <th scope="col" className="px-6 py-4">
+                <th scope="col" className="px-5 py-3">
                   Detail
                 </th>
               </tr>
             </thead>
             <tbody>
               {SCORING_ROWS.map((row) => (
-                <tr key={row.item} className="border-b border-border/70">
+                <tr
+                  key={row.item}
+                  className="border-b border-border/70 last:border-0"
+                >
                   <th
                     scope="row"
-                    className="px-6 py-4 font-heading font-semibold text-accent"
+                    className="px-5 py-3 font-heading font-semibold text-accent"
                   >
                     {row.item}
                   </th>
-                  <td className="px-6 py-4 text-text-muted">{row.detail}</td>
+                  <td className="px-5 py-3 text-text-muted">{row.detail}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </Card>
-        <p className="mt-4 text-sm text-text-subtle">
-          Adjusted time = raw finish time + skip penalties + handling penalties.
-        </p>
+        </div>
       </ContentSection>
 
-      <ContentSection id="rounds" title={ROUND_DIFFERENCES.title}>
-        <Card>
-          {ROUND_DIFFERENCES.paragraphs?.map((paragraph) => (
-            <p key={paragraph} className="mb-3 text-text-muted">
-              {paragraph}
-            </p>
-          ))}
-          <ul className="mt-2 list-disc space-y-2 pl-5 text-text-muted">
-            {ROUND_DIFFERENCES.bullets?.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </Card>
-      </ContentSection>
-
-      <ContentSection id="dq" title={DISQUALIFICATION.title}>
-        <Card>
-          <ul className="list-disc space-y-2 pl-5 text-text-muted">
-            {DISQUALIFICATION.bullets?.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </Card>
-      </ContentSection>
-
-      <ContentSection id="safety" title={SAFETY_RULES.title}>
-        <Card>
-          <ul className="list-disc space-y-2 pl-5 text-text-muted">
-            {SAFETY_RULES.bullets?.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </Card>
-      </ContentSection>
-
-      <ContentSection id="submission" title={SUBMISSION_PROCESS.title}>
-        <Card>
-          <ul className="list-disc space-y-2 pl-5 text-text-muted">
-            {SUBMISSION_PROCESS.bullets?.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </Card>
-      </ContentSection>
-
-      <div className="print:hidden">
-        <ContentSection id="faq" title="Rules FAQ">
-          <InlineFAQ title="Common rules questions" items={RULES_FAQS} />
-        </ContentSection>
-      </div>
+      <p className="text-sm text-text-subtle">
+        Rulebook version {RULEBOOK.version} · Last updated{' '}
+        {RULEBOOK.updatedLabel}
+      </p>
     </div>
   </PageContainer>
 );

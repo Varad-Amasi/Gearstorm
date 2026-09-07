@@ -48,7 +48,7 @@ describe('RegistrationForm', () => {
         college: 'KLS GIT',
         paymentStatus: 'pending',
         registrationDate: new Date().toISOString(),
-        memberCount: 3,
+        memberCount: 2,
       },
       emailQueued: false,
       message: 'ok',
@@ -79,12 +79,6 @@ describe('RegistrationForm', () => {
         email: 'm2@example.com',
         phone: '+91 90000 11112',
         year: '3rd Year',
-      },
-      {
-        name: 'Member Three',
-        email: 'm3@example.com',
-        phone: '+91 90000 11113',
-        year: '2nd Year',
       },
     ];
 

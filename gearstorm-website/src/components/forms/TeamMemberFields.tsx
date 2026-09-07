@@ -24,7 +24,7 @@ const YEAR_OPTIONS = ACADEMIC_YEARS.map((year) => ({
 }));
 
 /**
- * Dynamic team-member field set for registration (3–5 members).
+ * Dynamic team-member field set for registration (2–4 members).
  * Member 1 is always Lead and cannot be changed; others are Members.
  */
 export const TeamMemberFields = ({

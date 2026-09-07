@@ -123,7 +123,7 @@ describe('registrationSchema', () => {
       collegeChoice: 'KLS GIT',
       collegeOther: '',
       ...paymentFields,
-      members: [validMember, validMember],
+      members: [validMember],
     });
     expect(result.success).toBe(false);
   });

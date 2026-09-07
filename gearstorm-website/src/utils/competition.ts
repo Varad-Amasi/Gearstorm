@@ -4,18 +4,41 @@
 export const REGISTRATION_OPEN = false;
 
 /**
- * Provisional competition limits used across Bot Specs, Rules, and Home.
- * Values mirror the published Home copy and are subject to organizer confirmation.
+ * Official limits from the GearStorm 2.0 rulebook.
  */
 export const COMPETITION = {
-  maxBotSizeCm: 30,
+  maxBotSizeCm: 25,
+  dimensionTolerancePct: 5,
   maxWeightKg: 3,
-  teamSizeMin: 3,
-  teamSizeMax: 5,
-  prizePoolLabel: '₹15K',
+  weightTolerancePct: 5,
+  maxWeightWithToleranceKg: 3.15,
+  teamSizeMin: 2,
+  teamSizeMax: 4,
+  prizePoolLabel: '₹30K',
+  beginnerFirst: '₹5,000',
+  beginnerSecond: '₹3,000',
+  beginnerThird: '₹2,000',
+  advancedFirst: '₹10,000',
+  advancedSecond: '₹7,000',
+  advancedThird: '₹3,000',
+  beginnerBudgetMax: 5000,
+  beginnerBudgetCeiling: 5500,
+  advancedBudgetMin: 5500,
+  maxTeamsPerCategory: 15,
+  maxTeamsTotal: 30,
+  finalsPerCategory: 6,
+  mergeIfBelow: 10,
   rounds: 2,
-  provisionalNotice:
-    'Specifications and scoring below are provisional and may be updated before the event. Final rules will be confirmed by IEEE RAS and ISTE, KLS GIT.',
+  battery: '3S Li-Po or 3S Li-ion (11.1 V nominal, 12.6 V max charged)',
+  officialNotice:
+    'The official rulebook is the source of truth. This site summarises the main points for teams.',
+} as const;
+
+export const RULEBOOK = {
+  href: '/docs/gear-storm-2.0-rule-book.pdf',
+  downloadName: 'GEAR-STORM-2.0-Rule-Book.pdf',
+  version: '2.0',
+  updatedLabel: '7 September 2026',
 } as const;
 
 export const HOST_COLLEGE = 'KLS GIT' as const;

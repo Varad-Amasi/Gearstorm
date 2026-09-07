@@ -30,7 +30,7 @@ const defaultValues = (): RegistrationFormDefaults => ({
   collegeOther: '',
   paymentUtr: '',
   paymentProof: undefined,
-  members: [emptyLead(), emptyMember(), emptyMember()],
+  members: [emptyLead(), emptyMember()],
 });
 
 /**

@@ -57,7 +57,13 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 900,
   },
-  server: { proxy },
+  server: {
+    proxy,
+    watch: {
+      // Word files in public/docs lock on Windows and crash chokidar.
+      ignored: ['**/public/docs/**'],
+    },
+  },
   preview: { proxy },
   test: {
     globals: true,
