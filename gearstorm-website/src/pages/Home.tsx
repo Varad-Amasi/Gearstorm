@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { getButtonClasses } from '@/components/common/buttonStyles';
 import { RegisterCta } from '@/components/common/RegisterCta';
 import { HomeGallery } from '@/components/gallery/HomeGallery';
+import { CategorySplit } from '@/components/sections/CategorySplit';
 import { CTASection } from '@/components/sections/CTASection';
 import { FAQSection } from '@/components/sections/FAQSection';
 import { FeatureCard } from '@/components/sections/FeatureCard';
@@ -10,13 +11,17 @@ import { Reveal } from '@/components/sections/Reveal';
 import { StatsSection } from '@/components/sections/StatsSection';
 import { TimelineSection } from '@/components/sections/TimelineSection';
 import { EVENT, ORGANIZER, ROUTES } from '@/config/routes';
-import { COMPETITION, REGISTRATION_OPEN } from '@/utils/competition';
+import {
+  CATEGORIES,
+  COMPETITION,
+  REGISTRATION_OPEN,
+} from '@/utils/competition';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 const HIGHLIGHTS = [
   {
-    title: 'Two categories',
-    description: `Beginner (budget cap, no dedicated RF driving) and Advanced (open budget and wireless). Up to ${COMPETITION.maxTeamsPerCategory} teams in each.`,
+    title: 'Same arena, two rankings',
+    description: `${CATEGORIES.beginner.name} and ${CATEGORIES.advanced.name} race the same track. Times, finals, and prizes stay in your category.`,
   },
   {
     title: 'You build the chassis',
@@ -31,7 +36,7 @@ const HIGHLIGHTS = [
 ] as const;
 
 const STATS = [
-  { value: '2', label: 'Categories' },
+  { value: '2', label: 'Beginner · Advanced' },
   {
     value: `${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax}`,
     label: 'Team size',
@@ -44,7 +49,8 @@ const QUICK_RULES = [
   `The bot must stay inside a ${COMPETITION.maxBotSizeCm} cm cube (±${COMPETITION.dimensionTolerancePct}%), including antennas.`,
   `${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} students from the same college.`,
   'Team-built chassis. Kits and ready-made platforms are not allowed.',
-  'Beginner vs Advanced: budget and control rules differ — see the rulebook.',
+  `${CATEGORIES.beginner.name}: ${CATEGORIES.beginner.summary}`,
+  `${CATEGORIES.advanced.name}: ${CATEGORIES.advanced.summary}`,
   `Top ${COMPETITION.finalsPerCategory} in each category go to the Final.`,
 ] as const;
 
@@ -53,14 +59,14 @@ const TIMELINE = [
     meta: '1',
     title: 'Register',
     description: REGISTRATION_OPEN
-      ? 'Submit your team on this site, then start building.'
-      : 'Registration is not open yet. Build against the published specs in the meantime.',
+      ? 'Submit your team on this site, choose Beginner or Advanced, then start building.'
+      : 'Registration is not open yet. Build against the Beginner or Advanced specs in the meantime.',
   },
   {
     meta: '2',
     title: 'Inspection',
     description:
-      'Size, weight, battery, chassis, and category (including Beginner BOM) are checked.',
+      'Size, weight, battery, chassis, and category (Beginner BOM or Advanced control) are checked.',
   },
   {
     meta: '3',
@@ -82,7 +88,11 @@ const TIMELINE = [
 const FAQS = [
   {
     question: 'Who can take part?',
-    answer: `Teams of ${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} students from the same college. Any engineering campus can enter.`,
+    answer: `Teams of ${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} students from the same college. Enter ${CATEGORIES.beginner.name} or ${CATEGORIES.advanced.name}. Any engineering campus can enter.`,
+  },
+  {
+    question: 'What is the difference between Beginner and Advanced?',
+    answer: `${CATEGORIES.beginner.name}: ${CATEGORIES.beginner.summary} ${CATEGORIES.advanced.name}: ${CATEGORIES.advanced.summary}`,
   },
   {
     question: 'Do we bring our own robot?',
@@ -104,7 +114,7 @@ const FAQS = [
 const HomePage = (): JSX.Element => {
   useDocumentTitle(
     undefined,
-    `${EVENT.name} is an inter-college robotics competition organised ${ORGANIZER.credit}.`
+    `${EVENT.name} is an inter-college robotics competition with Beginner and Advanced categories, organised ${ORGANIZER.credit}.`
   );
 
   return (
@@ -113,7 +123,7 @@ const HomePage = (): JSX.Element => {
         eyebrow={`${ORGANIZER.societies[0].short} and ${ORGANIZER.societies[1].short}`}
         eyebrowDetail={ORGANIZER.chapter}
         title={EVENT.name}
-        description="Inter-college line-and-obstacle robotics at KLS Gogte Institute of Technology, Belagavi. Beginner and Advanced teams build a robot and race the same arena against the clock."
+        description="Two competitions, one arena: Beginner and Advanced. Inter-college line-and-obstacle robotics at KLS Gogte Institute of Technology, Belagavi."
         className="w-full"
         actions={
           <>
@@ -159,10 +169,11 @@ const HomePage = (): JSX.Element => {
                 try for the lowest adjusted time on a live course.
               </p>
               <p>
-                Round 1 is open to every registered team. The top{' '}
-                {COMPETITION.finalsPerCategory} in each category go to the
-                Final. Size, battery, and category rules are in the official
-                rulebook.
+                There are two competitions — {CATEGORIES.beginner.name} and{' '}
+                {CATEGORIES.advanced.name} — on the same arena, with separate
+                rankings and prizes. Round 1 is open to every registered team.
+                The top {COMPETITION.finalsPerCategory} in each category go to
+                that category’s Final.
               </p>
               <p>
                 2.0 is the next edition. Last year’s event (1.0) was held on
@@ -197,7 +208,7 @@ const HomePage = (): JSX.Element => {
                 },
                 {
                   label: 'Format',
-                  value: 'Beginner and Advanced, two rounds, same arena',
+                  value: `${CATEGORIES.beginner.name} and ${CATEGORIES.advanced.name}, two rounds, same arena`,
                 },
                 {
                   label: 'Organised by',
@@ -216,6 +227,51 @@ const HomePage = (): JSX.Element => {
               ))}
             </ul>
           </Reveal>
+        </div>
+      </section>
+
+      <section
+        className="container-page relative py-16"
+        aria-labelledby="two-competitions"
+      >
+        <Reveal>
+          <p className="font-subhead text-sm font-semibold uppercase tracking-widest text-accent">
+            Two competitions
+          </p>
+          <h2
+            id="two-competitions"
+            className="mt-2 font-heading text-2xl font-bold md:text-3xl"
+          >
+            Beginner and Advanced
+          </h2>
+          <p className="mt-3 max-w-2xl text-text-muted">
+            Same size, weight, battery, and arena. Different budget, control
+            rules, rankings, and prizes. Choose one when you register.
+          </p>
+        </Reveal>
+        <div className="mt-8">
+          <CategorySplit
+            idPrefix="home-"
+            beginner={
+              <ul className="list-disc space-y-2 pl-5 text-sm text-text-muted">
+                <li>{CATEGORIES.beginner.budget}</li>
+                <li>{CATEGORIES.beginner.control}</li>
+                <li>Prizes: {CATEGORIES.beginner.prizes}</li>
+              </ul>
+            }
+            advanced={
+              <ul className="list-disc space-y-2 pl-5 text-sm text-text-muted">
+                <li>{CATEGORIES.advanced.budget}</li>
+                <li>{CATEGORIES.advanced.control}</li>
+                <li>Prizes: {CATEGORIES.advanced.prizes}</li>
+              </ul>
+            }
+          />
+        </div>
+        <div className="mt-6">
+          <Link to={ROUTES.RULES} className={getButtonClasses('ghost', 'md')}>
+            Category rules
+          </Link>
         </div>
       </section>
 
@@ -262,8 +318,8 @@ const HomePage = (): JSX.Element => {
               Before you build
             </h2>
             <p className="mt-4 max-w-md text-text-muted">
-              The points teams ask about first. Download the full rulebook from
-              the Rules page.
+              The points teams ask about first, including the Beginner and
+              Advanced split. Download the full rulebook from the Rules page.
             </p>
             <Link
               to={ROUTES.RULES}
@@ -321,7 +377,7 @@ const HomePage = (): JSX.Element => {
 
       <CTASection
         title="Enter as a team"
-        description={`${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} students from the same college. Registration opens on this site.`}
+        description={`${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} students from the same college. Enter ${CATEGORIES.beginner.name} or ${CATEGORIES.advanced.name}. Registration opens on this site.`}
         actions={
           <>
             <RegisterCta

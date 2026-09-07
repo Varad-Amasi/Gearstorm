@@ -6,7 +6,7 @@ const TimelinePage = (): JSX.Element => (
   <PageContainer
     eyebrow="Event day"
     title="Timeline"
-    description="How GearStorm 2.0 is structured, from arrival through the Final. Clock times are posted when registration opens."
+    description="How GearStorm 2.0 is structured for Beginner and Advanced, from arrival through each category’s Final. Clock times are posted when registration opens."
   >
     <TimelineSection
       title="From desk to results"

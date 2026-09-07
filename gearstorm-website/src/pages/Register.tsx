@@ -4,13 +4,18 @@ import { RegistrationForm } from '@/components/forms/RegistrationForm';
 import { PageContainer } from '@/components/layout/PageContainer';
 import { ContentSection } from '@/components/sections/ContentSection';
 import { ORGANIZER, ROUTES } from '@/config/routes';
-import { COMPETITION, PAYMENT, REGISTRATION_OPEN } from '@/utils/competition';
+import {
+  CATEGORIES,
+  COMPETITION,
+  PAYMENT,
+  REGISTRATION_OPEN,
+} from '@/utils/competition';
 import { Link } from 'react-router-dom';
 
 const STEPS = [
   {
     title: 'Fill team details',
-    description: `Add your team name, college, and ${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} members. The first member is the Lead; the rest are Members.`,
+    description: `Add your team name, college, and ${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} members for ${CATEGORIES.beginner.name} or ${CATEGORIES.advanced.name}. The first member is the Lead; the rest are Members.`,
   },
   {
     title: 'Pay the registration fee',
@@ -29,7 +34,7 @@ const RegisterPage = (): JSX.Element => {
       <PageContainer
         eyebrow="Coming Soon"
         title="Team Registration"
-        description={`Entries are not open yet. Teams of ${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} will register here when we flip the switch. Organised ${ORGANIZER.credit}.`}
+        description={`Entries are not open yet. Teams of ${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} will register here for ${CATEGORIES.beginner.name} or ${CATEGORIES.advanced.name} when we flip the switch. Organised ${ORGANIZER.credit}.`}
       >
         <div className="mx-auto flex max-w-3xl flex-col gap-8">
           <Alert variant="info" title="Registration is closed">
@@ -41,7 +46,8 @@ const RegisterPage = (): JSX.Element => {
             .
           </Alert>
           <p className="text-sm text-text-subtle">
-            Meanwhile, read the{' '}
+            Meanwhile, read the {CATEGORIES.beginner.name} and{' '}
+            {CATEGORIES.advanced.name}{' '}
             <Link className="text-accent hover:underline" to={ROUTES.RULES}>
               Rules
             </Link>{' '}
@@ -60,7 +66,7 @@ const RegisterPage = (): JSX.Element => {
     <PageContainer
       eyebrow="Entries Open"
       title="Team Registration"
-      description={`${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} people. Same college. Pay, upload proof, you’re in. Organised ${ORGANIZER.credit}.`}
+      description={`${COMPETITION.teamSizeMin}–${COMPETITION.teamSizeMax} people. Same college. Enter ${CATEGORIES.beginner.name} or ${CATEGORIES.advanced.name}, pay, upload proof, you’re in. Organised ${ORGANIZER.credit}.`}
     >
       <div className="mx-auto flex max-w-3xl flex-col gap-10">
         {import.meta.env.DEV ? (

@@ -1,6 +1,7 @@
-import { COMPETITION } from '@/utils/competition';
+import { CATEGORIES, COMPETITION } from '@/utils/competition';
 
 export const QUICK_REFERENCE: readonly string[] = [
+  `Two competitions: ${CATEGORIES.beginner.name} and ${CATEGORIES.advanced.name}. Same arena; separate rankings and prizes.`,
   `Robot size: ${COMPETITION.maxBotSizeCm} cm × ${COMPETITION.maxBotSizeCm} cm × ${COMPETITION.maxBotSizeCm} cm, including antennas (±${COMPETITION.dimensionTolerancePct}%). No deployable extras.`,
   `Weight: ${COMPETITION.maxWeightKg} kg including battery (+${COMPETITION.weightTolerancePct}%, max ${COMPETITION.maxWeightWithToleranceKg} kg).`,
   `Power: one ${COMPETITION.battery}.`,
@@ -8,11 +9,29 @@ export const QUICK_REFERENCE: readonly string[] = [
   'Disqualifiers include: kits or ready-made chassis, cable pulling, parts left on the track, arena damage, extra skips after three, or unsafe batteries.',
 ] as const;
 
+export const BEGINNER_RULES: readonly string[] = [
+  `Budget: ${CATEGORIES.beginner.budget}. Submit a bill of materials. Robu.in prices are the usual reference.`,
+  CATEGORIES.beginner.control,
+  'Onboard sensing and autonomy are allowed. A dedicated FlySky, nRF24, 433 MHz, or similar RC link is not.',
+  `Up to ${COMPETITION.maxTeamsPerCategory} teams. Top ${COMPETITION.finalsPerCategory} go to the Beginner Final.`,
+  `Prizes: ${CATEGORIES.beginner.prizes}.`,
+  `If fewer than ${COMPETITION.mergeIfBelow} Beginner teams register, organisers may merge the field — announced before racing.`,
+] as const;
+
+export const ADVANCED_RULES: readonly string[] = [
+  `Budget: ${CATEGORIES.advanced.budget}.`,
+  CATEGORIES.advanced.control,
+  'Manual, wireless, autonomous, or hybrid driving is allowed.',
+  `Up to ${COMPETITION.maxTeamsPerCategory} teams. Top ${COMPETITION.finalsPerCategory} go to the Advanced Final.`,
+  `Prizes: ${CATEGORIES.advanced.prizes}.`,
+  `If fewer than ${COMPETITION.mergeIfBelow} Advanced teams register, organisers may merge the field — announced before racing.`,
+] as const;
+
 export const ARENA_SPECS: readonly { label: string; value: string }[] = [
   {
     label: 'Layout',
     value:
-      'Exact length, width, and final layout are published on the event day. Both categories use the same official track.',
+      'Exact length, width, and final layout are published on the event day. Beginner and Advanced use the same official track.',
   },
   {
     label: 'Surface',
@@ -33,9 +52,13 @@ export const ARENA_SPECS: readonly { label: string; value: string }[] = [
 
 export const SCORING_ROWS: readonly { item: string; detail: string }[] = [
   {
-    item: 'Adjusted time',
+    item: 'Rankings',
     detail:
-      'Recorded finish time + all time penalties. Lowest adjusted time ranks higher.',
+      'Beginner and Advanced are scored separately. Lowest adjusted time in your category ranks higher.',
+  },
+  {
+    item: 'Adjusted time',
+    detail: 'Recorded finish time + all time penalties.',
   },
   {
     item: 'Team touch',

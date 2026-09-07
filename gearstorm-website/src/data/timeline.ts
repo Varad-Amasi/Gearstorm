@@ -5,8 +5,8 @@ export const EVENT_TIMELINE = [
     meta: 'Before the day',
     title: 'Register',
     description: REGISTRATION_OPEN
-      ? 'Submit your team of 2–4 on this site and start building against the published specs.'
-      : 'Registration is not open yet. Build against the rulebook in the meantime.',
+      ? 'Submit your team of 2–4 on this site, choose Beginner or Advanced, and start building against the published specs.'
+      : 'Registration is not open yet. Build against the Beginner or Advanced rulebook in the meantime.',
   },
   {
     meta: 'Arrival',
@@ -18,7 +18,7 @@ export const EVENT_TIMELINE = [
     meta: 'Inspection',
     title: 'Robot inspection',
     description:
-      'Size, weight, battery, chassis, safety, and category (including the Beginner BOM) are checked before you can race.',
+      'Size, weight, battery, chassis, safety, and category (Beginner BOM or Advanced control) are checked before you can race.',
   },
   {
     meta: 'Briefing',

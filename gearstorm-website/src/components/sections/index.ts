@@ -1,4 +1,5 @@
 export { BotPreview } from './BotPreview';
+export { CategoryColumn, CategoryJump, CategorySplit } from './CategorySplit';
 export { ContentSection } from './ContentSection';
 export type { ContentSectionProps } from './ContentSection';
 export { CTASection } from './CTASection';

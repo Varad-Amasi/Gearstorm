@@ -9,7 +9,7 @@ const ContactPage = (): JSX.Element => (
   <PageContainer
     eyebrow="Get In Touch"
     title="Contact"
-    description="IEEE RAS and ISTE at KLS GIT Belagavi. Email is the fastest way to reach us."
+    description="IEEE RAS and ISTE at KLS GIT Belagavi. Questions about Beginner or Advanced? Email is the fastest way to reach us."
   >
     <div className="mx-auto flex max-w-2xl flex-col gap-8">
       <ContentSection
