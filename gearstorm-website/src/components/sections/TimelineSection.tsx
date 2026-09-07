@@ -42,7 +42,7 @@ export const TimelineSection = ({
         <li key={item.title} className="relative pb-10 pl-8 last:pb-0">
           <span
             aria-hidden="true"
-            className="absolute -left-2 top-1 h-4 w-4 rounded-full border-2 border-accent bg-dark-950 shadow-magenta"
+            className="absolute -left-2 top-1 h-4 w-4 rounded-full border-2 border-accent bg-dark-950"
           />
           <Reveal delay={index * 0.08}>
             {item.meta ? (

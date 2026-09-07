@@ -20,7 +20,7 @@ export const FeatureCard = ({
   variant = 'standard',
   className,
 }: FeatureCardProps): JSX.Element => (
-  <Card variant={variant} interactive {...(className ? { className } : {})}>
+  <Card variant={variant} {...(className ? { className } : {})}>
     {icon ? (
       <div
         className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/20 text-primary-500"

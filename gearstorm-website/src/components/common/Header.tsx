@@ -4,6 +4,7 @@ import { Logo } from '@/components/common/Logo';
 import { MobileMenu } from '@/components/common/MobileMenu';
 import { Navigation } from '@/components/common/Navigation';
 import { RegisterCta } from '@/components/common/RegisterCta';
+import { ThemeToggle } from '@/components/common/ThemeToggle';
 
 const MOBILE_MENU_ID = 'mobile-navigation';
 
@@ -21,7 +22,7 @@ export const Header = (): JSX.Element => {
   }, [pathname, closeMenu]);
 
   return (
-    <header className="sticky top-0 z-header border-b border-accent/25 bg-dark-950/75 pt-[env(safe-area-inset-top)] shadow-[0_1px_24px_rgba(217,30,99,0.12)] backdrop-blur-md">
+    <header className="sticky top-0 z-header border-b border-border bg-dark-950/95 pt-[env(safe-area-inset-top)] backdrop-blur-md">
       <div className="container-page flex h-16 items-center justify-between gap-3">
         <Logo onNavigate={closeMenu} />
 
@@ -29,7 +30,8 @@ export const Header = (): JSX.Element => {
           <Navigation />
         </nav>
 
-        <div className="flex shrink-0 items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <ThemeToggle />
           <RegisterCta
             variant="secondary"
             size="sm"

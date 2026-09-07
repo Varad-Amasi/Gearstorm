@@ -33,11 +33,7 @@ export const Navigation = ({
               'flex min-h-11 items-center rounded-lg px-3 font-subhead text-sm font-medium md:text-sm',
               orientation === 'vertical' && 'text-base',
               'transition-colors duration-normal hover:bg-accent/10 hover:text-accent',
-              isActive
-                ? 'text-accent'
-                : orientation === 'vertical'
-                  ? 'text-white'
-                  : 'text-text-muted'
+              isActive ? 'text-accent' : 'text-text-muted'
             )
           }
         >

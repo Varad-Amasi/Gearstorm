@@ -6,16 +6,13 @@ export interface HeroSectionProps {
   title: string;
   description: string;
   eyebrow?: string;
-  /** Call-to-action buttons or links. */
   actions?: ReactNode;
-  /** Visual shown beside the copy; the 3D robot canvas lands here in Phase 4. */
   media?: ReactNode;
   className?: string;
 }
 
 /**
- * Above-the-fold hero. On large screens the headline stacks over the robot
- * visual; on small screens it stays a single column with no overlap.
+ * Above-the-fold intro: title, short description, and optional photo.
  */
 export const HeroSection = ({
   title,
@@ -32,18 +29,11 @@ export const HeroSection = ({
   return (
     <section
       className={clsx(
-        'container-page relative overflow-x-clip py-10 sm:py-16 md:py-24',
+        'container-page relative py-10 sm:py-16 md:py-20',
         className
       )}
       aria-labelledby="hero-title"
     >
-      <p
-        aria-hidden="true"
-        className="pointer-events-none absolute -left-4 top-6 hidden select-none font-display text-[18vw] font-extrabold leading-none text-vivid-purple/15 lg:block lg:text-[9rem] xl:text-[11rem]"
-      >
-        GS
-      </p>
-
       <div
         className={clsx(
           'relative grid items-center gap-8 sm:gap-10',
@@ -52,35 +42,32 @@ export const HeroSection = ({
       >
         <div
           className={clsx(
-            'relative z-20 min-w-0 space-y-6 [container-type:inline-size]',
+            'relative z-20 min-w-0 space-y-6',
             media && 'lg:col-span-7 lg:pr-8'
           )}
         >
           {eyebrow ? (
-            <Badge
-              variant="accent"
-              className="relative z-20 max-w-full whitespace-normal lg:-mb-1"
-            >
+            <Badge variant="accent" className="max-w-full whitespace-normal">
               {eyebrow}
             </Badge>
           ) : null}
           <h1
             id="hero-title"
             aria-label={title}
-            className="relative whitespace-nowrap font-display font-extrabold uppercase leading-none tracking-tight text-white [font-size:clamp(1.65rem,11.2cqi,4.75rem)]"
+            className="font-display text-4xl font-extrabold uppercase leading-none tracking-tight text-text-light sm:text-5xl md:text-6xl"
           >
-            <span className="whitespace-nowrap">{mainTitle}</span>
+            <span>{mainTitle.trim()}</span>
             {edition ? (
-              <span className="gs-glitch ml-1.5 inline-block align-baseline font-accent text-[0.38em] text-neon-orange sm:ml-2">
+              <span className="ml-2 font-accent text-[0.38em] text-accent">
                 {edition}
               </span>
             ) : null}
           </h1>
-          <p className="relative z-20 max-w-md font-sans text-base font-medium leading-snug text-text-light md:text-xl">
+          <p className="max-w-xl font-sans text-base leading-relaxed text-text-muted md:text-lg">
             {description}
           </p>
           {actions ? (
-            <div className="relative z-20 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
+            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
               {actions}
             </div>
           ) : null}

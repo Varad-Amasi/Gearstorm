@@ -32,6 +32,25 @@
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --font-serif-accent: 'Playfair Display', Georgia, serif;
 
+  /* Semantic surfaces — swapped in html.light.
+     Hex tokens are for inline CSS; RGB channels are for Tailwind opacity. */
+  --c-page: #080810;
+  --c-page-2: #0b0b14;
+  --c-surface: #12121f;
+  --c-text: #e8e4ee;
+  --c-muted: #9ca3af;
+  --c-subtle: #6b7280;
+  --c-border: #374151;
+  color-scheme: dark;
+
+  --c-page-rgb: 8 8 16;
+  --c-page-2-rgb: 11 11 20;
+  --c-surface-rgb: 18 18 31;
+  --c-text-rgb: 232 228 238;
+  --c-muted-rgb: 156 163 175;
+  --c-subtle-rgb: 107 114 128;
+  --c-border-rgb: 55 65 81;
+
   /* Spacing (8px base) */
   --space-0: 0;
   --space-1: 4px;
@@ -61,4 +80,29 @@
   --transition-fast: 150ms;
   --transition-normal: 300ms;
   --transition-slow: 500ms;
+}
+
+html.light {
+  color-scheme: light;
+  /* Warm stone, not white. Magenta/purple/cyan live in the backdrop. */
+  --c-page: #d9d0c4;
+  --c-page-2: #cfc4b8;
+  --c-surface: #f3ece3;
+  --c-text: #1a1418;
+  --c-muted: #5a514c;
+  --c-subtle: #7a716a;
+  --c-border: #c4b8ac;
+  --c-page-rgb: 217 208 196;
+  --c-page-2-rgb: 207 196 184;
+  --c-surface-rgb: 243 236 227;
+  --c-text-rgb: 26 20 24;
+  --c-muted-rgb: 90 81 76;
+  --c-subtle-rgb: 122 113 106;
+  --c-border-rgb: 196 184 172;
+  --color-dark-bg: #d9d0c4;
+  --color-dark-surface: #f3ece3;
+  --color-text-light: #1a1418;
+  --color-text-muted: #5a514c;
+  --color-text-subtle: #7a716a;
+  --color-border: #c4b8ac;
 }

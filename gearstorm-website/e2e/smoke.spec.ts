@@ -20,6 +20,9 @@ test.describe('GearStorm smoke', () => {
       page.getByRole('heading', { name: 'What is GearStorm?' })
     ).toBeVisible();
     await expect(
+      page.getByRole('button', { name: /switch to (dark|light) mode/i })
+    ).toBeVisible();
+    await expect(
       page.getByRole('button', { name: /register your team/i }).first()
     ).toBeDisabled();
   });
@@ -47,7 +50,7 @@ test.describe('GearStorm smoke', () => {
       page.getByRole('heading', { level: 1, name: 'Gallery' })
     ).toBeVisible();
     await expect(
-      page.getByRole('heading', { name: 'GearStorm 1.0' })
+      page.getByRole('heading', { name: 'GearStorm 1.0', exact: true })
     ).toBeVisible();
 
     await page.goto('/contact');
@@ -57,6 +60,10 @@ test.describe('GearStorm smoke', () => {
     await expect(
       page.getByRole('heading', { name: /organiser details/i })
     ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: /load campus map/i })
+    ).toBeVisible();
+    await expect(page.locator('iframe')).toHaveCount(0);
   });
 
   test('register page is closed until entries open', async ({ page }) => {
@@ -77,5 +84,18 @@ test.describe('GearStorm smoke', () => {
     await expect(skip).toBeFocused();
     await skip.press('Enter');
     await expect(page.locator('#main-content')).toBeFocused();
+  });
+
+  test('theme toggle switches html class', async ({ page }) => {
+    await page.goto('/');
+    const toggle = page.getByRole('button', {
+      name: /switch to (dark|light) mode/i,
+    });
+    await expect(toggle).toBeVisible();
+    const before = await page.locator('html').getAttribute('class');
+    await toggle.click();
+    const after = await page.locator('html').getAttribute('class');
+    expect(after).not.toBe(before);
+    expect(after ?? '').toMatch(/\b(light|dark)\b/);
   });
 });

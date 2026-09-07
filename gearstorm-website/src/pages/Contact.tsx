@@ -1,16 +1,15 @@
 import { Card } from '@/components/common/Card';
+import { CampusMap } from '@/components/contact/CampusMap';
 import { PageContainer } from '@/components/layout/PageContainer';
 import { ContentSection } from '@/components/sections/ContentSection';
 import { ORGANIZER } from '@/config/routes';
 import { SOCIAL_LINKS, VENUE } from '@/utils/competition';
 
-const mapSrc = `https://maps.google.com/maps?q=${VENUE.mapQuery}&z=15&output=embed`;
-
 const ContactPage = (): JSX.Element => (
   <PageContainer
     eyebrow="Get In Touch"
     title="Contact"
-    description="Organiser details for GearStorm 2.0. More contacts coming soon."
+    description="IEEE RAS and ISTE at KLS GIT Belagavi. Email is the fastest way to reach us."
   >
     <div className="mx-auto flex max-w-2xl flex-col gap-8">
       <ContentSection
@@ -71,16 +70,7 @@ const ContactPage = (): JSX.Element => (
       </ContentSection>
 
       <ContentSection id="map" title="Campus location">
-        <div className="overflow-hidden rounded-lg border border-border">
-          <iframe
-            title={`Map of ${VENUE.name}`}
-            src={mapSrc}
-            className="h-64 w-full border-0 bg-dark-900 md:h-80"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            allowFullScreen
-          />
-        </div>
+        <CampusMap />
       </ContentSection>
     </div>
   </PageContainer>
