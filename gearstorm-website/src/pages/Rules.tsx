@@ -2,32 +2,45 @@ import { Card } from '@/components/common/Card';
 import { getButtonClasses } from '@/components/common/buttonStyles';
 import { ArenaDiagram } from '@/components/rules/ArenaDiagram';
 import { PageContainer } from '@/components/layout/PageContainer';
+import {
+  CategoryJump,
+  CategorySplit,
+} from '@/components/sections/CategorySplit';
 import { ContentSection } from '@/components/sections/ContentSection';
 import {
+  ADVANCED_RULES,
   ARENA_SPECS,
+  BEGINNER_RULES,
   QUICK_REFERENCE,
   SCORING_ROWS,
 } from '@/data/rulesContent';
-import { RULEBOOK } from '@/utils/competition';
+import { CATEGORIES, RULEBOOK } from '@/utils/competition';
+
+const RuleList = ({ items }: { items: readonly string[] }): JSX.Element => (
+  <ul className="list-disc space-y-3 pl-5 text-text-muted">
+    {items.map((item) => (
+      <li key={item}>{item}</li>
+    ))}
+  </ul>
+);
 
 const RulesPage = (): JSX.Element => (
   <PageContainer
     eyebrow="Competition"
     title="Rules"
-    description="What teams check most often. The full wording lives in the PDF."
+    description={`GearStorm 2.0 is two competitions — ${CATEGORIES.beginner.name} and ${CATEGORIES.advanced.name} — on the same arena. This page is the short sheet; the full wording lives in the PDF.`}
   >
     <div className="flex flex-col gap-12">
+      <CategoryJump idPrefix="rules-" />
+
       <ContentSection
         id="quick"
-        title="Quick reference"
+        title="Applies to both"
+        description="Size, weight, battery, team size, and disqualifiers are the same in Beginner and Advanced."
         className="border-0 pt-0"
       >
         <Card>
-          <ul className="list-disc space-y-3 pl-5 text-text-muted">
-            {QUICK_REFERENCE.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+          <RuleList items={QUICK_REFERENCE} />
         </Card>
       </ContentSection>
 
@@ -45,9 +58,21 @@ const RulesPage = (): JSX.Element => (
       </div>
 
       <ContentSection
+        id="categories"
+        title="Beginner and Advanced"
+        description="Pick one category at registration. Rankings and prizes stay separate."
+      >
+        <CategorySplit
+          idPrefix="rules-"
+          beginner={<RuleList items={BEGINNER_RULES} />}
+          advanced={<RuleList items={ADVANCED_RULES} />}
+        />
+      </ContentSection>
+
+      <ContentSection
         id="arena"
         title="Track and arena"
-        description="Spec sheet from the rulebook. Final measurements are given at the venue."
+        description="Both categories race the same official track. Final measurements are given at the venue."
       >
         <div className="grid gap-6 lg:grid-cols-2">
           <dl className="divide-y divide-border rounded-xl border border-border bg-dark-800/80">
@@ -67,7 +92,7 @@ const RulesPage = (): JSX.Element => (
       <ContentSection
         id="scoring"
         title="Scoring at a glance"
-        description="Adjusted time decides the ranking. Full penalty tables are in the PDF."
+        description="Adjusted time decides the ranking in your category. Full penalty tables are in the PDF."
       >
         <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full min-w-[28rem] text-left text-sm">

@@ -42,6 +42,12 @@ test.describe('GearStorm smoke', () => {
     await expect(
       page.getByRole('link', { name: /download full rulebook \(pdf\)/i })
     ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 2, name: 'Beginner', exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 2, name: 'Advanced', exact: true })
+    ).toBeVisible();
 
     await page.goto('/timeline');
     await expect(
@@ -51,6 +57,12 @@ test.describe('GearStorm smoke', () => {
     await page.goto('/bot-specs');
     await expect(
       page.getByRole('heading', { level: 1, name: 'Bot Specifications' })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 2, name: 'Beginner', exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 2, name: 'Advanced', exact: true })
     ).toBeVisible();
 
     await page.goto('/gallery');

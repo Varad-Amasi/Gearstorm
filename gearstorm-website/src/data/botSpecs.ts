@@ -1,4 +1,4 @@
-import { COMPETITION } from '@/utils/competition';
+import { CATEGORIES, COMPETITION } from '@/utils/competition';
 
 export interface SpecRow {
   label: string;
@@ -14,9 +14,9 @@ export interface SpecGroup {
 
 export const PHYSICAL_SPECS: SpecGroup = {
   id: 'physical',
-  title: 'Physical specifications',
+  title: 'Shared physical specifications',
   description:
-    'Measured at inspection. Full wording is in the official rulebook (section 2).',
+    'Beginner and Advanced are measured the same way at inspection. Full wording is in the official rulebook (section 2).',
   rows: [
     {
       label: 'Max envelope',
@@ -41,8 +41,9 @@ export const PHYSICAL_SPECS: SpecGroup = {
 
 export const ELECTRICAL_SPECS: SpecGroup = {
   id: 'electrical',
-  title: 'Electrical specifications',
-  description: 'Battery rules from rulebook section 2.3–2.4.',
+  title: 'Shared electrical specifications',
+  description:
+    'Battery rules apply to both Beginner and Advanced (rulebook section 2.3–2.4).',
   rows: [
     {
       label: 'Battery',
@@ -60,64 +61,83 @@ export const ELECTRICAL_SPECS: SpecGroup = {
   ],
 };
 
-export const COMPONENT_SPECS: SpecGroup = {
-  id: 'components',
-  title: 'Control & construction',
-  description: 'Beginner and Advanced share the size/weight/battery limits.',
-  rows: [
-    {
-      label: 'Wired or wireless',
-      value:
-        'Both are allowed. A wired cable must stay slack — pulling it to help the robot is a DQ.',
-    },
-    {
-      label: 'Beginner control',
-      value:
-        'No dedicated RF/RC driving (FlySky, nRF24, 433 MHz remotes, and similar). Arduino / ESP32 / STM32 onboard is fine for sensing and autonomy.',
-    },
-    {
-      label: 'Advanced control',
-      value:
-        'Manual, wireless, autonomous, or hybrid. Dedicated RF, Bluetooth, and Wi-Fi are allowed if they do not jam other teams.',
-    },
-    {
-      label: 'Beginner budget',
-      value: `Reference value ₹${COMPETITION.beginnerBudgetMax.toLocaleString('en-IN')} or less (up to ₹${COMPETITION.beginnerBudgetCeiling.toLocaleString('en-IN')} with tolerance). Submit a BOM. Robu.in prices are the usual reference.`,
-    },
-    {
-      label: 'Advanced budget',
-      value: `Reference value above ₹${COMPETITION.advancedBudgetMin.toLocaleString('en-IN')}. No upper cap.`,
-    },
-  ],
-};
+export const BEGINNER_SPECS: readonly SpecRow[] = [
+  {
+    label: 'Budget',
+    value: `${CATEGORIES.beginner.budget}. Submit a BOM with names, quantities, and reference prices.`,
+  },
+  {
+    label: 'Control',
+    value: CATEGORIES.beginner.control,
+  },
+  {
+    label: 'Not allowed',
+    value:
+      'Dedicated RF/RC driving (FlySky, nRF24, 433 MHz remotes, and similar).',
+  },
+  {
+    label: 'Allowed',
+    value:
+      'Onboard Arduino / ESP32 / STM32 for sensing and autonomy. Wired control if the cable stays slack.',
+  },
+] as const;
 
-export const DESIGN_TIPS: readonly string[] = [
+export const ADVANCED_SPECS: readonly SpecRow[] = [
+  {
+    label: 'Budget',
+    value: CATEGORIES.advanced.budget,
+  },
+  {
+    label: 'Control',
+    value: CATEGORIES.advanced.control,
+  },
+  {
+    label: 'Allowed',
+    value:
+      'Manual, wireless, autonomous, or hybrid. Dedicated RF, Bluetooth, and Wi-Fi if they do not jam other teams.',
+  },
+  {
+    label: 'Wired cable',
+    value: 'Allowed, but pulling the cable to help the robot is a DQ.',
+  },
+] as const;
+
+export const SHARED_DESIGN_TIPS: readonly string[] = [
   'Fit the 25 cm cube with antennas on, then add capability.',
-  'Beginner teams: keep a BOM with names, quantities, and reference prices.',
   'Do not plan to unfold or extend past the size limit after the start.',
   'Charge Li-Po/Li-ion only where marshals allow, in a fire-safe way.',
   'Label the pack and keep terminals insulated for a fast inspection.',
+] as const;
+
+export const BEGINNER_TIPS: readonly string[] = [
+  'Keep a BOM with names, quantities, and Robu.in-style reference prices.',
+  'Plan autonomy or slack wired control — a FlySky pack will fail inspection.',
+] as const;
+
+export const ADVANCED_TIPS: readonly string[] = [
+  'If you use wireless, bring a spare bind and stay off other teams’ channels.',
+  'There is no upper budget cap, but the size, weight, and battery limits still apply.',
 ] as const;
 
 export const BOT_SPEC_FAQS = [
   {
     question: 'Do antennas count in the size check?',
     answer:
-      'Yes. Everything attached to the robot counts. Deployable parts that grow the robot during the run are not allowed.',
+      'Yes. Everything attached to the robot counts, in both Beginner and Advanced. Deployable parts that grow the robot during the run are not allowed.',
   },
   {
     question: 'Can we use a ready-made chassis?',
     answer:
-      'No. The chassis must be designed and built by the team. Individual motors, wheels, and boards are allowed.',
+      'No. In both categories the chassis must be designed and built by the team. Individual motors, wheels, and boards are allowed.',
   },
   {
     question: 'What battery can we use?',
     answer:
-      'A single 3S Li-Po or 3S Li-ion pack (11.1 V nominal, 12.6 V fully charged), unless the organisers approve something else in writing.',
+      'A single 3S Li-Po or 3S Li-ion pack (11.1 V nominal, 12.6 V fully charged), unless the organisers approve something else in writing. Same rule for Beginner and Advanced.',
   },
   {
     question: 'Can Beginner teams use a FlySky or nRF remote?',
     answer:
-      'No. Dedicated RF/RC driving is an Advanced-only option. See the rulebook section 6.',
+      'No. Dedicated RF/RC driving is Advanced only. See the rulebook section 6.',
   },
 ] as const;

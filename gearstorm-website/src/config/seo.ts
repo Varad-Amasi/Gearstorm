@@ -13,7 +13,7 @@ export const SEO_CONFIG = {
   siteName: 'GearStorm 2.0',
   title: 'GearStorm 2.0 | IEEE RAS & ISTE Robotics Competition',
   description:
-    'Inter-college robotics competition organised in collaboration with IEEE RAS and ISTE of KLS GIT Belagavi.',
+    'Inter-college robotics with two competitions — Beginner and Advanced — organised in collaboration with IEEE RAS and ISTE of KLS GIT Belagavi.',
   url: siteUrl,
   /** Raster OG image — social crawlers often reject SVG. */
   image: '/og-image.png',
@@ -27,5 +27,7 @@ export const SEO_CONFIG = {
     'KLS GIT',
     'Belagavi',
     'inter-college',
+    'Beginner',
+    'Advanced',
   ],
 } as const;

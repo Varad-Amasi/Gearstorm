@@ -34,6 +34,30 @@ export const COMPETITION = {
     'The official rulebook is the source of truth. This site summarises the main points for teams.',
 } as const;
 
+/** Two official competitions. Same arena; separate rules, rankings, and prizes. */
+export const CATEGORIES = {
+  beginner: {
+    id: 'beginner',
+    name: 'Beginner',
+    summary:
+      'Lower budget, onboard control only. No dedicated RF or RC driving.',
+    budget: `₹${COMPETITION.beginnerBudgetMax.toLocaleString('en-IN')} or less (up to ₹${COMPETITION.beginnerBudgetCeiling.toLocaleString('en-IN')} with tolerance)`,
+    control:
+      'No dedicated RF/RC remotes. Arduino, ESP32, or STM32 onboard is fine.',
+    prizes: `${COMPETITION.beginnerFirst} / ${COMPETITION.beginnerSecond} / ${COMPETITION.beginnerThird}`,
+  },
+  advanced: {
+    id: 'advanced',
+    name: 'Advanced',
+    summary:
+      'Open budget. Manual, wireless, autonomous, or hybrid driving is allowed.',
+    budget: `Above ₹${COMPETITION.advancedBudgetMin.toLocaleString('en-IN')}. No upper cap`,
+    control:
+      'Dedicated RF, Bluetooth, and Wi-Fi are allowed if they do not jam other teams.',
+    prizes: `${COMPETITION.advancedFirst} / ${COMPETITION.advancedSecond} / ${COMPETITION.advancedThird}`,
+  },
+} as const;
+
 export const RULEBOOK = {
   href: '/docs/gear-storm-2.0-rule-book.pdf',
   downloadName: 'GEAR-STORM-2.0-Rule-Book.pdf',
