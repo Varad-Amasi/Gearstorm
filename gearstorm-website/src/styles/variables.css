@@ -3,12 +3,12 @@
   /* Brand colors */
   --color-primary-purple: #6b3a8c;
   --color-accent-magenta: #d91e63;
-  --color-dark-bg: #080810;
-  --color-dark-surface: #12121f;
-  --color-text-light: #e0e0e0;
-  --color-text-muted: #9ca3af;
-  --color-text-subtle: #6b7280;
-  --color-border: #374151;
+  --color-dark-bg: #0e1017;
+  --color-dark-surface: #1b1f2b;
+  --color-text-light: #d3d7e0;
+  --color-text-muted: #9aa1b0;
+  --color-text-subtle: #6f7686;
+  --color-border: #2a2f3c;
 
   /* Semantic */
   --color-success: #10b981;
@@ -16,10 +16,10 @@
   --color-warning: #f59e0b;
   --color-info: #3b82f6;
 
-  /* Accents — high-contrast neon against dark */
-  --color-neon-cyan: #00d9ff;
-  --color-neon-orange: #ff4d1a;
-  --color-vivid-purple: #b44cff;
+  /* Secondary accents — kept in the magenta↔violet family, no rainbow neon */
+  --color-neon-cyan: #8b5cf6;
+  --color-neon-orange: #f0518a;
+  --color-vivid-purple: #a56bff;
 
   /* Typography — robotic display + readable body */
   --font-display: 'Orbitron', 'Chakra Petch', system-ui, sans-serif;
@@ -33,23 +33,25 @@
   --font-serif-accent: 'Playfair Display', Georgia, serif;
 
   /* Semantic surfaces — swapped in html.light.
-     Hex tokens are for inline CSS; RGB channels are for Tailwind opacity. */
-  --c-page: #080810;
-  --c-page-2: #0b0b14;
-  --c-surface: #12121f;
-  --c-text: #e8e4ee;
-  --c-muted: #9ca3af;
-  --c-subtle: #6b7280;
-  --c-border: #374151;
+     Hex tokens are for inline CSS; RGB channels are for Tailwind opacity.
+     Deep neutral ink (not pure black) + soft off-white text to drop the
+     harsh max-contrast neon-on-black look. */
+  --c-page: #0e1017;
+  --c-page-2: #141722;
+  --c-surface: #1b1f2b;
+  --c-text: #d3d7e0;
+  --c-muted: #9aa1b0;
+  --c-subtle: #6f7686;
+  --c-border: #2a2f3c;
   color-scheme: dark;
 
-  --c-page-rgb: 8 8 16;
-  --c-page-2-rgb: 11 11 20;
-  --c-surface-rgb: 18 18 31;
-  --c-text-rgb: 232 228 238;
-  --c-muted-rgb: 156 163 175;
-  --c-subtle-rgb: 107 114 128;
-  --c-border-rgb: 55 65 81;
+  --c-page-rgb: 14 16 23;
+  --c-page-2-rgb: 20 23 34;
+  --c-surface-rgb: 27 31 43;
+  --c-text-rgb: 211 215 224;
+  --c-muted-rgb: 154 161 176;
+  --c-subtle-rgb: 111 118 134;
+  --c-border-rgb: 42 47 60;
 
   /* Spacing (8px base) */
   --space-0: 0;
@@ -84,23 +86,23 @@
 
 html.light {
   color-scheme: light;
-  /* Warm stone, not white. Magenta/purple/cyan live in the backdrop. */
-  --c-page: #d9d0c4;
-  --c-page-2: #cfc4b8;
-  --c-surface: #f3ece3;
+  /* Clean warm paper, not muddy stone. One quiet brand tint in the backdrop. */
+  --c-page: #e8e2d8;
+  --c-page-2: #ddd6ca;
+  --c-surface: #f6f1ea;
   --c-text: #1a1418;
   --c-muted: #5a514c;
   --c-subtle: #7a716a;
-  --c-border: #c4b8ac;
-  --c-page-rgb: 217 208 196;
-  --c-page-2-rgb: 207 196 184;
-  --c-surface-rgb: 243 236 227;
+  --c-border: #d4c9bc;
+  --c-page-rgb: 232 226 216;
+  --c-page-2-rgb: 221 214 202;
+  --c-surface-rgb: 246 241 234;
   --c-text-rgb: 26 20 24;
   --c-muted-rgb: 90 81 76;
   --c-subtle-rgb: 122 113 106;
-  --c-border-rgb: 196 184 172;
-  --color-dark-bg: #d9d0c4;
-  --color-dark-surface: #f3ece3;
+  --c-border-rgb: 212 201 188;
+  --color-dark-bg: #e8e2d8;
+  --color-dark-surface: #f6f1ea;
   --color-text-light: #1a1418;
   --color-text-muted: #5a514c;
   --color-text-subtle: #7a716a;

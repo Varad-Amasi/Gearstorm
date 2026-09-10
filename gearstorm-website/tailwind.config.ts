@@ -41,9 +41,9 @@ const config: Config = {
         error: '#EF4444',
         warning: '#F59E0B',
         info: '#3B82F6',
-        'neon-cyan': '#00D9FF',
-        'neon-orange': '#FF4D1A',
-        'vivid-purple': '#B44CFF',
+        'neon-cyan': '#8B5CF6',
+        'neon-orange': '#F0518A',
+        'vivid-purple': '#A56BFF',
       },
       fontFamily: {
         display: ['var(--font-display)'],
@@ -57,9 +57,9 @@ const config: Config = {
         'serif-accent': ['Playfair Display', 'Georgia', 'serif'],
       },
       boxShadow: {
-        purple: '0 0 24px rgba(180, 76, 255, 0.45)',
-        magenta: '0 0 24px rgba(217, 30, 99, 0.55)',
-        orange: '0 0 22px rgba(255, 77, 26, 0.5)',
+        purple: '0 12px 32px -14px rgba(107, 58, 140, 0.55)',
+        magenta: '0 12px 32px -14px rgba(217, 30, 99, 0.45)',
+        orange: '0 12px 32px -14px rgba(217, 30, 99, 0.32)',
       },
       maxWidth: {
         content: '1400px',
