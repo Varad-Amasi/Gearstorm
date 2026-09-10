@@ -123,7 +123,7 @@ const HomePage = (): JSX.Element => {
         eyebrow={`${ORGANIZER.societies[0].short} and ${ORGANIZER.societies[1].short}`}
         eyebrowDetail={ORGANIZER.chapter}
         title={EVENT.name}
-        description="Two competitions, one arena: Beginner and Advanced. Inter-college line-and-obstacle robotics at KLS Gogte Institute of Technology, Belagavi."
+        description="An inter-college robotics race at KLS Gogte Institute of Technology, Belagavi. Build a line-and-obstacle bot, run the arena, and post the lowest adjusted time. Enter as Beginner or Advanced."
         className="w-full"
         actions={
           <>
@@ -149,12 +149,9 @@ const HomePage = (): JSX.Element => {
         aria-labelledby="about-event"
       >
         <Reveal>
-          <p className="font-subhead text-sm font-semibold uppercase tracking-widest text-accent">
-            About
-          </p>
           <h2
             id="about-event"
-            className="mt-2 font-heading text-2xl font-bold md:text-3xl"
+            className="font-heading text-2xl font-bold md:text-3xl"
           >
             What is GearStorm?
           </h2>
@@ -217,12 +214,12 @@ const HomePage = (): JSX.Element => {
               ].map((item) => (
                 <li
                   key={item.label}
-                  className="rounded-md border border-border bg-dark-800/80 px-4 py-3"
+                  className="flex flex-col gap-1 rounded-md border border-border bg-dark-800/80 px-4 py-3 sm:flex-row sm:items-baseline sm:gap-3"
                 >
-                  <p className="font-subhead text-xs font-semibold uppercase tracking-widest text-text-muted">
+                  <p className="w-24 shrink-0 font-subhead text-sm font-semibold text-text-muted">
                     {item.label}
                   </p>
-                  <p className="mt-1 text-text-light">{item.value}</p>
+                  <p className="text-text-light">{item.value}</p>
                 </li>
               ))}
             </ul>
@@ -235,18 +232,16 @@ const HomePage = (): JSX.Element => {
         aria-labelledby="two-competitions"
       >
         <Reveal>
-          <p className="font-subhead text-sm font-semibold uppercase tracking-widest text-accent">
-            Two competitions
-          </p>
           <h2
             id="two-competitions"
-            className="mt-2 font-heading text-2xl font-bold md:text-3xl"
+            className="font-heading text-2xl font-bold md:text-3xl"
           >
-            Beginner and Advanced
+            Two categories, one arena
           </h2>
           <p className="mt-3 max-w-2xl text-text-muted">
-            Same size, weight, battery, and arena. Different budget, control
-            rules, rankings, and prizes. Choose one when you register.
+            Beginner and Advanced share the same size, weight, battery, and
+            track. The budget, control rules, rankings, and prizes are what
+            differ. You pick one when you register.
           </p>
         </Reveal>
         <div className="mt-8">
